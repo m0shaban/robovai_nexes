@@ -114,6 +114,57 @@
         .dash-drawer-sheet.show {
             transform: translateY(0);
         }
+
+        /* Leaflet + Map UI polish */
+        .leaflet-container { background: #020617; }
+        .leaflet-control-zoom a {
+            background: rgba(2, 6, 23, 0.75) !important;
+            color: #e2e8f0 !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.35) !important;
+        }
+        .leaflet-control-zoom a:hover { background: rgba(14,165,233,0.18) !important; }
+        .leaflet-bar { border: 0 !important; }
+        .rv-popup .leaflet-popup-content-wrapper {
+            background: rgba(2, 6, 23, 0.92);
+            color: #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            border-radius: 14px;
+            box-shadow: 0 22px 50px rgba(0,0,0,0.55);
+        }
+        .rv-popup .leaflet-popup-tip { background: rgba(2, 6, 23, 0.92); }
+        .rv-popup .leaflet-popup-content { margin: 10px 12px; }
+
+        .map-frame {
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.06) inset,
+                        0 24px 50px rgba(0,0,0,0.45);
+        }
+        .map-scanlines {
+            background-image: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0.04) 0px,
+                rgba(255,255,255,0.00) 2px
+            );
+            background-size: 100% 6px;
+            opacity: 0.12;
+        }
+        .map-vignette {
+            background: radial-gradient(closest-side at 50% 35%, rgba(0,0,0,0.00), rgba(0,0,0,0.55));
+        }
+
+        /* Charts fallback (when CDN blocked) */
+        .chart-fallback-bar {
+            height: 10px;
+            border-radius: 999px;
+            background: rgba(148,163,184,0.18);
+            overflow: hidden;
+        }
+        .chart-fallback-bar > span {
+            display: block;
+            height: 100%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(14,165,233,0.95), rgba(99,102,241,0.95));
+        }
     </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden">
@@ -354,13 +405,26 @@
 
         <!-- Center Map (Middle) -->
         <div id="pane-map" class="col-span-12 lg:col-span-6 flex flex-col gap-4 h-full min-h-[420px]">
-            <div class="glass-panel rounded-xl flex-1 relative overflow-hidden group">
+            <div class="glass-panel map-frame rounded-xl flex-1 relative overflow-hidden group">
                 <div id="map" class="absolute inset-0 z-0 bg-slate-800"></div>
+
+                <!-- Premium overlays (visual only) -->
+                <div class="pointer-events-none absolute inset-0 z-[350] map-vignette"></div>
+                <div class="pointer-events-none absolute inset-0 z-[351] map-scanlines"></div>
                 
                 <!-- Map Overlay Controls -->
                 <div class="absolute top-4 right-4 z-[400] flex flex-col gap-2">
-                    <button class="bg-dark-900/90 text-white p-2 rounded shadow-lg hover:bg-blue-600 transition-colors text-xs" title="Reset View"><i class="fa-solid fa-crosshairs"></i></button>
-                    <button class="bg-dark-900/90 text-white p-2 rounded shadow-lg hover:bg-blue-600 transition-colors text-xs" title="Heatmap Mode"><i class="fa-solid fa-fire"></i></button>
+                    <button id="btnMapReset" class="bg-dark-900/90 text-white p-2 rounded shadow-lg hover:bg-blue-600 transition-colors text-xs" title="Reset View"><i class="fa-solid fa-crosshairs"></i></button>
+                    <button id="btnMapHeat" class="bg-dark-900/90 text-white p-2 rounded shadow-lg hover:bg-blue-600 transition-colors text-xs" title="Heatmap Mode"><i class="fa-solid fa-fire"></i></button>
+                </div>
+
+                <!-- Legend -->
+                <div class="absolute bottom-4 left-4 z-[400] glass-panel rounded-xl px-3 py-2 text-[10px] text-slate-300 border border-white/10">
+                    <div class="font-bold text-slate-200 mb-1">Legend</div>
+                    <div class="flex items-center gap-2">
+                        <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.5)]"></span> تشغيل</span>
+                        <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_12px_rgba(239,68,68,0.55)]"></span> إنذار</span>
+                    </div>
                 </div>
 
                 <!-- Simulation Overlay (Hidden by default) -->
@@ -387,13 +451,37 @@
 
             <!-- Bottom Charts Area -->
             <div class="h-48 grid grid-cols-2 gap-4">
-                <div class="glass-panel p-3 rounded-xl">
+                <div class="glass-panel p-3 rounded-xl flex flex-col">
                     <div class="text-[10px] text-slate-400 mb-2 font-bold uppercase">كفاءة الأصول (ROI)</div>
-                    <canvas id="roiChart" class="w-full h-full"></canvas>
+                    <div class="relative flex-1 min-h-[120px]">
+                        <canvas id="roiChart" class="w-full h-full"></canvas>
+                        <div id="roiFallback" class="hidden absolute inset-0">
+                            <div class="text-[11px] text-slate-300 mb-2">ملخّص سريع (بديل)</div>
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between gap-3"><span class="text-[10px] text-slate-400">DCA-150</span><div class="flex-1 chart-fallback-bar"><span style="width:92%"></span></div><span class="text-[10px] text-slate-300">92%</span></div>
+                                <div class="flex items-center justify-between gap-3"><span class="text-[10px] text-slate-400">Cat C13</span><div class="flex-1 chart-fallback-bar"><span style="width:88%"></span></div><span class="text-[10px] text-slate-300">88%</span></div>
+                                <div class="flex items-center justify-between gap-3"><span class="text-[10px] text-slate-400">DCA-400</span><div class="flex-1 chart-fallback-bar"><span style="width:85%"></span></div><span class="text-[10px] text-slate-300">85%</span></div>
+                                <div class="flex items-center justify-between gap-3"><span class="text-[10px] text-slate-400">DCA-100</span><div class="flex-1 chart-fallback-bar"><span style="width:78%"></span></div><span class="text-[10px] text-slate-300">78%</span></div>
+                                <div class="flex items-center justify-between gap-3"><span class="text-[10px] text-slate-400">Perkins</span><div class="flex-1 chart-fallback-bar"><span style="width:65%"></span></div><span class="text-[10px] text-slate-300">65%</span></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="glass-panel p-3 rounded-xl">
+                <div class="glass-panel p-3 rounded-xl flex flex-col">
                     <div class="text-[10px] text-slate-400 mb-2 font-bold uppercase">تحليل الأعطال (الأسباب)</div>
-                    <canvas id="failuresChart" class="w-full h-full"></canvas>
+                    <div class="relative flex-1 min-h-[120px]">
+                        <canvas id="failuresChart" class="w-full h-full"></canvas>
+                        <div id="failFallback" class="hidden absolute inset-0">
+                            <div class="text-[11px] text-slate-300 mb-2">الأسباب الأكثر تكرارًا</div>
+                            <div class="space-y-2 text-[10px] text-slate-300">
+                                <div class="flex items-center justify-between"><span class="inline-flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> فلاتر</span><span class="text-slate-400">45%</span></div>
+                                <div class="flex items-center justify-between"><span class="inline-flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-red-500"></span> حرارة</span><span class="text-slate-400">30%</span></div>
+                                <div class="flex items-center justify-between"><span class="inline-flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> بطارية</span><span class="text-slate-400">15%</span></div>
+                                <div class="flex items-center justify-between"><span class="inline-flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-slate-500"></span> أخرى</span><span class="text-slate-400">10%</span></div>
+                                <div class="mt-2 text-[10px] text-slate-500">(لو الرسوم مش ظاهرة: غالبًا الـCDN محجوب/بدون إنترنت)</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -466,10 +554,12 @@
 
     <script>
         // 1. Leaflet Map Setup
+        const MAP_CENTER = [30.0444, 31.2357];
+        const MAP_ZOOM = 10;
         const map = L.map('map', {
             zoomControl: false,
             attributionControl: false
-        }).setView([30.0444, 31.2357], 10); // Cairo Center
+        }).setView(MAP_CENTER, MAP_ZOOM); // Cairo Center
 
         L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
             subdomains: 'abcd',
@@ -502,58 +592,131 @@
             { lat: 30.0626, lng: 31.3479, type: 'green', name: "مدينة نصر - ستاد القاهرة" },
         ];
 
+        const markersLayer = L.layerGroup().addTo(map);
+        const heatLayer = L.layerGroup();
+        let heatOn = false;
+
         locations.forEach(loc => {
-            L.marker([loc.lat, loc.lng], { icon: loc.type === 'green' ? greenIcon : redIcon })
-                .addTo(map)
-                .bindPopup(`<div class='text-slate-800 font-bold'>${loc.name}</div>`);
+            const marker = L.marker([loc.lat, loc.lng], { icon: loc.type === 'green' ? greenIcon : redIcon })
+                .addTo(markersLayer)
+                .bindPopup(
+                    `<div class='font-bold'>${loc.name}</div><div class='text-[11px] text-slate-400 mt-1'>الحالة: ${loc.type === 'green' ? 'تشغيل' : 'إنذار'}</div>`,
+                    { className: 'rv-popup' }
+                );
+
+            const circle = L.circle([loc.lat, loc.lng], {
+                radius: loc.type === 'green' ? 520 : 950,
+                color: loc.type === 'green' ? '#10b981' : '#ef4444',
+                weight: 1,
+                fillColor: loc.type === 'green' ? '#10b981' : '#ef4444',
+                fillOpacity: loc.type === 'green' ? 0.08 : 0.14,
+            }).addTo(heatLayer);
+
+            // Keep popup discoverability on both modes
+            circle.on('click', () => marker.openPopup());
         });
 
+        // Add zoom control back (custom position)
+        L.control.zoom({ position: 'bottomleft' }).addTo(map);
 
-        // 2. Charts Setup (Chart.js)
-        // ROI Chart
-        const ctxROI = document.getElementById('roiChart').getContext('2d');
-        new Chart(ctxROI, {
-            type: 'bar',
-            data: {
-                labels: ['DCA-400', 'DCA-150', 'DCA-100', 'Cat C13', 'Perkins'],
-                datasets: [{
-                    label: 'نسبة الربحية %',
-                    data: [85, 92, 78, 88, 65],
-                    backgroundColor: '#0ea5e9',
-                    borderRadius: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: {  grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
-                    x: {  grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 9 } } }
-                }
+        // Wire map overlay buttons
+        const btnMapReset = document.getElementById('btnMapReset');
+        const btnMapHeat = document.getElementById('btnMapHeat');
+
+        btnMapReset?.addEventListener('click', () => {
+            map.setView(MAP_CENTER, MAP_ZOOM, { animate: true, duration: 0.6 });
+        });
+
+        btnMapHeat?.addEventListener('click', () => {
+            heatOn = !heatOn;
+            if (heatOn) {
+                map.removeLayer(markersLayer);
+                heatLayer.addTo(map);
+                btnMapHeat.classList.add('bg-blue-600');
+            } else {
+                map.removeLayer(heatLayer);
+                markersLayer.addTo(map);
+                btnMapHeat.classList.remove('bg-blue-600');
             }
+            setTimeout(() => map.invalidateSize(), 80);
         });
 
-        // Failures Chart - Maintenance Reasons
-        const ctxFail = document.getElementById('failuresChart').getContext('2d');
-        new Chart(ctxFail, {
-            type: 'doughnut',
-            data: {
-                labels: ['حرارة', 'فلاتر', 'بطارية', 'أخرى'],
-                datasets: [{
-                    data: [30, 45, 15, 10],
-                    backgroundColor: ['#ef4444', '#f59e0b', '#10b981', '#64748b'],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { 
-                    legend: { position: 'right', labels: { color: '#94a3b8', boxWidth: 10, font: { size: 9 } } } 
-                }
+
+        // 2. Charts Setup (Chart.js) - guarded + fallback
+        let roiChart = null;
+        let failuresChart = null;
+
+        function showChartsFallback() {
+            document.getElementById('roiChart')?.classList.add('hidden');
+            document.getElementById('failuresChart')?.classList.add('hidden');
+            document.getElementById('roiFallback')?.classList.remove('hidden');
+            document.getElementById('failFallback')?.classList.remove('hidden');
+        }
+
+        function initCharts() {
+            const roiEl = document.getElementById('roiChart');
+            const failEl = document.getElementById('failuresChart');
+            if (!roiEl || !failEl) return;
+            if (!window.Chart) {
+                showChartsFallback();
+                return;
             }
-        });
+
+            try {
+                roiChart = new Chart(roiEl.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['DCA-400', 'DCA-150', 'DCA-100', 'Cat C13', 'Perkins'],
+                        datasets: [{
+                            label: 'نسبة الربحية %',
+                            data: [85, 92, 78, 88, 65],
+                            backgroundColor: '#0ea5e9',
+                            borderRadius: 6,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
+                            x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 10 } } }
+                        }
+                    }
+                });
+
+                failuresChart = new Chart(failEl.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['حرارة', 'فلاتر', 'بطارية', 'أخرى'],
+                        datasets: [{
+                            data: [30, 45, 15, 10],
+                            backgroundColor: ['#ef4444', '#f59e0b', '#10b981', '#64748b'],
+                            borderWidth: 0,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '62%',
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: { color: '#94a3b8', boxWidth: 10, font: { size: 10 } }
+                            }
+                        }
+                    }
+                });
+
+                // One more resize after layout settles
+                setTimeout(() => {
+                    roiChart?.resize();
+                    failuresChart?.resize();
+                }, 180);
+            } catch (_) {
+                showChartsFallback();
+            }
+        }
 
 
         // 3. Simulations Logic
@@ -599,8 +762,14 @@
                 b.classList.toggle('tab-active', b.dataset.tab === tab);
             });
 
-            // Leaflet needs a resize invalidate when its container becomes visible
-            if (tab === 'map') setTimeout(() => map.invalidateSize(), 80);
+            // Leaflet/Charts need a resize invalidate when their container becomes visible
+            if (tab === 'map') {
+                setTimeout(() => {
+                    map.invalidateSize();
+                    roiChart?.resize();
+                    failuresChart?.resize();
+                }, 120);
+            }
             localStorage.setItem('dashboardTab', tab);
         }
 
@@ -696,6 +865,7 @@
                 // desktop: show all panes
                 ['pane-kpi','pane-map','pane-log'].forEach(id => document.getElementById(id)?.classList.remove('hidden'));
                 setTimeout(() => map.invalidateSize(), 120);
+                setTimeout(() => { roiChart?.resize(); failuresChart?.resize(); }, 160);
             }
         });
 
@@ -820,6 +990,7 @@
             animateNumber(document.getElementById('kpiRevenue'), 150000);
             animateNumber(document.getElementById('kpiOpex'), 12450);
             animateNumber(document.getElementById('kpiSaved'), 45000);
+            initCharts();
             setTimeout(() => map.invalidateSize(), 120);
         }
 
