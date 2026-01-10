@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" class="dark">
+<html lang="ar" dir="rtl" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>القطامي سمارت فليت</title>
+    <title>القطامي سمارت فليت | الجيل الجديد لإدارة الطاقة</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -12,1039 +12,433 @@
             darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Cairo', 'sans-serif'],
-                    },
                     colors: {
-                        slate: {
-                            850: '#152033',
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9', // Sky blue
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        },
+                        dark: {
+                            900: '#020617', // Slate 950
+                            800: '#0f172a', // Slate 900
+                            700: '#1e293b', // Slate 800
                         }
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
                     }
                 }
             }
         }
     </script>
     
-    <!-- FontAwesome -->
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Google Fonts: Cairo -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: #0f172a;
-            color: #f1f5f9;
-        }
+        body { font-family: 'Cairo', sans-serif; background-color: #020617; color: white; overflow-x: hidden; }
         
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-        }
-        .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        
+        /* Glassmorphism */
         .glass {
-            background: rgba(30, 41, 59, 0.7);
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(14, 165, 233, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -10px rgba(14, 165, 233, 0.15);
         }
 
         /* Animations */
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade-in-up { animation: fadeInUp 0.3s ease-out forwards; }
-        .animate-fade-in { animation: fadeInUp 0.3s ease-out forwards; }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(14, 165, 233, 0.0); }
+            50% { box-shadow: 0 0 40px rgba(14, 165, 233, 0.3); }
+        }
+        .animate-pulse-glow { animation: pulse-glow 3s infinite; }
+
+        .text-glow {
+            text-shadow: 0 0 20px rgba(14, 165, 233, 0.5);
+        }
+        /* Scroll Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Stagger Delays */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+
+        /* Premium Hover Effects */
+        .hover-shine {
+            position: relative;
+            overflow: hidden;
+        }
+        .hover-shine::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+            transform: skewX(-25deg);
+            transition: 0.5s;
+        }
+        .hover-shine:hover::after {
+            left: 200%;
+            transition: 0.7s;
+        }
     </style>
 </head>
-<body class="h-screen flex flex-col overflow-hidden text-right">
+<body class="bg-dark-900 text-slate-100">
 
-    <!-- Navigation Bar -->
-    <nav class="h-16 border-b border-slate-700/50 bg-slate-900/80 backdrop-blur-md flex items-center justify-between px-6 shrink-0 z-20">
-        <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/30">
-                <i class="fa-solid fa-bolt"></i>
-            </div>
-            <h1 class="text-xl font-bold tracking-tight text-white hover:text-blue-400 transition-colors cursor-pointer">القطامي <span class="text-blue-500">للمولدات</span></h1>
-        </div>
-
-        <div class="flex items-center gap-4">
-            <label class="text-sm text-slate-400 font-medium hidden md:block">اختر السيناريو:</label>
-            <div class="relative">
-                <select id="scenarioSelect" class="appearance-none bg-slate-800 border border-slate-700 text-white py-2 pr-4 pl-10 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:bg-slate-750 cursor-pointer w-64">
-                    <option value="Maintenance">1. صيانة دورية</option>
-                    <option value="Security">2. سرقة / اختراق أمني</option>
-                    <option value="FuelTheft">3. كشف سرقة وقود</option>
-                    <option value="SmartBilling">4. الفوترة والنزاعات</option>
-                    <option value="AIPredictive">5. الصيانة التنبؤية (AI)</option>
-                    <option value="AssetReturn">6. استلام وفحص (تالف)</option>
-                    <option value="MaintReject">7. رفض صيانة (توفير)</option>
-                    <option value="Tampering">8. محاولة تلاعب / فصل</option>
-                    <option value="QRContext">9. مسح QR (حسب الدور)</option>
-                    <option value="GeoFence">10. مسح خارج الموقع (حظر)</option>
-                    <option value="Inventory">11. جرد المخزن السريع</option>
-                </select>
-                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center px-3 text-slate-400">
-                    <i class="fa-solid fa-chevron-down text-xs"></i>
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 transition-all duration-300 glass border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-3">
+                    <img src="landing_assets/RoboVAI Solutions.png" alt="RoboVAI Solutions" class="w-12 h-12 rounded-xl shadow-lg">
+                    <div class="hidden md:block">
+                        <span class="text-xl font-bold tracking-wide">القطامي <span class="text-blue-400">سمارت فليت</span></span>
+                        <span class="block text-[10px] text-slate-400 -mt-1 tracking-widest">Powered by RoboVAI Nexus</span>
+                    </div>
                 </div>
+                
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#home" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">الرئيسية</a>
+                    <a href="#features" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">المميزات</a>
+                    <a href="#system" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">مراحل النظام</a>
+                    <a href="#contact" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">تواصل معنا</a>
+                </div>
+
+                <a href="demo.html" class="bg-white/10 hover:bg-white/20 border border-white/10 text-white px-6 py-2.5 rounded-full text-sm font-bold transition-all flex items-center gap-2 group">
+                    <span>دخول الديمو</span>
+                    <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                </a>
             </div>
-            
-            <div class="h-8 w-px bg-slate-700 mx-2 hidden md:block"></div>
-            
-            <button class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300 transition-colors">
-                <i class="fa-regular fa-bell"></i>
-            </button>
-            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 border border-slate-600 shadow-md"></div>
         </div>
     </nav>
 
-    <!-- Main Grid Layout -->
-    <main class="flex-1 grid grid-cols-12 gap-6 p-6 overflow-hidden min-h-0">
-        
-        <!-- Right Column: Mobile App (Technician View) -->
-        <section class="col-span-12 lg:col-span-3 flex flex-col h-full min-h-0 order-1">
-            <div class="flex items-center gap-2 mb-3 text-slate-400 text-xs font-semibold uppercase tracking-wider">
-                <i class="fa-solid fa-mobile-screen"></i> تطبيق الفني - الميدان
-            </div>
-            
-            <!-- Phone Frame -->
-            <div class="flex-1 rounded-[2.5rem] border-8 border-slate-800 bg-white relative overflow-hidden shadow-2xl shadow-black/50 flex flex-col max-h-[850px] mx-auto w-full max-w-[340px]">
-                <!-- Notch -->
-                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-slate-800 z-50 rounded-b-xl flex justify-center">
-                   <div class="w-12 h-1.5 bg-slate-900/50 rounded-full mt-2"></div>
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute inset-0 bg-dark-900">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-blue-900/20 via-dark-900 to-dark-900"></div>
+            <div class="absolute top-20 left-10 w-72 h-72 bg-blue-600/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10 grid lg:grid-cols-2 gap-12 items-center">
+            <!-- Text Content -->
+            <div class="text-center lg:text-right space-y-8">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-medium animate-fade-in-up">
+                    <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                    نظام التشغيل الرقمي (Smart Fleet OS)
                 </div>
                 
-                <!-- Status Bar -->
-                <div class="h-10 bg-slate-100 flex items-center justify-between px-6 pt-2 text-[10px] font-bold text-slate-800 select-none ltr">
-                    <div class="flex gap-1.5">
-                        <i class="fa-solid fa-signal"></i>
-                        <i class="fa-solid fa-wifi"></i>
-                        <i class="fa-solid fa-battery-full"></i>
-                    </div>
-                    <span>10:42</span>
-                </div>
+                <h1 class="text-5xl lg:text-7xl font-black leading-tight reveal delay-100">
+                    RoboVAI <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 text-glow">Nexus</span>
+                </h1>
+                
+                <p class="text-lg text-slate-400 max-w-2xl mx-auto lg:mx-0 leading-relaxed reveal delay-200 mt-6">
+                    ليس مجرد تطبيق، بل هو <strong>توأم رقمي (Digital Twin)</strong> لكل مولد في أسطول "القطامي".
+                    <br>الجيل الجديد من إدارة الأصول بذكاء سياقي (Context-Aware) يخدم العميل، الفني، والمالك في آن واحد.
+                </p>
 
-                <!-- App Header -->
-                <div class="bg-blue-600 px-5 pt-4 pb-8 text-white rounded-b-[2rem] shadow-lg relative z-0">
-                    <div class="flex justify-between items-start mb-4">
-                        <i class="fa-solid fa-bars text-lg opacity-80"></i>
-                        <div class="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                            <i class="fa-solid fa-user text-xs"></i>
-                        </div>
-                    </div>
-                    <h2 class="text-xl font-bold">أهلاً، يا هندسة</h2>
-                    <p class="text-blue-100 text-xs mt-1 opacity-90">جاهز لوردية النهاردة؟</p>
-                </div>
-
-                <!-- App Content -->
-                <div id="mobileContent" class="flex-1 bg-slate-50 relative -mt-6 z-10 rounded-t-[1.5rem] px-5 pt-6 pb-2 overflow-y-auto scrollbar-hide flex flex-col">
-                    <!-- Dynamic Content Will Be Injected Here -->
-                </div>
-
-                <!-- Phone Bottom Bar -->
-                <div class="h-16 bg-white border-t border-slate-100 flex justify-around items-center px-2 pb-2 text-slate-400">
-                    <div class="flex flex-col items-center gap-1 text-blue-600">
-                        <i class="fa-solid fa-house text-lg"></i>
-                    </div>
-                    <div class="flex flex-col items-center gap-1 hover:text-blue-600 transition-colors">
-                        <i class="fa-solid fa-calendar-check text-lg"></i>
-                    </div>
-                    <div class="flex flex-col items-center gap-1 hover:text-blue-600 transition-colors">
-                        <i class="fa-solid fa-comment-dots text-lg"></i>
-                    </div>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start reveal delay-300">
+                    <a href="demo.html" class="px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white rounded-xl font-bold shadow-lg shadow-blue-500/25 transition-all transform hover:scale-105 flex items-center justify-center gap-3 hover-shine">
+                        <i class="fa-solid fa-play"></i>
+                        ابدأ التجربة الحية
+                    </a>
+                    <a href="#system" class="px-8 py-4 glass hover:bg-white/5 text-white rounded-xl font-bold transition-all flex items-center justify-center gap-3 hover-shine">
+                        <i class="fa-solid fa-layer-group"></i>
+                        كيف يعمل النظام؟
+                    </a>
                 </div>
                 
-                <!-- Home Indicator -->
-                <div class="bg-white h-5 w-full flex justify-center items-end pb-1.5">
-                    <div class="w-32 h-1 bg-slate-900 rounded-full"></div>
+                <!-- Stats -->
+                <div class="grid grid-cols-3 gap-6 pt-8 border-t border-white/5">
+                    <div>
+                        <div class="text-2xl font-bold text-white mb-1">99.9%</div>
+                        <div class="text-xs text-slate-500 uppercase tracking-wider">Uptime</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-blue-400 mb-1">+500</div>
+                        <div class="text-xs text-slate-500 uppercase tracking-wider">وحدة متصلة</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-cyan-400 mb-1">AI</div>
+                        <div class="text-xs text-slate-500 uppercase tracking-wider">تحليل ذكي</div>
+                    </div>
                 </div>
             </div>
-        </section>
 
-        <!-- Middle Column: Command Center (Chat) -->
-        <section class="col-span-12 lg:col-span-4 flex flex-col h-full min-h-0 order-2">
-             <div class="flex items-center justify-between mb-3 text-slate-400 text-xs font-semibold uppercase tracking-wider">
-                <div class="flex items-center gap-2"><i class="fa-brands fa-whatsapp"></i> بث التنبيهات المباشر</div>
-                <span class="w-2 h-2 rounded-full bg-green-500 shadow-lg shadow-green-500/50 animate-pulse"></span>
-            </div>
-            
-            <div class="flex-1 glass rounded-2xl flex flex-col overflow-hidden shadow-xl border border-slate-700/50">
-                <!-- Chat Header -->
-                <div class="p-4 border-b border-slate-700/50 bg-slate-800/40 backdrop-blur-md flex justify-between items-center">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-orange-500/10 text-orange-400 flex items-center justify-center border border-orange-500/20">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
+            <!-- Hero Image -->
+            <div class="relative hidden lg:block perspective-1000">
+                <div class="relative w-full aspect-square max-w-[600px] mx-auto animate-float">
+                    <!-- Glow effect behind image -->
+                    <div class="absolute inset-0 bg-blue-500/20 blur-[100px] rounded-full"></div>
+                    
+                    <!-- Main Hero Image -->
+                    <img src="landing_assets/hero_generator_real.png" alt="Generator Tech" class="relative z-10 w-full h-full object-contain drop-shadow-2xl">
+                    
+                    <!-- Floating Cards -->
+                    <div class="absolute -right-8 top-20 glass p-4 rounded-xl border-r-4 border-blue-500 animate-float z-20" style="animation-delay: 1s;">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center text-blue-400">
+                                <i class="fa-solid fa-wifi"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs text-slate-400">حالة الاتصال</div>
+                                <div class="text-sm font-bold text-emerald-400">متصل 5G</div>
+                            </div>
                         </div>
-                        <div>
-                            <h3 class="font-bold text-sm text-slate-100">عمليات الأسطول</h3>
-                            <p class="text-xs text-slate-400">12 متصل الآن</p>
+                    </div>
+
+                    <div class="absolute -left-12 bottom-32 glass p-4 rounded-xl border-l-4 border-cyan-500 animate-float z-20" style="animation-delay: 2s;">
+                         <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-bolt text-yellow-400"></i>
+                            <div>
+                                <div class="text-sm font-bold">125 KVA</div>
+                                <div class="text-[10px] text-slate-400">Total Output</div>
+                            </div>
                         </div>
-                    </div>
-                    <button class="text-slate-400 hover:text-white"><i class="fa-solid fa-ellipsis-vertical"></i></button>
-                </div>
-
-                <!-- Messages Area -->
-                <div id="chatContainer" class="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-hide bg-gradient-to-b from-transparent to-slate-900/30">
-                    <div class="flex justify-center my-2">
-                        <span class="bg-slate-800/60 text-slate-400 text-[10px] px-3 py-1 rounded-full border border-slate-700">اليوم</span>
-                    </div>
-                    <!-- Messages will be injected here -->
-                </div>
-
-                <!-- Input Area -->
-                <div class="p-3 bg-slate-800/50 border-t border-slate-700/50 backdrop-blur-md">
-                    <div class="flex gap-2">
-                        <button class="w-10 h-10 rounded-xl bg-slate-700/50 text-slate-400 hover:bg-slate-700 hover:text-white transition-colors flex items-center justify-center">
-                           <i class="fa-solid fa-paperclip"></i>
-                        </button>
-                        <input type="text" placeholder="اكتب رسالة..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 text-sm text-white focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition-all placeholder:text-slate-500 text-right">
-                        <button class="w-10 h-10 rounded-xl bg-blue-600 text-white shadow-lg shadow-blue-600/20 hover:bg-blue-500 transition-all flex items-center justify-center">
-                            <i class="fa-solid fa-paper-plane text-sm transform rotate-180"></i>
-                        </button>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Left Column: Live Analytics -->
-        <section class="col-span-12 lg:col-span-5 flex flex-col h-full min-h-0 text-white order-3">
-            <div class="flex items-center gap-2 mb-3 text-slate-400 text-xs font-semibold uppercase tracking-wider">
-                <i class="fa-solid fa-chart-line"></i> مؤشرات الأداء الحية
+    <!-- Context-Aware Access Section -->
+    <section id="context-aware" class="py-24 relative bg-dark-800">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20 reveal">
+                <h2 class="text-3xl lg:text-4xl font-bold mb-4">بوابة الدخول <span class="text-blue-500">الذكية</span> (Context-Aware)</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">كود QR واحد... 3 واجهات مختلفة. النظام يتعرف على "من أنت" ويعرض لك الأدوات المناسبة.</p>
             </div>
 
-            <!-- KPI Cards Grid -->
-            <div class="grid grid-cols-2 gap-4 mb-4">
-                <!-- Card 1 -->
-                <div class="bg-slate-800/40 p-5 rounded-2xl border border-slate-700/50 hover:bg-slate-800/60 transition-colors group">
-                    <div class="flex justify-between items-start mb-2">
-                        <div class="w-10 h-10 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                            <i class="fa-solid fa-truck-fast"></i>
-                        </div>
-                        <span id="badge-active" class="text-emerald-400 text-xs font-bold bg-emerald-500/10 px-2 py-1 rounded-full">+12%</span>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- 1. Client View -->
+                <div class="glass-card p-8 rounded-3xl relative group overflow-hidden reveal delay-100 border-t-4 border-blue-500">
+                    <div class="bg-blue-900/30 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-2xl text-blue-400">
+                        <i class="fa-solid fa-user-tie"></i>
                     </div>
-                    <div id="kpi-active" class="text-2xl font-bold text-white mb-0.5">24/30</div>
-                    <div class="text-xs text-slate-400 font-medium">الوحدات النشطة</div>
+                    
+                    <h3 class="text-2xl font-bold mb-2">1. واجهة العميل (VIP)</h3>
+                    <p class="text-xs text-blue-400 font-mono mb-4">Role: Client / Site Engineer</p>
+                    
+                    <ul class="space-y-3 text-slate-400 text-sm mb-6">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-bell text-red-500"></i> زر استغاثة (SOS) فوري</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-truck-droplet text-blue-500"></i> طلب وقود / تمديد</li>
+                    </ul>
+                    
+                    <img src="landing_assets/security_site_real.png" alt="Client Site View" class="w-full h-32 object-cover rounded-xl opacity-80 group-hover:opacity-100 transition-all mb-4 border border-white/10">
+
+                    <div class="bg-slate-900/50 p-3 rounded-xl border border-white/5 text-center">
+                        <span class="text-[10px] text-slate-500 block">القيمة المضافة</span>
+                        <div class="font-bold text-white text-sm">مهندس مقيم 24/7</div>
+                    </div>
                 </div>
 
-                <!-- Card 2 -->
-                <div class="bg-slate-800/40 p-5 rounded-2xl border border-slate-700/50 hover:bg-slate-800/60 transition-colors group">
-                    <div class="flex justify-between items-start mb-2">
-                        <div class="w-10 h-10 rounded-lg bg-orange-500/10 text-orange-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                            <i class="fa-solid fa-gas-pump"></i>
-                        </div>
-                        <span id="badge-fuel" class="text-red-400 text-xs font-bold bg-red-500/10 px-2 py-1 rounded-full">-5%</span>
+                <!-- 2. Technician View -->
+                <div class="glass-card p-8 rounded-3xl relative group overflow-hidden reveal delay-200 border-t-4 border-amber-500 transform lg:-translate-y-8 shadow-2xl shadow-amber-500/10">
+                    <div class="bg-amber-900/30 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-2xl text-amber-400">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
                     </div>
-                    <div id="kpi-fuel" class="text-2xl font-bold text-white mb-0.5">78%</div>
-                    <div class="text-xs text-slate-400 font-medium">متوسط الوقود</div>
+                    
+                    <h3 class="text-2xl font-bold mb-2">2. واجهة التشغيل (Ops)</h3>
+                    <p class="text-xs text-amber-400 font-mono mb-4">Role: Technician / Driver</p>
+                    
+                    <ul class="space-y-3 text-slate-400 text-sm mb-6">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-book-medical text-amber-500"></i> السجل الطبي للمعدة</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-list-check text-blue-500"></i> قوائم صيانة ذكية</li>
+                    </ul>
+
+                    <img src="landing_assets/tech_tablet_real.png" alt="Technician App" class="w-full h-32 object-cover rounded-xl opacity-80 group-hover:opacity-100 transition-all mb-4 border border-white/10">
+
+                    <div class="bg-slate-900/50 p-3 rounded-xl border border-white/5 text-center">
+                        <span class="text-[10px] text-slate-500 block">القيمة المضافة</span>
+                        <div class="font-bold text-white text-sm">إغلاق ثغرات الصيانة</div>
+                    </div>
+                </div>
+
+                <!-- 3. Owner View -->
+                <div class="glass-card p-8 rounded-3xl relative group overflow-hidden reveal delay-300 border-t-4 border-emerald-500">
+                    <div class="bg-emerald-900/30 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-2xl text-emerald-400">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    
+                    <h3 class="text-2xl font-bold mb-2">3. واجهة الإدارة (Owner)</h3>
+                    <p class="text-xs text-emerald-400 font-mono mb-4">Role: Owner / Manager</p>
+                    
+                    <ul class="space-y-3 text-slate-400 text-sm mb-6">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-sack-dollar text-emerald-500"></i> حساب العائد (ROI)</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-map-location-dot text-blue-500"></i> تتبع ومراقبة حية</li>
+                    </ul>
+
+                    <img src="landing_assets/fleet_map_real.png" alt="Owner Dashboard" class="w-full h-32 object-cover rounded-xl opacity-80 group-hover:opacity-100 transition-all mb-4 border border-white/10">
+
+                    <div class="bg-slate-900/50 p-3 rounded-xl border border-white/5 text-center">
+                        <span class="text-[10px] text-slate-500 block">القيمة المضافة</span>
+                        <div class="font-bold text-white text-sm">اتخاذ قرار لحظي</div>
+                    </div>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <!-- Data Table Section -->
-            <div class="flex-1 glass rounded-2xl border border-slate-700/50 flex flex-col overflow-hidden min-h-0">
-                <div class="p-4 border-b border-slate-700/50 flex justify-between items-center">
-                    <h3 class="font-bold text-sm">حالة المولدات</h3>
-                    <button class="text-xs text-blue-400 hover:text-blue-300 font-medium">عرض الكل</button>
-                </div>
+    <!-- 4 Core Workflows Section -->
+    <section id="workflows" class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-grid-pattern opacity-5"></div>
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="bg-slate-800/50 rounded-[3rem] p-8 lg:p-16 border border-white/5 backdrop-blur-sm">
                 
-                <div class="overflow-auto scrollbar-hide">
-                    <table class="w-full text-right text-sm text-slate-400">
-                        <thead class="bg-slate-800/50 text-xs uppercase font-medium text-slate-300 sticky top-0 backdrop-blur-sm">
-                            <tr>
-                                <th class="px-4 py-3">رقم المولد</th>
-                                <th class="px-4 py-3">السائق / الموقع</th>
-                                <th class="px-4 py-3">الحالة</th>
-                                <th class="px-4 py-3 text-left">الوقود</th>
-                            </tr>
-                        </thead>
-                        <tbody id="table-body" class="divide-y divide-slate-700/50">
-                            <!-- Rows injected by JS -->
-                        </tbody>
-                    </table>
-                </div>
-                
-                 <!-- Mini Chart Placeholder -->
-                 <div class="p-4 border-t border-slate-700/50 mt-auto bg-slate-800/20">
-                    <p class="text-[10px] text-slate-400 uppercase tracking-widest mb-2 font-bold">مؤشر الكفاءة (آخر 6 ساعات)</p>
-                    <div class="flex items-end gap-1 h-12 ltr"> 
-                        <!-- Chart bars (LTR direction kept for logic) -->
-                        <div class="flex-1 bg-blue-500/20 rounded-t-sm h-[40%] hover:bg-blue-500/40 transition-colors"></div>
-                        <div class="flex-1 bg-blue-500/20 rounded-t-sm h-[60%] hover:bg-blue-500/40 transition-colors"></div>
-                        <div class="flex-1 bg-blue-500/20 rounded-t-sm h-[50%] hover:bg-blue-500/40 transition-colors"></div>
-                        <div class="flex-1 bg-blue-500/20 rounded-t-sm h-[80%] hover:bg-blue-500/40 transition-colors"></div>
-                        <div class="flex-1 bg-blue-500/20 rounded-t-sm h-[70%] hover:bg-blue-500/40 transition-colors"></div>
-                        <div class="flex-1 bg-emerald-500/40 rounded-t-sm h-[90%] hover:bg-emerald-500/60 transition-colors relative group">
-                            <div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-white text-slate-900 text-[9px] px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">الآن</div>
+                <div class="grid lg:grid-cols-2 gap-16 items-start">
+                    <div>
+                        <div class="inline-block px-4 py-2 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-bold mb-6">
+                            الأتمتة الذكية (Automation)
+                        </div>
+                        <h2 class="text-3xl lg:text-4xl font-bold mb-8 leading-tight">4 مسارات عمل <br><span class="text-blue-500">تغير قواعد اللعبة</span></h2>
+                        
+                        <div class="space-y-8">
+                            <!-- Workflow 1 -->
+                            <div class="flex gap-5 reveal delay-100 group">
+                                <div class="w-14 h-14 rounded-2xl bg-slate-700/50 flex items-center justify-center text-blue-400 shrink-0 group-hover:bg-blue-500 group-hover:text-white transition-all">
+                                    <i class="fa-solid fa-handshake"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg text-white mb-2">1. الصيانة التشاركية</h4>
+                                    <p class="text-slate-400 text-sm leading-relaxed">الفني يكتشف العطل -> يطلب القطعة -> المدير يعتمد بلمسة واحدة. إغلاق كامل للدورة المستندية.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Workflow 2 -->
+                            <div class="flex gap-5 reveal delay-200 group">
+                                <div class="w-14 h-14 rounded-2xl bg-slate-700/50 flex items-center justify-center text-red-400 shrink-0 group-hover:bg-red-500 group-hover:text-white transition-all">
+                                    <i class="fa-solid fa-shield-cat"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg text-white mb-2">2. درع الوقود (Fuel Shield)</h4>
+                                    <p class="text-slate-400 text-sm leading-relaxed">AI يقارن استهلاك الوقود بكتالوج المصنع. أي نقص غير منطقي = إنذار سرقة فوري للأمن.</p>
+                                </div>
+                            </div>
+
+                            <!-- Workflow 3 -->
+                            <div class="flex gap-5 reveal delay-300 group">
+                                <div class="w-14 h-14 rounded-2xl bg-slate-700/50 flex items-center justify-center text-amber-400 shrink-0 group-hover:bg-amber-500 group-hover:text-white transition-all">
+                                    <i class="fa-solid fa-boxes-stacked"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg text-white mb-2">3. المخزون الذكي</h4>
+                                    <p class="text-slate-400 text-sm leading-relaxed">ربط قطع الغيار بالمولدات. عند الوصول لحد الأمان، النظام يرسل طلب توريد تلقائي للمشتريات.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-12">
+                            <a href="index v3.html" class="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-4 rounded-xl font-bold shadow-lg shadow-blue-600/20 hover:scale-105 transition-transform">
+                                شاهد الديمو يعمل
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </a>
                         </div>
                     </div>
-                 </div>
+
+                    <!-- Visual Side (Cards) -->
+                    <div class="grid grid-cols-2 gap-4 mt-8 lg:mt-0">
+                        <div class="glass-card p-6 rounded-2xl text-center transform hover:-translate-y-2 transition-transform">
+                            <i class="fa-solid fa-robot text-3xl text-blue-400 mb-4"></i>
+                            <div class="font-bold text-lg">AI Logic</div>
+                            <div class="text-xs text-slate-400">تحليل البيانات</div>
+                        </div>
+                        <div class="glass-card p-6 rounded-2xl text-center translate-y-8 transform hover:translate-y-6 transition-transform">
+                            <i class="fa-solid fa-mobile-screen-button text-3xl text-purple-400 mb-4"></i>
+                            <div class="font-bold text-lg">Mobile App</div>
+                            <div class="text-xs text-slate-400">تطبيق لكل دور</div>
+                        </div>
+                        <div class="glass-card p-6 rounded-2xl text-center transform hover:-translate-y-2 transition-transform">
+                            <i class="fa-solid fa-fingerprint text-3xl text-emerald-400 mb-4"></i>
+                            <div class="font-bold text-lg">Secure ID</div>
+                            <div class="text-xs text-slate-400">بصمة رقمية</div>
+                        </div>
+                        <div class="glass-card p-6 rounded-2xl text-center translate-y-8 transform hover:translate-y-6 transition-transform">
+                            <i class="fa-solid fa-network-wired text-3xl text-amber-400 mb-4"></i>
+                            <div class="font-bold text-lg">IoT Grid</div>
+                            <div class="text-xs text-slate-400">ربط لحظي</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-    </main>
+    <!-- Footer -->
+    <footer class="bg-dark-950 border-t border-white/5 py-12">
+        <div class="container mx-auto px-6 text-center">
+            <div class="flex items-center justify-center gap-3 mb-2">
+                <img src="landing_assets/RoboVAI Solutions.png" alt="RoboVAI Solutions" class="w-10 h-10 rounded-lg">
+                <span class="text-xl font-bold">القطامي سمارت فليت</span>
+            </div>
+            <p class="text-slate-500 text-xs mb-2">مدعوم من <span class="text-blue-400 font-semibold">RoboVAI Nexus</span></p>
+            <p class="text-slate-600 text-xs mb-8">منتج من <span class="font-semibold">RoboVAI Solutions</span> © 2026</p>
+            <div class="flex justify-center gap-6 text-slate-400">
+                <a href="#" class="hover:text-blue-400 transition-colors"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#" class="hover:text-blue-400 transition-colors"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" class="hover:text-blue-400 transition-colors"><i class="fa-brands fa-linkedin"></i></a>
+            </div>
+        </div>
+    </footer>
 
+
+    <!-- Scroll Animation Script -->
     <script>
-        // --- Global State ---
-        let state = {
-            status: 'Normal',
-            assetID: 'KAT-500', // Rebranded ID
-            scenario: 'Maintenance' 
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
         };
 
-        // --- DOM Elements ---
-        const els = {
-            scenarioSelect: document.getElementById('scenarioSelect'),
-            mobileContent: document.getElementById('mobileContent'),
-            chatContainer: document.getElementById('chatContainer'),
-            kpiActive: document.getElementById('kpi-active'),
-            kpiFuel: document.getElementById('kpi-fuel'),
-            badgeActive: document.getElementById('badge-active'),
-            badgeFuel: document.getElementById('badge-fuel'),
-            tableBody: document.getElementById('table-body')
-        };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Animate once
+                }
+            });
+        }, observerOptions);
 
-        // --- Event Listeners ---
-        els.scenarioSelect.addEventListener('change', (e) => {
-            state.scenario = e.target.value;
-            resetDemo();
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
         });
-
-        // --- Initialization ---
-        function resetDemo() {
-            // Reset state
-            state.status = 'Normal';
-            
-            // Clear Chat
-            els.chatContainer.innerHTML = `
-                <div class="flex justify-center my-2">
-                    <span class="bg-slate-800/60 text-slate-400 text-[10px] px-3 py-1 rounded-full border border-slate-700">اليوم</span>
-                </div>
-            `;
-            
-            // Initial Dashboard Render
-            updateDashboard(state.scenario, 'initial');
-
-            // Initial Mobile Render
-            renderMobile(state.scenario, 'initial');
-
-            // Add welcome message
-            setTimeout(() => {
-                addChatMessage('المشرف', `تم تفعيل سيناريو: ${formatScenarioName(state.scenario)}. في انتظار الأحداث...`);
-            }, 500);
-        }
-
-        function formatScenarioName(s) {
-            if (s === 'Maintenance') return 'الصيانة الدورية';
-            if (s === 'Security') return 'التنبيه الأمني';
-            if (s === 'FuelTheft') return 'كشف سرقة الوقود';
-            if (s === 'SmartBilling') return 'الفوترة الذكية';
-            if (s === 'AIPredictive') return 'الصيانة التنبؤية (AI)';
-            if (s === 'AssetReturn') return 'فحص الاستلام';
-            if (s === 'MaintReject') return 'رفض طلب الصيانة';
-            if (s === 'Tampering') return 'محاولة التلاعب';
-            if (s === 'QRContext') return 'مسح QR الذكي';
-            if (s === 'GeoFence') return 'المسح الجغرافي (Security)';
-            if (s === 'Inventory') return 'الجرد السريع';
-            return s;
-        }
-
-        // --- Mobile View Logic ---
-        function renderMobile(scenario, step) {
-            let html = '';
-            
-            if (scenario === 'Maintenance') {
-                if (step === 'initial') {
-                    html = `
-                        <div class="flex-1 flex flex-col items-center justify-center text-center">
-                            <div class="w-24 h-24 bg-slate-100 rounded-2xl flex items-center justify-center mb-6 border-2 border-dashed border-slate-300">
-                                <i class="fa-solid fa-qrcode text-4xl text-slate-400"></i>
-                            </div>
-                            <h3 class="text-slate-800 font-bold text-lg mb-2">فحص المولد</h3>
-                            <p class="text-slate-500 text-xs px-8 mb-6">امسح كود الـ QR الموجود على المولد لبدء الخدمة.</p>
-                            <button onclick="handleMobileClick('scan')" class="bg-blue-600 text-white w-full py-3 rounded-xl font-bold shadow-lg shadow-blue-500/30 hover:bg-blue-500 transition-colors">
-                                <i class="fa-solid fa-camera ml-2"></i> مسح الكود
-                            </button>
-                        </div>
-                    `;
-                } else if (step === 'loading') {
-                    html = `
-                        <div class="flex-1 flex flex-col items-center justify-center">
-                            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mb-4"></div>
-                            <p class="text-slate-500 text-xs font-medium">جاري التحقق من المولد...</p>
-                        </div>
-                    `;
-                } else if (step === 'form') {
-                    html = `
-                        <div class="animate-fade-in-up">
-                            <h3 class="font-bold text-slate-800 text-lg mb-4">تقرير صيانة</h3>
-                            <div class="space-y-3 mb-6">
-                                <div>
-                                    <label class="text-[10px] uppercase font-bold text-slate-400">رقم المولد</label>
-                                    <input type="text" value="KAT-500" disabled class="w-full bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-600 text-right">
-                                </div>
-                                <div>
-                                    <label class="text-[10px] uppercase font-bold text-slate-400">نوع العطل</label>
-                                    <select class="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-800 text-right">
-                                        <option>تغيير زيت وفلاتر</option>
-                                        <option>مشكلة في الدينامو</option>
-                                        <option>السير مقطوع</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="text-[10px] uppercase font-bold text-slate-400">ملاحظات</label>
-                                    <textarea class="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm h-20 text-right" placeholder="اكتب تفاصيل المشكلة هنا..."></textarea>
-                                </div>
-                            </div>
-                            <button onclick="handleMobileClick('submit')" class="bg-blue-600 text-white w-full py-3 rounded-xl font-bold shadow-lg shadow-blue-500/30 hover:bg-blue-500 transition-colors">
-                                إرسال التقرير
-                            </button>
-                        </div>
-                    `;
-                }
-            } else if (scenario === 'Security') {
-                 html = `
-                    <div class="flex-1 flex flex-col relative rounded-xl overflow-hidden mb-4 border border-slate-200">
-                        <div class="absolute inset-0 bg-slate-200 flex items-center justify-center">
-                            <!-- Mock Map Grid -->
-                            <div class="grid grid-cols-6 grid-rows-6 w-full h-full opacity-20">
-                                ${Array(36).fill('<div class="border border-slate-300"></div>').join('')}
-                            </div>
-                            <i class="fa-solid fa-location-dot text-4xl text-blue-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-lg"></i>
-                        </div>
-                        <div class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm p-3 rounded-lg shadow-sm border border-slate-100 text-right">
-                             <div class="flex items-center gap-2 mb-1">
-                                <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                                <span class="text-[10px] font-bold text-slate-500 uppercase">النطاق الجغرافي نشط</span>
-                             </div>
-                             <p class="text-xs text-slate-800 font-bold">المنطقة: العاشر من رمضان - زون 4</p>
-                        </div>
-                    </div>
-                    <button onclick="handleMobileClick('breach')" class="bg-red-50 text-red-600 border border-red-100 w-full py-3 rounded-xl font-bold hover:bg-red-100 transition-colors">
-                        <i class="fa-solid fa-triangle-exclamation ml-2"></i> محاكاة تحرك غير مصرح
-                    </button>
-                `;
-            } else if (scenario === 'FuelTheft') {
-                html = `
-                    <div class="flex-1 flex flex-col justify-center animate-fade-in-up">
-                        <div class="bg-slate-100 p-4 rounded-2xl mb-6">
-                            <h3 class="text-slate-800 font-bold mb-4">مراقبة الوقود (سولار)</h3>
-                            <div class="flex items-end h-40 gap-4 px-4 bg-white rounded-xl py-4 shadow-inner border border-slate-200 ltr">
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-blue-100 rounded-t h-full relative overflow-hidden">
-                                        <div class="absolute bottom-0 w-full bg-blue-500 h-[80%] rounded-t"></div>
-                                    </div>
-                                    <span class="text-[10px] font-bold text-slate-400">10:00</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-blue-100 rounded-t h-full relative overflow-hidden">
-                                        <div class="absolute bottom-0 w-full bg-blue-500 h-[80%] rounded-t"></div>
-                                    </div>
-                                    <span class="text-[10px] font-bold text-slate-400">10:30</span>
-                                </div>
-                                <div class="flex-1 flex flex-col items-center gap-2">
-                                    <div class="w-full bg-red-100 rounded-t h-full relative overflow-hidden">
-                                        <div class="absolute bottom-0 w-full bg-red-500 h-[50%] rounded-t animate-pulse"></div>
-                                    </div>
-                                    <span class="text-[10px] font-bold text-slate-400">11:00</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-3 bg-red-50 border border-red-100 p-3 rounded-lg mb-6">
-                            <i class="fa-solid fa-ban text-red-500 text-xl"></i>
-                            <div>
-                                <h4 class="text-xs font-bold text-red-800">حالة المولد: متوقف</h4>
-                                <p class="text-[10px] text-red-600">تم رصد انخفاض مفاجئ في مستوى الجاز.</p>
-                            </div>
-                        </div>
-                        <button onclick="handleMobileClick('verifyFuel')" class="bg-slate-800 text-white w-full py-3 rounded-xl font-bold shadow-lg hover:bg-slate-700 transition-colors">
-                            <i class="fa-solid fa-check-double ml-2"></i> تأكيد قراءة الحساس
-                        </button>
-                    </div>
-                `;
-            } else if (scenario === 'SmartBilling') {
-                html = `
-                    <div class="flex-1 flex flex-col justify-center animate-fade-in-up">
-                        <div class="bg-blue-600 p-6 rounded-[2rem] text-white shadow-xl shadow-blue-500/30 mb-6 relative overflow-hidden text-center">
-                            <div class="absolute top-0 right-0 p-4 opacity-20">
-                                <i class="fa-solid fa-clock text-6xl"></i>
-                            </div>
-                            <p class="text-blue-200 text-xs font-medium mb-1">مدة التشغيل الحالية</p>
-                            <h2 class="text-4xl font-bold mb-4 ltr inline-block">05:00:00</h2>
-                            <div class="flex items-center gap-2 bg-blue-500/30 px-3 py-1.5 rounded-lg w-fit mx-auto backdrop-blur-sm mt-2">
-                                <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                                <span class="text-xs font-bold">إيجار نشط</span>
-                            </div>
-                        </div>
-                        
-                        <div class="bg-white border border-slate-100 p-4 rounded-xl shadow-sm mb-6">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-xs text-slate-500">كود العميل</span>
-                                <span class="text-xs font-bold text-slate-800">C-9981</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-xs text-slate-500">سعر الساعة</span>
-                                <span class="text-xs font-bold text-slate-800">1500 ج.م</span>
-                            </div>
-                        </div>
-
-                        ${step === 'stopped' ? `
-                             <div class="bg-slate-800 text-white p-4 rounded-xl text-center">
-                                <i class="fa-solid fa-stop-circle text-2xl mb-2 text-slate-400"></i>
-                                <h3 class="font-bold">تم إيقاف الجلسة</h3>
-                                <p class="text-xs text-slate-400">جاري مزامنة البيانات...</p>
-                            </div>
-                        ` : `
-                            <button onclick="handleMobileClick('endShift')" class="bg-red-500 text-white w-full py-3 rounded-xl font-bold shadow-lg shadow-red-500/30 hover:bg-red-600 transition-colors">
-                                <i class="fa-solid fa-stop ml-2"></i> إنهاء وردية الإيجار
-                            </button>
-                        `}
-                    </div>
-                `;
-            } else if (scenario === 'AIPredictive') {
-                 html = `
-                    <div class="flex-1 flex flex-col items-center justify-center animate-fade-in-up">
-                        <div class="relative w-40 h-40 flex items-center justify-center mb-8">
-                            <div class="absolute inset-0 bg-blue-500/10 rounded-full animate-ping"></div>
-                            <div class="absolute inset-4 bg-blue-500/20 rounded-full animate-pulse"></div>
-                            <div class="relative bg-white p-6 rounded-full shadow-xl border border-blue-100 z-10">
-                                <i class="fa-solid fa-heart-pulse text-4xl text-blue-600"></i>
-                            </div>
-                        </div>
-                        
-                        ${step === 'analyzing' ? `
-                            <h3 class="text-slate-800 font-bold text-lg mb-1">monitor الصحة (AI)</h3>
-                            <p class="text-blue-500 text-xs font-bold uppercase tracking-wider animate-pulse">جاري تحليل البيانات...</p>
-                        ` : `
-                             <div class="bg-yellow-50 border border-yellow-100 p-4 rounded-xl w-full text-center">
-                                <div class="w-10 h-10 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center mx-auto mb-2">
-                                    <i class="fa-solid fa-triangle-exclamation"></i>
-                                </div>
-                                <h3 class="text-slate-800 font-bold text-sm mb-1">تشخيص ذكي</h3>
-                                <p class="text-slate-600 text-xs">تم رصد تذبذب في ضغط طلمبة الزيت. الكفاءة انخفضت 4%.</p>
-                            </div>
-                        `}
-                    </div>
-                `;
-            } else if (scenario === 'AssetReturn') {
-                 // Scenario 6
-                 html = `
-                    <div class="flex-1 flex flex-col justify-center animate-fade-in-up">
-                        <div class="bg-slate-100 p-4 rounded-2xl mb-6 border border-slate-200">
-                             <h3 class="font-bold text-slate-800 mb-2">📉 فحص الاستلام / التشييك</h3>
-                             <p class="text-xs text-slate-500 mb-4">قم بتصوير المولد من الـ 4 جهات للمقارنة بالذكاء الاصطناعي مع حالة الخروج.</p>
-                             
-                             <div class="border-2 border-dashed border-slate-300 rounded-xl bg-white h-32 flex flex-col items-center justify-center text-slate-400 mb-4">
-                                <i class="fa-solid fa-camera text-2xl mb-2"></i>
-                                <span class="text-[10px]">اضغط لرفع صورة الجانب الأيمن</span>
-                             </div>
-
-                             ${step === 'damageFound' ? `
-                                <div class="bg-red-50 border border-red-100 p-3 rounded-lg flex gap-3 animate-pulse">
-                                    <i class="fa-solid fa-circle-exclamation text-red-500 text-lg"></i>
-                                    <div>
-                                        <h4 class="text-xs font-bold text-red-800">تطابق غير سليم!</h4>
-                                        <p class="text-[10px] text-red-600">تم رصد خبطة جديدة في الصاج الجانبي.</p>
-                                    </div>
-                                </div>
-                             ` : ''}
-                        </div>
-                        
-                        ${step === 'damageFound' ? `
-                            <button onclick="handleMobileClick('logDamage')" class="bg-red-600 text-white w-full py-3 rounded-xl font-bold shadow-lg hover:bg-red-700 transition-colors">
-                               تسجيل الضرر وإغلاق التذكرة
-                            </button>
-                        ` : `
-                            <button onclick="handleMobileClick('uploadPhoto')" class="bg-blue-600 text-white w-full py-3 rounded-xl font-bold shadow-lg hover:bg-blue-500 transition-colors">
-                                <i class="fa-solid fa-upload ml-2"></i> رفع المسح الضوئي
-                            </button>
-                        `}
-                    </div>
-                 `;
-            } else if (scenario === 'MaintReject') {
-                // Scenario 7
-                html = `
-                     <div class="flex-1 flex flex-col justify-center animate-fade-in-up">
-                        <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm mb-6 relative overflow-hidden">
-                             ${step === 'rejected' ? `
-                                <div class="absolute inset-0 bg-red-500/10 backdrop-blur-sm flex items-center justify-center z-10 flex-col animate-fade-in">
-                                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-2 shadow-sm">
-                                        <i class="fa-solid fa-xmark text-3xl text-red-600"></i>
-                                    </div>
-                                    <h3 class="text-red-700 font-bold text-lg">تم رفض الطلب</h3>
-                                    <p class="text-red-600 text-xs px-6 text-center mt-1 bg-white/50 py-1 rounded-full">ملاحظة: غالي جداً، نظف الفلاتر الأول.</p>
-                                </div>
-                             `: ''}
-                            
-                            <h3 class="font-bold text-slate-800 text-lg mb-1">طلب قطع غيار</h3>
-                            <p class="text-xs text-slate-400 mb-4 border-b border-slate-100 pb-2">رقم الطلب #REQ-8823</p>
-                            
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-xs text-slate-600 font-bold">القطعة:</span>
-                                <span class="text-xs text-slate-800">Turbocharger Kit T-4</span>
-                            </div>
-                            <div class="flex justify-between items-center mb-4">
-                                <span class="text-xs text-slate-600 font-bold">التكلفة:</span>
-                                <span class="text-xs text-red-600 font-bold">70,000 ج.م</span>
-                            </div>
-                            
-                            <div class="bg-yellow-50 text-yellow-700 px-3 py-2 rounded-lg text-xs font-bold text-center border border-yellow-200">
-                                <i class="fa-regular fa-clock ml-1"></i> بانتظار موافقة الإدارة...
-                            </div>
-                        </div>
-                    </div>
-                `;
-            } else if (scenario === 'Tampering') {
-                // Scenario 8
-                html = `
-                     <div class="flex-1 flex flex-col items-center justify-center animate-fade-in-up text-center">
-                        <div class="w-32 h-32 bg-slate-100 rounded-full flex items-center justify-center mb-6 relative">
-                            <i class="fa-solid fa-plug-circle-xmark text-6xl text-slate-300"></i>
-                            <div class="absolute bottom-0 right-0 w-10 h-10 bg-red-500 rounded-full border-4 border-white flex items-center justify-center shadow-lg">
-                                <i class="fa-solid fa-exclamation text-white"></i>
-                            </div>
-                        </div>
-                        <h2 class="text-2xl font-bold text-slate-800 mb-2">انقطع الاتصال</h2>
-                        <p class="text-slate-500 text-sm px-6">فقدنا الإشارة مع الوحدة KAT-500. جاري محاولة إعادة الاتصال عبر القمر الصناعي...</p>
-                        <div class="mt-8 flex gap-2">
-                             <span class="w-2 h-2 bg-red-400 rounded-full animate-bounce"></span>
-                             <span class="w-2 h-2 bg-red-400 rounded-full animate-bounce delay-75"></span>
-                             <span class="w-2 h-2 bg-red-400 rounded-full animate-bounce delay-150"></span>
-                        </div>
-                    </div>
-                `;
-            } else if (scenario === 'QRContext') {
-                // Scenario 9
-                let content = '';
-                let roleName = state.role === 'Tech' ? 'الفني' : state.role === 'Client' ? 'العميل' : 'الأدمن';
-                
-                if (state.role === 'Tech') {
-                    content = `
-                        <div class="border-t border-slate-200 pt-4 w-full">
-                            <div class="flex items-center gap-3 mb-4 bg-blue-50 p-3 rounded-lg border border-blue-100">
-                                <div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center"><i class="fa-solid fa-wrench"></i></div>
-                                <div>
-                                    <h4 class="text-xs font-bold text-blue-900">نموذج صيانة</h4>
-                                    <p class="text-[10px] text-blue-700">صلاحية دخول: كاملة</p>
-                                </div>
-                            </div>
-                            <button class="w-full bg-blue-600 text-white py-2 rounded-lg text-xs font-bold mb-2">بدء الفحص الدوري</button>
-                            <button class="w-full bg-slate-100 text-slate-600 py-2 rounded-lg text-xs font-bold border border-slate-300">سجل الأعطال</button>
-                        </div>
-                    `;
-                } else if (state.role === 'Client') {
-                     content = `
-                        <div class="border-t border-slate-200 pt-4 w-full">
-                             <div class="grid grid-cols-2 gap-2 mb-4">
-                                <div class="bg-slate-50 p-2 rounded text-center border border-slate-200">
-                                    <span class="block text-[10px] text-slate-400">الحالة</span>
-                                    <span class="block text-xs font-bold text-emerald-500">ممتاز (98%)</span>
-                                </div>
-                                <div class="bg-slate-50 p-2 rounded text-center border border-slate-200">
-                                    <span class="block text-[10px] text-slate-400">ساعات</span>
-                                    <span class="block text-xs font-bold text-slate-700">1,240 س</span>
-                                </div>
-                             </div>
-                             <div class="bg-yellow-50 p-3 rounded-lg border border-yellow-100 text-[10px] text-yellow-800 text-center">
-                                <i class="fa-solid fa-eye ml-1"></i> للعرض فقط. ليس لديك صلاحية التعديل.
-                             </div>
-                        </div>
-                    `;
-                } else {
-                     content = `
-                        <div class="border-t border-slate-200 pt-4 w-full">
-                            <div class="mb-4">
-                                <h4 class="text-xs font-bold text-slate-800 mb-2">إعدادات متقدمة</h4>
-                                <div class="flex items-center justify-between py-2 border-b border-slate-100">
-                                    <span class="text-xs text-slate-500">Reboot Unit</span>
-                                    <i class="fa-solid fa-toggle-off text-slate-300"></i>
-                                </div>
-                                <div class="flex items-center justify-between py-2 border-b border-slate-100">
-                                    <span class="text-xs text-slate-500">Debug Mode</span>
-                                    <i class="fa-solid fa-toggle-on text-emerald-500"></i>
-                                </div>
-                            </div>
-                            <button class="w-full bg-slate-800 text-white py-2 rounded-lg text-xs font-bold">تصدير Logs</button>
-                        </div>
-                    `;
-                }
-
-                html = `
-                    <div class="flex-1 flex flex-col items-center animate-fade-in-up w-full pt-4">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?data=KAT-500&size=150x150" class="w-32 h-32 mb-4 border-4 border-white shadow-lg rounded-xl">
-                        <p class="text-xs text-slate-400 mb-1">تم المسح بصلاحية: <span class="text-white font-bold bg-slate-600 px-2 rounded">${roleName}</span></p>
-                        <h2 class="text-lg font-bold text-slate-800 mb-4">KAT-500 Generator</h2>
-                        ${content}
-                    </div>
-                `;
-            } else if (scenario === 'GeoFence') {
-                // Scenario 10
-                 if (step === 'denied') {
-                    html = `
-                        <div class="flex-1 flex flex-col items-center justify-center animate-pulse bg-red-50 w-full h-full absolute inset-0 z-20">
-                            <i class="fa-solid fa-ban text-6xl text-red-600 mb-4"></i>
-                            <h2 class="text-2xl font-bold text-red-800 mb-2">دخول مرفوض!</h2>
-                            <p class="text-red-600 text-sm text-center px-8">هذا الكود خارج النطاق الجغرافي المصرح به (Giza Area).</p>
-                             <div class="mt-8 bg-white px-4 py-2 rounded-full shadow border border-red-100">
-                                <span class="text-xs font-mono text-red-400">LOC: 30.123, 31.456 (Unauthorized)</span>
-                             </div>
-                        </div>
-                    `;
-                 } else {
-                    html = `
-                        <div class="flex-1 flex flex-col items-center justify-center animate-fade-in-up">
-                            <div class="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-                            <h3 class="text-slate-800 font-bold mb-6">جاري التحقق من الموقع...</h3>
-                            <button onclick="handleMobileClick('scanGeo')" class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg transition-transform active:scale-95">
-                                📍 محاكاة (موقع خاطئ)
-                            </button>
-                        </div>
-                    `;
-                 }
-            } else if (scenario === 'Inventory') {
-                // Scenario 11
-                html = `
-                    <div class="flex-1 flex flex-col animate-fade-in-up w-full">
-                         <div class="bg-slate-800 text-white p-4 rounded-xl mb-4 shadow-lg flex justify-between items-center">
-                            <div>
-                                <h3 class="font-bold text-sm">الجرد الشهري</h3>
-                                <p class="text-[10px] text-slate-400">مخزن القطامية الرئيسي</p>
-                            </div>
-                            <div class="text-right">
-                                <span class="block text-2xl font-bold text-emerald-400">${state.inventoryCount}</span>
-                                <span class="block text-[10px]">أصول مؤكدة</span>
-                            </div>
-                         </div>
-
-                         <div class="flex-1 bg-slate-100 rounded-xl border-2 border-dashed border-slate-300 flex flex-col items-center justify-center mb-4 relative overflow-hidden">
-                            <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent animate-scan opacity-50"></div>
-                            <i class="fa-solid fa-barcode text-4xl text-slate-400 mb-2"></i>
-                            <p class="text-xs text-slate-500">وجه الكاميرا للباركود</p>
-                         </div>
-
-                         <button onclick="handleMobileClick('scanInventory')" class="bg-blue-600 text-white w-full py-4 rounded-xl font-bold shadow-lg hover:bg-blue-500 transition-colors flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-qrcode"></i> فحص الأصل التالي (+1)
-                         </button>
-                    </div>
-                `;
-            }
-            
-            els.mobileContent.innerHTML = html;
-        }
-
-        window.handleMobileClick = (action) => {
-            if (action === 'scan') {
-                renderMobile('Maintenance', 'loading');
-                setTimeout(() => { renderMobile('Maintenance', 'form'); }, 1000);
-            } else if (action === 'submit') {
-                 els.mobileContent.innerHTML = `
-                    <div class="flex-1 flex flex-col items-center justify-center text-center animate-fade-in-up">
-                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4"><i class="fa-solid fa-check text-2xl text-green-600"></i></div>
-                        <h3 class="text-slate-800 font-bold text-lg">تم ارسال التقرير</h3>
-                        <p class="text-slate-500 text-xs">رقم البلاغ #99281</p>
-                    </div>
-                `;
-                setTimeout(() => { addChatMessage('النظام', '🛠️ بلاغ صيانة جديد: تغيير زيت وفلاتر للمولد القطامي رقم 500', true); }, 800);
-            } else if (action === 'breach') {
-                 addChatMessage('النظام', '🚨 تنبيه خطير: المولد KAT-500 يتحرك خارج النطاق الجغرافي!', true);
-            } else if (action === 'verifyFuel') {
-                 els.mobileContent.innerHTML = `
-                    <div class="flex-1 flex flex-col items-center justify-center text-center animate-fade-in-up">
-                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-slate-800 mb-4"></div>
-                        <p class="text-slate-500 text-xs">جاري الاتصال بغرفة العمليات...</p>
-                    </div>
-                 `;
-                 setTimeout(() => {
-                     addChatMessage('النظام', '⚠️ تنبيه سرقة: تم سحب 100 لتر والمحرك متوقف!', true);
-                     els.mobileContent.innerHTML = `
-                        <div class="flex-1 flex flex-col items-center justify-center text-center animate-fade-in-up">
-                             <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4"><i class="fa-solid fa-shield-halved text-2xl text-red-600"></i></div>
-                             <h3 class="text-slate-800 font-bold text-lg">تم إرسال الإنذار</h3>
-                        </div>
-                     `;
-                 }, 1500);
-            } else if (action === 'endShift') {
-                renderMobile('SmartBilling', 'stopped');
-                setTimeout(() => {
-                    addChatMessage('النظام', '🧾 تقرير الوردية: ساعات العميل 5 س | التليماتيكس الفعلي: 12 س', true);
-                }, 1000);
-            } else if (action === 'startAI') { 
-                // Auto
-            } else if (action === 'uploadPhoto') {
-                // Scenario 6
-                renderMobile('AssetReturn', 'damageFound');
-            } else if (action === 'logDamage') {
-                // Scenario 6 Submit
-                 addChatMessage('النظام', '⚠️ تقرير تلفيات: تم رصد انبعاج جديد (خبطة) في الهيكل. تكلفة الإصلاح 2000 ج.م', true);
-            } else if (action === 'scanGeo') {
-                // Scenario 10
-                renderMobile('GeoFence', 'denied');
-                addChatMessage('النظام', '🚨 اختراق أمني: محاولة مسح QR من موقع غير مصرح (الجيزة)!', true);
-            } else if (action === 'scanInventory') {
-                // Scenario 11
-                state.inventoryCount++;
-                renderMobile('Inventory'); // Re-render to update count
-                updateDashboard('Inventory Check', state.inventoryCount); // Pass count
-            }
-        };
-
-        els.scenarioSelect.addEventListener('change', (e) => {
-             const val = e.target.value;
-             state.inventoryCount = 0; // Reset
-             
-             if(val === 'AIPredictive') {
-                 setTimeout(() => {
-                     renderMobile('AIPredictive', 'analyzing');
-                     setTimeout(() => {
-                         renderMobile('AIPredictive', 'result');
-                         addChatMessage('النظام', '🤖 تنبيه تنبؤي: احتمال عطل طلمبة الزيت خلال 48 ساعة.', true);
-                     }, 3000);
-                 }, 500);
-             } else if (val === 'MaintReject') {
-                 // Trigger Scenario 7 start
-                 setTimeout(() => {
-                     addChatMessage('النظام', '🔧 مطلوب موافقة: تغيير وتربو تشارجر (70,000 ج.م).', true);
-                 }, 800);
-             } else if (val === 'Tampering') {
-                 // Trigger Scenario 8 start
-                 setTimeout(() => {
-                     addChatMessage('النظام', '☠️ تحذير تلاعب: تم فصل البطارية الرئيسية! الجهاز يعمل بالبطارية الاحتياطية.', true);
-                 }, 500);
-             } else if (val === 'Inventory') {
-                 // Auto Switch Role
-                 state.role = 'Warehouse';
-                 els.roleSelect.value = 'Warehouse';
-                 addChatMessage('النظام', '📦 تم تفعيل وضع الجرد السريع. الموظف المسئول: أمين المخزن.');
-             } else if (val === 'QRContext') {
-                  addChatMessage('النظام', `📱 وضع المسح الذكي. الدور الحالي: ${els.roleSelect.options[els.roleSelect.selectedIndex].text}`);
-             }
-        });
-
-        // Role Selector Listener
-        els.roleSelect.addEventListener('change', (e) => {
-            state.role = e.target.value;
-            // Only re-render if in QR Context scenario
-            if (state.scenario === 'QRContext') {
-                renderMobile('QRContext');
-                addChatMessage('النظام', `🔄 تم تغيير الصلاحية إلى: ${els.roleSelect.options[els.roleSelect.selectedIndex].text}`);
-            }
-        });
-
-
-        // --- Chat Logic ---
-        function addChatMessage(sender, text, isAction = false) {
-            const isSystem = sender === 'النظام';
-            let html = '';
-            
-            if (isSystem) {
-                if (state.scenario === 'Maintenance') {
-                    html = createChatActionHTML('fa-screwdriver-wrench text-orange-400', 'طلب صيانة', text, 'approve', 'اعتماد الصيانة', 'bg-blue-600');
-                } else if (state.scenario === 'Security') {
-                    html = createChatActionHTML('fa-triangle-exclamation text-red-500', 'اختراق أمني', text, 'shutdown', 'إيقاف المحرك عن بعد', 'bg-red-600', true);
-                } else if (state.scenario === 'FuelTheft') {
-                    html = createChatActionHTML('fa-gas-pump text-red-500', 'سرقة وقود', text, 'camera', 'طلب كاميرا الموقع', 'bg-slate-700');
-                } else if (state.scenario === 'SmartBilling') {
-                    html = createChatActionHTML('fa-file-invoice text-blue-400', 'فرق ساعات تشغيل', text, 'invoice', 'إرسال الفاتورة المعدلة', 'bg-emerald-600');
-                } else if (state.scenario === 'AIPredictive') {
-                    html = createChatActionHTML('fa-robot text-purple-400', 'تحليل الذكاء الاصطناعي', text, 'parts', 'طلب قطع غيار (وقائي)', 'bg-purple-600');
-                } else if (state.scenario === 'AssetReturn') {
-                    html = createChatActionHTML('fa-list-check text-orange-500', 'تنبيه عودة أصول', text, 'charge', 'خصم من التأمين (2000 ج.م)', 'bg-slate-700');
-                } else if (state.scenario === 'MaintReject') {
-                     // Special Case for Reject
-                     html = `
-                        <div class="flex justify-center my-4 opacity-0 animate-fade-in forwards">
-                            <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl max-w-[90%] shadow-lg">
-                                <div class="flex items-center gap-2 mb-2 text-blue-400">
-                                    <i class="fa-solid fa-file-signature"></i>
-                                    <span class="text-xs font-bold uppercase">طلب موافقة مالية</span>
-                                </div>
-                                <p class="text-sm text-white mb-3">${text}</p>
-                                <div class="flex gap-2">
-                                    <button class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-2 rounded-lg transition-colors">موافقة</button>
-                                    <button onclick="handleChatAction('reject')" class="flex-1 bg-red-600 hover:bg-red-500 text-white text-xs font-bold py-2 rounded-lg transition-colors">رفض الطلب ❌</button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                } else if (state.scenario === 'Tampering') {
-                    html = createChatActionHTML('fa-skull-crossbones text-red-600', 'خطر تلاعب بالجهاز', text + '<br><span class="text-[10px] text-slate-400">آخر موقع: طريق مصر اسماعيلية الصحراوي</span>' , 'investigate', 'طلب دورية أمنية', 'bg-red-700 animate-pulse', true);
-                } else if (state.scenario === 'GeoFence') {
-                    html = createChatActionHTML('fa-map-location-dot text-red-500', 'انتهاك جغرافي', text, 'lockDown', '🔒 حظر الحساب فوراً', 'bg-red-800');
-                }
-            } else {
-                 html = `
-                    <div class="flex items-end gap-2 group opacity-0 animate-fade-in forwards">
-                        <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-xs font-bold text-white mb-1 shadow-md">${sender === 'المشرف' ? 'م' : 'س'}</div>
-                        <div class="bg-slate-800 p-3 rounded-2xl rounded-br-sm max-w-[85%] border border-slate-700 shadow-sm">
-                            <p class="text-xs font-bold text-indigo-400 mb-0.5">${sender}</p>
-                            <p class="text-sm text-slate-200 leading-snug">${text}</p>
-                            <span class="text-[10px] text-slate-500 mt-1 block text-left">الآن</span>
-                        </div>
-                    </div>
-                 `;
-            }
-
-            const div = document.createElement('div');
-            div.innerHTML = html;
-            els.chatContainer.appendChild(div.firstElementChild);
-            els.chatContainer.scrollTo({ top: els.chatContainer.scrollHeight, behavior: 'smooth' });
-        }
-
-        function createChatActionHTML(iconClass, title, text, actionKey, btnText, btnColor, isCritical = false) {
-             const borderClass = isCritical ? 'border-red-500/50 bg-red-900/10' : 'border-slate-700 bg-slate-800';
-             return `
-                <div class="flex justify-center my-4 opacity-0 animate-fade-in forwards">
-                    <div class="${borderClass} border p-4 rounded-xl max-w-[90%] shadow-lg">
-                        <div class="flex items-center gap-2 mb-2">
-                            <i class="fa-solid ${iconClass}"></i>
-                            <span class="text-xs font-bold uppercase text-slate-300">${title}</span>
-                        </div>
-                        <p class="text-sm text-white mb-3 ${isCritical ? 'font-bold' : ''}">${text}</p>
-                        <button onclick="handleChatAction('${actionKey}')" class="w-full ${btnColor} hover:opacity-90 text-white text-xs font-bold py-2.5 rounded-lg transition-colors shadow-lg">
-                            ${btnText}
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        window.handleChatAction = (action) => {
-            if (action === 'approve') {
-                updateDashboard('Service Complete');
-                addChatMessage('المشرف', '✅ تم اعتماد الصيانة. جاري إرسال فريق الدعم.');
-            } else if (action === 'shutdown') {
-                updateDashboard('ENGINE LOCKED');
-                addChatMessage('المشرف', '🔒 تم إيقاف المحرك (LOCK). المولد في وضع الأمان.');
-            } else if (action === 'camera') {
-                updateDashboard('Theft Verified');
-                addChatMessage('المشرف', '📸 تم طلب بث الكاميرات. جاري ابلاغ الأمن.');
-            } else if (action === 'invoice') {
-                updateDashboard('Invoice Sent');
-                addChatMessage('المشرف', '📩 تم ارسال الفاتورة المعدلة للعميل (12 ساعة).');
-            } else if (action === 'parts') {
-                updateDashboard('Parts Ordered');
-                addChatMessage('المشرف', '📦 تم طلب طلمبة زيت جديدة. موعد التركيب غداً.');
-            } else if (action === 'charge') {
-                updateDashboard('Under Repair');
-                addChatMessage('المشرف', '💰 تم خصم 2000 ج.م من تأمين العميل وإغلاق أمر الاستلام.');
-            } else if (action === 'reject') {
-                updateDashboard('Savings');
-                renderMobile('MaintReject', 'rejected'); // Update Mobile Immediately
-                addChatMessage('المشرف', '❌ تم رفض الطلب. (تنبيه: التكلفة مرتفعة، يرجى التنظيف أولاً).');
-            } else if (action === 'investigate') {
-                addChatMessage('المشرف', '� تم تبليغ العمليات المركزية.');
-            } else if (action === 'lockDown') {
-                updateDashboard('Locked');
-                addChatMessage('المشرف', '🔒 تم تجميد الحساب وحظر الـ IP.');
-            }
-        };
-
-        function updateDashboard(status, step = '') {
-            state.status = status;
-            
-            let kpi1Lbl = 'الوحدات النشطة', kpi1Val = '24/30', kpi1Badge = '+12%';
-            let kpi2Lbl = 'متوسط الوقود', kpi2Val = '78%', kpi2Badge = '-5%';
-
-            if (state.scenario === 'FuelTheft') {
-                kpi2Lbl = 'خسارة سولار';
-                kpi2Val = status === 'Theft Verified' ? '3,500 ج.م' : '0 ج.م';
-                kpi2Badge = status === 'Theft Verified' ? '🔻 سرقة مؤكدة' : '0%';
-                if(status === 'Theft Verified') els.kpiFuel.classList.add('text-red-500');
-            } else if (state.scenario === 'SmartBilling') {
-                kpi2Lbl = 'إيرادات مستردة';
-                kpi2Val = status === 'Invoice Sent' ? '+ 7 ساعات' : '0 ج.م';
-                kpi2Badge = status === 'Invoice Sent' ? '💰 تم التحصيل' : 'في الانتظار';
-                 if(status === 'Invoice Sent') {
-                    els.kpiFuel.classList.add('text-emerald-500');
-                    els.kpiFuel.classList.remove('text-white');
-                }
-            } else if (state.scenario === 'AIPredictive') {
-                kpi2Lbl = 'صحة الأصول';
-                kpi2Val = status === 'Parts Ordered' ? '65%' : '98%';
-                kpi2Badge = status === 'Parts Ordered' ? '⚠️ تدهور' : 'ممتاز';
-                 if(status === 'Parts Ordered') {
-                    els.kpiFuel.classList.add('text-yellow-500');
-                    els.kpiFuel.classList.remove('text-white');
-                }
-            } else if (state.scenario === 'AssetReturn') {
-                kpi2Lbl = 'تعويضات أعطال';
-                kpi2Val = status === 'Under Repair' ? '2,000 ج.م' : '0 ج.م';
-                kpi2Badge = status === 'Under Repair' ? '🔧 تحت الإصلاح' : 'سليم';
-                if(status === 'Under Repair') els.kpiFuel.classList.add('text-orange-500');
-            } else if (state.scenario === 'MaintReject') {
-                kpi2Lbl = 'وفورات صيانة';
-                kpi2Val = status === 'Savings' ? '70,000 ج.م' : '0 ج.م';
-                kpi2Badge = status === 'Savings' ? '✅ تم التوفير' : 'تحت المراجعة';
-                if(status === 'Savings') els.kpiFuel.classList.add('text-emerald-400');
-            } else if (state.scenario === 'Tampering' || state.scenario === 'GeoFence') {
-                kpi1Lbl = 'اتصال الأسطول';
-                kpi1Val = status === 'Locked' ? 'Locked' : '96%'; 
-                kpi1Badge = '🔻 1 مفصول';
-                els.kpiActive.classList.add('text-red-500');
-            } else if (state.scenario === 'Inventory') {
-                kpi1Lbl = 'نسبة الجرد';
-                kpi1Val = '85%';
-                kpi1Badge = `+ ${step} أصول`; // step here is passed as count
-                els.kpiActive.classList.add('text-blue-400');
-            }
-
-            els.kpiActive.innerText = kpi1Val;
-            els.badgeActive.innerText = kpi1Badge;
-            document.querySelector('#kpi-active + div').innerText = kpi1Lbl;
-
-            els.kpiFuel.innerText = kpi2Val;
-            els.badgeFuel.innerText = kpi2Badge;
-            document.querySelector('#kpi-fuel + div').innerText = kpi2Lbl;
-
-            let rowStatus = '<span class="bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded text-[10px] font-bold uppercase border border-emerald-500/20">يعمل</span>';
-            let rowFuel = '45%';
-
-            if (status === 'ENGINE LOCKED') rowStatus = '<span class="bg-red-500/10 text-red-500 px-2 py-0.5 rounded text-[10px] font-bold uppercase border border-red-500/20 animate-pulse">مغلق أمنياً</span>';
-            if (status === 'Service Complete') rowStatus = '<span class="bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold uppercase border border-blue-500/20">تمت الصيانة</span>';
-            if (state.scenario === 'SmartBilling' && status === 'Invoice Sent') {
-                rowFuel = 'تمت الفوترة: 12س';
-            }
-            if (state.scenario === 'AssetReturn' && status === 'Under Repair') {
-                rowStatus = '<span class="bg-yellow-500/10 text-yellow-500 px-2 py-0.5 rounded text-[10px] font-bold uppercase border border-yellow-500/20">تحت الإصلاح</span>';
-                rowFuel = 'تالف';
-            }
-            if (state.scenario === 'Tampering') {
-                rowStatus = '<span class="bg-slate-900 border border-slate-700 text-slate-500 px-2 py-0.5 rounded text-[10px] font-bold uppercase"><i class="fa-solid fa-plug-circle-xmark mr-1"></i> مفصول</span>';
-            }
-            if (state.scenario === 'GeoFence' && status === 'Locked') {
-                 rowStatus = '<span class="bg-red-600 text-white px-2 py-0.5 rounded text-[10px] font-bold uppercase"><i class="fa-solid fa-lock mr-1"></i> محظور</span>';
-            }
-            if (state.scenario === 'Inventory' && step > 0) {
-                 rowStatus = '<span class="bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold uppercase border border-blue-500/20"><i class="fa-solid fa-check mr-1"></i> تم الجرد</span>';
-                 rowFuel = 'مؤكد حالا';
-            }
-
-            const trObj = `
-                 <tr class="bg-slate-700/30 transition-colors border-r-2 border-blue-500">
-                    <td class="px-4 py-3 font-bold text-white">#KAT-500</td>
-                    <td class="px-4 py-3 flex items-center gap-2">
-                        <div class="w-5 h-5 rounded-full bg-slate-600 border border-slate-500"></div> أحمد م.
-                    </td>
-                    <td class="px-4 py-3">${rowStatus}</td>
-                    <td class="px-4 py-3 text-left text-white">${rowFuel}</td>
-                </tr>
-                <tr class="hover:bg-slate-700/30 transition-colors opacity-60">
-                    <td class="px-4 py-3 font-medium text-white">#KAT-042</td>
-                    <td class="px-4 py-3 flex items-center gap-2"><div class="w-5 h-5 rounded-full bg-slate-600"></div> سعيد خ.</td>
-                    <td class="px-4 py-3"><span class="bg-yellow-500/10 text-yellow-400 px-2 py-0.5 rounded text-[10px] font-bold uppercase border border-yellow-500/20">توقف مؤقت</span></td>
-                    <td class="px-4 py-3 text-left text-white">64%</td>
-                </tr>
-                 <tr class="hover:bg-slate-700/30 transition-colors opacity-60">
-                    <td class="px-4 py-3 font-medium text-white">#KAT-105</td>
-                    <td class="px-4 py-3 flex items-center gap-2"><div class="w-5 h-5 rounded-full bg-slate-600"></div> محمد ع.</td>
-                    <td class="px-4 py-3"><span class="bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded text-[10px] font-bold uppercase border border-emerald-500/20">نقل</span></td>
-                    <td class="px-4 py-3 text-left text-white">91%</td>
-                </tr>
-            `;
-            els.tableBody.innerHTML = trObj;
-        }
-
-        resetDemo();
-
     </script>
 </body>
 </html>

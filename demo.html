@@ -86,16 +86,18 @@
     <!-- Navigation Bar -->
     <nav class="h-16 lg:h-16 border-b border-slate-700/50 bg-slate-900/80 backdrop-blur-md flex items-center justify-between px-4 lg:px-6 shrink-0 z-20 sticky top-0 w-full">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-400 flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/30">
-                <i class="fa-solid fa-robot"></i>
-            </div>
+            <img src="landing_assets/RoboVAI Solutions.png" alt="RoboVAI Solutions" class="w-10 h-10 rounded-xl shadow-lg">
             <div class="text-lg lg:text-xl font-bold tracking-tight text-white hover:text-blue-400 transition-colors cursor-pointer">
-                RoboVAI <span class="text-blue-500">Nexus</span>
-                <span class="block text-[10px] text-slate-400 font-normal">v1.0.0 Stable</span>
+                القطامي <span class="text-blue-500">سمارت فليت</span>
+                <span class="block text-[10px] text-slate-400 font-normal">Powered by RoboVAI Nexus</span>
             </div>
         </div>
 
         <div class="flex items-center gap-2 lg:gap-4">
+            <a href="index.html" class="hidden sm:flex bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-400 px-4 py-1.5 rounded-lg text-xs lg:text-sm font-medium transition-all items-center gap-2">
+                <i class="fa-solid fa-house"></i>
+                <span>الرئيسية</span>
+            </a>
             <label class="text-sm text-slate-400 font-medium hidden xl:block">Workflows:</label>
             <div class="relative">
                 <select id="scenarioSelect" class="appearance-none bg-slate-800 border border-slate-700 text-white py-1.5 lg:py-2 pr-4 pl-8 lg:pl-10 rounded-lg text-xs lg:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:bg-slate-750 cursor-pointer w-40 lg:w-64">
@@ -170,15 +172,15 @@
                 </div>
 
                 <!-- App Header -->
-                <div class="bg-blue-600 px-5 pt-4 pb-8 text-white rounded-b-[2rem] shadow-lg relative z-0">
+                <div id="mobileHeader" class="bg-blue-600 px-5 pt-4 pb-8 text-white rounded-b-[2rem] shadow-lg relative z-0">
                     <div class="flex justify-between items-start mb-4">
                         <i class="fa-solid fa-bars text-lg opacity-80"></i>
-                        <div class="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                        <div id="mobileAvatar" class="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
                             <i class="fa-solid fa-user text-xs"></i>
                         </div>
                     </div>
-                    <h2 class="text-xl font-bold">أهلاً، يا هندسة</h2>
-                    <p class="text-blue-100 text-xs mt-1 opacity-90">جاهز لوردية النهاردة؟</p>
+                    <h2 id="mobileTitle" class="text-xl font-bold">أهلاً، يا هندسة</h2>
+                    <p id="mobileSubtitle" class="text-blue-100 text-xs mt-1 opacity-90">جاهز لوردية النهاردة؟</p>
                 </div>
 
                 <!-- App Content -->
@@ -398,8 +400,37 @@
 
         els.roleSelect.addEventListener('change', (e) => {
             state.role = e.target.value;
+            updateRoleUI();
             renderMobile(state.scenario, 'initial'); // Re-render mobile with new role
         });
+
+        // --- Role UI Updates ---
+        function updateRoleUI() {
+            const header = document.getElementById('mobileHeader');
+            const title = document.getElementById('mobileTitle');
+            const subtitle = document.getElementById('mobileSubtitle');
+            const avatar = document.getElementById('mobileAvatar');
+            
+            if (state.role === 'Tech') {
+                // Technician - Blue theme
+                header.className = 'bg-blue-600 px-5 pt-4 pb-8 text-white rounded-b-[2rem] shadow-lg relative z-0';
+                title.textContent = 'أهلاً، يا هندسة';
+                subtitle.textContent = 'جاهز لوردية النهاردة؟';
+                avatar.innerHTML = '<i class="fa-solid fa-wrench text-xs"></i>';
+            } else if (state.role === 'Client') {
+                // Client - Green theme
+                header.className = 'bg-emerald-600 px-5 pt-4 pb-8 text-white rounded-b-[2rem] shadow-lg relative z-0';
+                title.textContent = 'مرحباً عميلنا الكريم';
+                subtitle.textContent = 'كيف يمكننا خدمتك اليوم؟';
+                avatar.innerHTML = '<i class="fa-solid fa-user text-xs"></i>';
+            } else if (state.role === 'Owner') {
+                // Owner - Purple/Gold theme
+                header.className = 'bg-gradient-to-r from-slate-800 to-slate-900 px-5 pt-4 pb-8 text-white rounded-b-[2rem] shadow-lg relative z-0 border-b-2 border-amber-500';
+                title.textContent = 'مرحباً يا باشا';
+                subtitle.textContent = 'لوحة تحكم الأسطول';
+                avatar.innerHTML = '<i class="fa-solid fa-crown text-xs text-amber-400"></i>';
+            }
+        }
 
         // --- Initialization ---
         function resetDemo() {
@@ -454,9 +485,155 @@
             return names[s] || s;
         }
 
+        // --- Role-Specific Home Screens ---
+        function getRoleHomeScreen(role) {
+            if (role === 'Client') {
+                return `
+                    <div class="flex-1 flex flex-col animate-fade-in-up">
+                        <h3 class="font-bold text-slate-800 text-lg mb-4">الخدمات المتاحة</h3>
+                        
+                        <div class="grid grid-cols-2 gap-3 mb-6">
+                            <button onclick="state.scenario='ClientSOS'; renderMobile('ClientSOS');" class="bg-red-50 border border-red-100 p-4 rounded-xl flex flex-col items-center gap-2 hover:bg-red-100 transition-all group">
+                                <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center group-hover:bg-red-500 group-hover:text-white transition-colors text-red-600">
+                                    <i class="fa-solid fa-bell text-xl"></i>
+                                </div>
+                                <span class="text-xs font-bold text-red-800">نجدة SOS</span>
+                            </button>
+                            <button onclick="state.scenario='Logistics'; renderMobile('Logistics');" class="bg-blue-50 border border-blue-100 p-4 rounded-xl flex flex-col items-center gap-2 hover:bg-blue-100 transition-all group">
+                                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-colors text-blue-600">
+                                    <i class="fa-solid fa-truck text-xl"></i>
+                                </div>
+                                <span class="text-xs font-bold text-blue-800">طلبات لوجستية</span>
+                            </button>
+                        </div>
+                        
+                        <div class="bg-white border border-slate-200 rounded-xl p-4 mb-4">
+                            <h4 class="text-xs font-bold text-slate-800 mb-3"><i class="fa-solid fa-bolt text-amber-500 ml-1"></i> حالة المولد</h4>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-slate-600">KAT-500</span>
+                                <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded">يعمل بكفاءة</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-auto text-center">
+                            <p class="text-[10px] text-slate-400">خط خدمة العملاء: 19500</p>
+                        </div>
+                    </div>
+                `;
+            } else if (role === 'Tech') {
+                return `
+                    <div class="flex-1 flex flex-col animate-fade-in-up">
+                        <h3 class="font-bold text-slate-800 text-lg mb-4">مهام اليوم</h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="bg-white border border-slate-200 rounded-xl p-3 flex items-center gap-3 hover:border-blue-500 transition-colors cursor-pointer" onclick="state.scenario='Maintenance'; renderMobile('Maintenance');">
+                                <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center">
+                                    <i class="fa-solid fa-qrcode"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-bold text-slate-800">فحص مولد جديد</p>
+                                    <p class="text-[10px] text-slate-400">امسح QR للبدء</p>
+                                </div>
+                                <i class="fa-solid fa-chevron-left text-slate-300"></i>
+                            </div>
+                            <div class="bg-white border border-slate-200 rounded-xl p-3 flex items-center gap-3 hover:border-orange-500 transition-colors cursor-pointer" onclick="state.scenario='CollabMaint'; renderMobile('CollabMaint');">
+                                <div class="w-10 h-10 bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center">
+                                    <i class="fa-solid fa-wrench"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-bold text-slate-800">طلب صيانة طارئ</p>
+                                    <p class="text-[10px] text-slate-400">1 طلب معلق</p>
+                                </div>
+                                <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+                            </div>
+                            <div class="bg-white border border-slate-200 rounded-xl p-3 flex items-center gap-3 hover:border-indigo-500 transition-colors cursor-pointer" onclick="state.scenario='SmartInv'; renderMobile('SmartInv');">
+                                <div class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center">
+                                    <i class="fa-solid fa-boxes-stacked"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-bold text-slate-800">جرد المخزون</p>
+                                    <p class="text-[10px] text-slate-400">3 أصناف تحت الحد</p>
+                                </div>
+                                <i class="fa-solid fa-chevron-left text-slate-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (role === 'Owner') {
+                return `
+                    <div class="flex-1 flex flex-col animate-fade-in-up">
+                        <div class="bg-gradient-to-r from-slate-800 to-slate-900 text-white p-4 rounded-2xl mb-4 shadow-lg">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <p class="text-[10px] text-slate-400">إجمالي الأسطول</p>
+                                    <h2 class="text-2xl font-bold">30 <span class="text-sm font-normal text-slate-400">وحدة</span></h2>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-[10px] text-slate-400">نسبة التشغيل</p>
+                                    <h2 class="text-2xl font-bold text-emerald-400">96%</h2>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <span class="bg-emerald-500/20 text-emerald-400 text-[10px] px-2 py-1 rounded">24 نشط</span>
+                                <span class="bg-yellow-500/20 text-yellow-400 text-[10px] px-2 py-1 rounded">4 صيانة</span>
+                                <span class="bg-red-500/20 text-red-400 text-[10px] px-2 py-1 rounded">2 متوقف</span>
+                            </div>
+                        </div>
+
+                        <h3 class="font-bold text-slate-800 text-sm mb-3">التحكم السريع</h3>
+                        <div class="grid grid-cols-2 gap-3 mb-4">
+                            <button onclick="state.scenario='ExecDash'; renderMobile('ExecDash');" class="bg-amber-50 border border-amber-200 p-3 rounded-xl flex flex-col items-center gap-2 hover:bg-amber-100 transition-all">
+                                <i class="fa-solid fa-chart-pie text-amber-600 text-xl"></i>
+                                <span class="text-xs font-bold text-amber-800">لوحة ROI</span>
+                            </button>
+                            <button onclick="state.scenario='GeoFence'; renderMobile('GeoFence');" class="bg-slate-100 border border-slate-200 p-3 rounded-xl flex flex-col items-center gap-2 hover:bg-slate-200 transition-all">
+                                <i class="fa-solid fa-map-location-dot text-slate-600 text-xl"></i>
+                                <span class="text-xs font-bold text-slate-700">تتبع الوحدات</span>
+                            </button>
+                        </div>
+                        
+                        <div class="bg-red-50 border border-red-100 p-3 rounded-xl">
+                            <div class="flex items-center gap-2 text-red-700 text-xs font-bold mb-1">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <span>تنبيه أمني</span>
+                            </div>
+                            <p class="text-[10px] text-red-600">محاولة تلاعب رُصدت على الوحدة KAT-042</p>
+                        </div>
+                    </div>
+                `;
+            }
+            return '';
+        }
         // --- Mobile View Logic ---
         function renderMobile(scenario, step = 'initial') {
             let html = '';
+            
+            // Role-based redirects for specific scenarios
+            const techOnlyScenarios = ['Maintenance', 'CollabMaint', 'SmartInv'];
+            const clientOnlyScenarios = ['ClientSOS', 'Logistics'];
+            const ownerOnlyScenarios = ['ExecDash'];
+            
+            // Show role-specific home screen if scenario doesn't match role
+            if (state.role === 'Client' && techOnlyScenarios.includes(scenario)) {
+                // Client trying to access tech scenarios - show client home
+                html = getRoleHomeScreen('Client');
+                els.mobileContent.innerHTML = html;
+                return;
+            }
+            if (state.role === 'Tech' && ownerOnlyScenarios.includes(scenario)) {
+                // Tech trying to access owner scenarios - show restricted message
+                html = `
+                    <div class="flex-1 flex flex-col items-center justify-center text-center animate-fade-in-up">
+                        <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-4">
+                            <i class="fa-solid fa-lock text-3xl text-red-500"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 mb-2">صلاحية غير متاحة</h3>
+                        <p class="text-xs text-slate-500 px-6">هذه الشاشة متاحة للإدارة فقط. برجاء التواصل مع المشرف.</p>
+                    </div>
+                `;
+                els.mobileContent.innerHTML = html;
+                return;
+            }
             
             if (scenario === 'CollabMaint') {
                 // Workflow 1: Collaborative Maintenance
