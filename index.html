@@ -54,39 +54,81 @@
 
         /* Animations */
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade-in-up { animation: fadeInUp 0.3s ease-out forwards; }
+        @keyframes pulse-ring { 0% { transform: scale(0.8); opacity: 0.5; } 100% { transform: scale(1.3); opacity: 0; } }
+        
+        .animate-fade-in-up { animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .animate-fade-in { animation: fadeInUp 0.3s ease-out forwards; }
+        .animate-pulse-ring { animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; }
+
+        /* Phone Focus Mode */
+        .phone-focus-mode {
+            transform: scale(1.05);
+            z-index: 50;
+            box-shadow: 0 0 0 100vmax rgba(15, 23, 42, 0.85); /* Dim Background */
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        /* Smooth Scroll & Transitions */
+        html { scroll-behavior: smooth; }
+        .transition-all-300 { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        /* Mobile Adjustments */
+        @media (max-width: 1024px) {
+            body { overflow-y: auto !important; height: auto !important; }
+            main { display: flex !important; flex-direction: column; overflow: visible !important; height: auto !important; }
+            .h-screen { height: auto !important; min-height: 100vh; }
+            nav { position: sticky; top: 0; }
+        }
     </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden text-right">
 
     <!-- Navigation Bar -->
-    <nav class="h-16 border-b border-slate-700/50 bg-slate-900/80 backdrop-blur-md flex items-center justify-between px-6 shrink-0 z-20">
+    <nav class="h-16 lg:h-16 border-b border-slate-700/50 bg-slate-900/80 backdrop-blur-md flex items-center justify-between px-4 lg:px-6 shrink-0 z-20 sticky top-0 w-full">
         <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/30">
-                <i class="fa-solid fa-bolt"></i>
+            <img src="landing_assets/RoboVAI Solutions.png" alt="RoboVAI Solutions" class="w-10 h-10 rounded-xl shadow-lg">
+            <div class="text-lg lg:text-xl font-bold tracking-tight text-white hover:text-blue-400 transition-colors cursor-pointer">
+                القطامي <span class="text-blue-500">سمارت فليت</span>
+                <span class="block text-[10px] text-slate-400 font-normal">Powered by RoboVAI Nexus</span>
             </div>
-            <h1 class="text-xl font-bold tracking-tight text-white hover:text-blue-400 transition-colors cursor-pointer">القطامي <span class="text-blue-500">للمولدات</span></h1>
         </div>
 
-        <div class="flex items-center gap-4">
-            <label class="text-sm text-slate-400 font-medium hidden md:block">اختر السيناريو:</label>
+        <div class="flex items-center gap-2 lg:gap-4">
+            <label class="text-sm text-slate-400 font-medium hidden xl:block">Workflows:</label>
             <div class="relative">
-                <select id="scenarioSelect" class="appearance-none bg-slate-800 border border-slate-700 text-white py-2 pr-4 pl-10 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:bg-slate-750 cursor-pointer w-64">
-                    <option value="Maintenance">1. صيانة دورية</option>
-                    <option value="Security">2. سرقة / اختراق أمني</option>
-                    <option value="FuelTheft">3. كشف سرقة وقود</option>
-                    <option value="SmartBilling">4. الفوترة والنزاعات</option>
-                    <option value="AIPredictive">5. الصيانة التنبؤية (AI)</option>
-                    <option value="AssetReturn">6. استلام وفحص (تالف)</option>
-                    <option value="MaintReject">7. رفض صيانة (توفير)</option>
-                    <option value="Tampering">8. محاولة تلاعب / فصل</option>
-                    <option value="QRContext">9. مسح QR (حسب الدور)</option>
-                    <option value="GeoFence">10. مسح خارج الموقع (حظر)</option>
-                    <option value="Inventory">11. جرد المخزن السريع</option>
+                <select id="scenarioSelect" class="appearance-none bg-slate-800 border border-slate-700 text-white py-1.5 lg:py-2 pr-4 pl-8 lg:pl-10 rounded-lg text-xs lg:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:bg-slate-750 cursor-pointer w-40 lg:w-64">
+                    <optgroup label="� QR Code Demo">
+                        <option value="Maintenance" selected>0. مسح QR + صيانة (الأساسي)</option>
+                    </optgroup>
+                    <optgroup label="�🔴 Core Workflows">
+                        <option value="CollabMaint">1. الصيانة التشاركية (Collaborative)</option>
+                        <option value="FuelShield">2. درع الوقود (Fuel Shield)</option>
+                        <option value="SmartInv">3. المخزون الذكي (Smart Inventory)</option>
+                        <option value="ExecDash">4. العائد الاستثماري (ROI Dashboard)</option>
+                    </optgroup>
+                    <optgroup label="👤 Client Experience">
+                        <option value="ClientSOS">5. استغاثة العميل (SOS)</option>
+                        <option value="Logistics">6. طلب لوجستي (وقود/تمديد)</option>
+                    </optgroup>
+                    <optgroup label="⚠️ Security & Safety">
+                        <option value="GeoFence">7. الخروج عن النطاق (Geo-Fence)</option>
+                        <option value="Tamper">8. محاولة تلاعب (Tampering)</option>
+                    </optgroup>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center px-2 lg:px-3 text-slate-400">
+                    <i class="fa-solid fa-chevron-down text-[10px] lg:text-xs"></i>
+                </div>
+            </div>
+            
+            <!-- Role Selector (Hidden on Mobile) -->
+            <div class="relative hidden sm:block">
+                <select id="roleSelect" class="appearance-none bg-slate-800 border border-slate-700 text-white py-2 pr-4 pl-10 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:bg-slate-750 cursor-pointer w-40">
+                    <option value="Tech">🔧 Technician (Ops)</option>
+                    <option value="Client">👤 Client (VIP)</option>
+                    <option value="Owner">👔 Owner (Admin)</option>
                 </select>
                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center px-3 text-slate-400">
-                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                    <i class="fa-solid fa-user-gear text-xs"></i>
                 </div>
             </div>
             
@@ -100,7 +142,7 @@
     </nav>
 
     <!-- Main Grid Layout -->
-    <main class="flex-1 grid grid-cols-12 gap-6 p-6 overflow-hidden min-h-0">
+    <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 p-4 lg:p-6 overflow-hidden min-h-0 lg:h-[calc(100vh-4rem)]">
         
         <!-- Right Column: Mobile App (Technician View) -->
         <section class="col-span-12 lg:col-span-3 flex flex-col h-full min-h-0 order-1">
@@ -126,15 +168,15 @@
                 </div>
 
                 <!-- App Header -->
-                <div class="bg-blue-600 px-5 pt-4 pb-8 text-white rounded-b-[2rem] shadow-lg relative z-0">
+                <div id="mobileHeader" class="bg-blue-600 px-5 pt-4 pb-8 text-white rounded-b-[2rem] shadow-lg relative z-0">
                     <div class="flex justify-between items-start mb-4">
                         <i class="fa-solid fa-bars text-lg opacity-80"></i>
-                        <div class="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                        <div id="mobileAvatar" class="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
                             <i class="fa-solid fa-user text-xs"></i>
                         </div>
                     </div>
-                    <h2 class="text-xl font-bold">أهلاً، يا هندسة</h2>
-                    <p class="text-blue-100 text-xs mt-1 opacity-90">جاهز لوردية النهاردة؟</p>
+                    <h2 id="mobileTitle" class="text-xl font-bold">أهلاً، يا هندسة</h2>
+                    <p id="mobileSubtitle" class="text-blue-100 text-xs mt-1 opacity-90">جاهز لوردية النهاردة؟</p>
                 </div>
 
                 <!-- App Content -->
@@ -288,7 +330,9 @@
         let state = {
             status: 'Normal',
             assetID: 'KAT-500', // Rebranded ID
-            scenario: 'Maintenance' 
+            scenario: 'Maintenance',
+            role: 'Tech',
+            inventoryCount: 0
         };
 
         // --- DOM Elements ---
@@ -300,14 +344,89 @@
             kpiFuel: document.getElementById('kpi-fuel'),
             badgeActive: document.getElementById('badge-active'),
             badgeFuel: document.getElementById('badge-fuel'),
-            tableBody: document.getElementById('table-body')
+            tableBody: document.getElementById('table-body'),
+            roleSelect: document.getElementById('roleSelect')
         };
 
         // --- Event Listeners ---
         els.scenarioSelect.addEventListener('change', (e) => {
-            state.scenario = e.target.value;
-            resetDemo();
+            const val = e.target.value;
+            state.scenario = val;
+            state.inventoryCount = 0; // Reset counter
+            
+            // Trigger Transition Effect
+            const sections = document.querySelectorAll('section');
+            sections.forEach(sec => {
+                sec.classList.remove('animate-fade-in-up');
+                void sec.offsetWidth; // Reflow
+                sec.classList.add('animate-fade-in-up');
+            });
+            
+            // Clear chat and reset
+            els.chatContainer.innerHTML = `
+                <div class="flex justify-center my-2">
+                    <span class="bg-slate-800/60 text-slate-400 text-[10px] px-3 py-1 rounded-full border border-slate-700">اليوم</span>
+                </div>
+            `;
+            
+            updateDashboard(state.scenario, 'initial');
+            renderMobile(state.scenario, 'initial');
+            
+            // Scenario-specific initialization
+            if(val === 'AIPredictive') {
+                setTimeout(() => {
+                    renderMobile('AIPredictive', 'analyzing');
+                    setTimeout(() => {
+                        renderMobile('AIPredictive', 'result');
+                        addChatMessage('النظام', '🤖 تنبيه تنبؤي: احتمال عطل طلمبة الزيت خلال 48 ساعة.', true);
+                    }, 3000);
+                }, 500);
+            } else if (val === 'Inventory') {
+                state.role = 'Tech';
+                addChatMessage('النظام', '📦 تم تفعيل وضع الجرد السريع. الموظف المسئول: أمين المخزن.');
+            } else if (val === 'QRContext') {
+                addChatMessage('النظام', `📱 وضع المسح الذكي. الدور الحالي: ${els.roleSelect.options[els.roleSelect.selectedIndex].text}`);
+            } else {
+                // Default welcome message
+                setTimeout(() => {
+                    addChatMessage('المشرف', `تم تفعيل سيناريو: ${formatScenarioName(state.scenario)}. في انتظار الأحداث...`);
+                }, 500);
+            }
         });
+
+        els.roleSelect.addEventListener('change', (e) => {
+            state.role = e.target.value;
+            updateRoleUI();
+            renderMobile(state.scenario, 'initial'); // Re-render mobile with new role
+        });
+
+        // --- Role UI Updates ---
+        function updateRoleUI() {
+            const header = document.getElementById('mobileHeader');
+            const title = document.getElementById('mobileTitle');
+            const subtitle = document.getElementById('mobileSubtitle');
+            const avatar = document.getElementById('mobileAvatar');
+            
+            if (state.role === 'Tech') {
+                // Technician - Blue theme
+                header.className = 'bg-blue-600 px-5 pt-4 pb-8 text-white rounded-b-[2rem] shadow-lg relative z-0';
+                title.textContent = 'أهلاً، يا هندسة';
+                subtitle.textContent = 'جاهز لوردية النهاردة؟';
+                avatar.innerHTML = '<i class="fa-solid fa-wrench text-xs"></i>';
+            } else if (state.role === 'Client') {
+                // Client - Green theme
+                header.className = 'bg-emerald-600 px-5 pt-4 pb-8 text-white rounded-b-[2rem] shadow-lg relative z-0';
+                title.textContent = 'مرحباً عميلنا الكريم';
+                subtitle.textContent = 'كيف يمكننا خدمتك اليوم؟';
+                avatar.innerHTML = '<i class="fa-solid fa-user text-xs"></i>';
+            } else if (state.role === 'Owner') {
+                // Owner - Purple/Gold theme
+                header.className = 'bg-gradient-to-r from-slate-800 to-slate-900 px-5 pt-4 pb-8 text-white rounded-b-[2rem] shadow-lg relative z-0 border-b-2 border-amber-500';
+                title.textContent = 'مرحباً يا باشا';
+                subtitle.textContent = 'لوحة تحكم الأسطول';
+                avatar.innerHTML = '<i class="fa-solid fa-crown text-xs text-amber-400"></i>';
+            }
+        }
 
         // --- Initialization ---
         function resetDemo() {
@@ -327,6 +446,12 @@
             // Initial Mobile Render
             renderMobile(state.scenario, 'initial');
 
+            // Trigger Transition
+            const mainContent = document.querySelector('main');
+            mainContent.classList.remove('animate-fade-in');
+            void mainContent.offsetWidth; // Trigger reflow
+            mainContent.classList.add('animate-fade-in');
+
             // Add welcome message
             setTimeout(() => {
                 addChatMessage('المشرف', `تم تفعيل سيناريو: ${formatScenarioName(state.scenario)}. في انتظار الأحداث...`);
@@ -334,25 +459,365 @@
         }
 
         function formatScenarioName(s) {
-            if (s === 'Maintenance') return 'الصيانة الدورية';
-            if (s === 'Security') return 'التنبيه الأمني';
-            if (s === 'FuelTheft') return 'كشف سرقة الوقود';
-            if (s === 'SmartBilling') return 'الفوترة الذكية';
-            if (s === 'AIPredictive') return 'الصيانة التنبؤية (AI)';
-            if (s === 'AssetReturn') return 'فحص الاستلام';
-            if (s === 'MaintReject') return 'رفض طلب الصيانة';
-            if (s === 'Tampering') return 'محاولة التلاعب';
-            if (s === 'QRContext') return 'مسح QR الذكي';
-            if (s === 'GeoFence') return 'المسح الجغرافي (Security)';
-            if (s === 'Inventory') return 'الجرد السريع';
-            return s;
+            const names = {
+                'CollabMaint': 'الصيانة التشاركية (Collaborative)',
+                'FuelShield': 'درع الوقود (Fuel Shield)',
+                'SmartInv': 'المخزون الذكي (Smart Inventory)',
+                'ExecDash': 'العائد الاستثماري (ROI Dashboard)',
+                'ClientSOS': 'استغاثة العميل (SOS)',
+                'Logistics': 'طلب لوجستي (Logistics)',
+                'GeoFence': 'الخروج عن النطاق (Geo-Fence)',
+                'Tamper': 'محاولة تلاعب (Tampering)',
+                'Maintenance': 'دورة الصيانة (Legacy)',
+                'Security': 'بلاغ أمني (Legacy)',
+                'FuelTheft': 'تسجيل تموين (Legacy)',
+                'SmartBilling': 'الفوترة (Legacy)',
+                'AIPredictive': 'تنبؤ AI (Legacy)',
+                'AssetReturn': 'فحص الاستلام (Legacy)',
+                'MaintReject': 'طلب شراء (Legacy)',
+                'QRContext': 'مسح QR الذكي (Legacy)',
+                'Inventory': 'الجرد السريع (Legacy)'
+            };
+            return names[s] || s;
         }
 
+        // --- Role-Specific Home Screens ---
+        function getRoleHomeScreen(role) {
+            if (role === 'Client') {
+                return `
+                    <div class="flex-1 flex flex-col animate-fade-in-up">
+                        <h3 class="font-bold text-slate-800 text-lg mb-4">الخدمات المتاحة</h3>
+                        
+                        <div class="grid grid-cols-2 gap-3 mb-6">
+                            <button onclick="state.scenario='ClientSOS'; renderMobile('ClientSOS');" class="bg-red-50 border border-red-100 p-4 rounded-xl flex flex-col items-center gap-2 hover:bg-red-100 transition-all group">
+                                <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center group-hover:bg-red-500 group-hover:text-white transition-colors text-red-600">
+                                    <i class="fa-solid fa-bell text-xl"></i>
+                                </div>
+                                <span class="text-xs font-bold text-red-800">نجدة SOS</span>
+                            </button>
+                            <button onclick="state.scenario='Logistics'; renderMobile('Logistics');" class="bg-blue-50 border border-blue-100 p-4 rounded-xl flex flex-col items-center gap-2 hover:bg-blue-100 transition-all group">
+                                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-colors text-blue-600">
+                                    <i class="fa-solid fa-truck text-xl"></i>
+                                </div>
+                                <span class="text-xs font-bold text-blue-800">طلبات لوجستية</span>
+                            </button>
+                        </div>
+                        
+                        <div class="bg-white border border-slate-200 rounded-xl p-4 mb-4">
+                            <h4 class="text-xs font-bold text-slate-800 mb-3"><i class="fa-solid fa-bolt text-amber-500 ml-1"></i> حالة المولد</h4>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-slate-600">KAT-500</span>
+                                <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded">يعمل بكفاءة</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-auto text-center">
+                            <p class="text-[10px] text-slate-400">خط خدمة العملاء: 19500</p>
+                        </div>
+                    </div>
+                `;
+            } else if (role === 'Tech') {
+                return `
+                    <div class="flex-1 flex flex-col animate-fade-in-up">
+                        <h3 class="font-bold text-slate-800 text-lg mb-4">مهام اليوم</h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="bg-white border border-slate-200 rounded-xl p-3 flex items-center gap-3 hover:border-blue-500 transition-colors cursor-pointer" onclick="state.scenario='Maintenance'; renderMobile('Maintenance');">
+                                <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center">
+                                    <i class="fa-solid fa-qrcode"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-bold text-slate-800">فحص مولد جديد</p>
+                                    <p class="text-[10px] text-slate-400">امسح QR للبدء</p>
+                                </div>
+                                <i class="fa-solid fa-chevron-left text-slate-300"></i>
+                            </div>
+                            <div class="bg-white border border-slate-200 rounded-xl p-3 flex items-center gap-3 hover:border-orange-500 transition-colors cursor-pointer" onclick="state.scenario='CollabMaint'; renderMobile('CollabMaint');">
+                                <div class="w-10 h-10 bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center">
+                                    <i class="fa-solid fa-wrench"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-bold text-slate-800">طلب صيانة طارئ</p>
+                                    <p class="text-[10px] text-slate-400">1 طلب معلق</p>
+                                </div>
+                                <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+                            </div>
+                            <div class="bg-white border border-slate-200 rounded-xl p-3 flex items-center gap-3 hover:border-indigo-500 transition-colors cursor-pointer" onclick="state.scenario='SmartInv'; renderMobile('SmartInv');">
+                                <div class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center">
+                                    <i class="fa-solid fa-boxes-stacked"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-bold text-slate-800">جرد المخزون</p>
+                                    <p class="text-[10px] text-slate-400">3 أصناف تحت الحد</p>
+                                </div>
+                                <i class="fa-solid fa-chevron-left text-slate-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (role === 'Owner') {
+                return `
+                    <div class="flex-1 flex flex-col animate-fade-in-up">
+                        <div class="bg-gradient-to-r from-slate-800 to-slate-900 text-white p-4 rounded-2xl mb-4 shadow-lg">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <p class="text-[10px] text-slate-400">إجمالي الأسطول</p>
+                                    <h2 class="text-2xl font-bold">30 <span class="text-sm font-normal text-slate-400">وحدة</span></h2>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-[10px] text-slate-400">نسبة التشغيل</p>
+                                    <h2 class="text-2xl font-bold text-emerald-400">96%</h2>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <span class="bg-emerald-500/20 text-emerald-400 text-[10px] px-2 py-1 rounded">24 نشط</span>
+                                <span class="bg-yellow-500/20 text-yellow-400 text-[10px] px-2 py-1 rounded">4 صيانة</span>
+                                <span class="bg-red-500/20 text-red-400 text-[10px] px-2 py-1 rounded">2 متوقف</span>
+                            </div>
+                        </div>
+
+                        <h3 class="font-bold text-slate-800 text-sm mb-3">التحكم السريع</h3>
+                        <div class="grid grid-cols-2 gap-3 mb-4">
+                            <button onclick="state.scenario='ExecDash'; renderMobile('ExecDash');" class="bg-amber-50 border border-amber-200 p-3 rounded-xl flex flex-col items-center gap-2 hover:bg-amber-100 transition-all">
+                                <i class="fa-solid fa-chart-pie text-amber-600 text-xl"></i>
+                                <span class="text-xs font-bold text-amber-800">لوحة ROI</span>
+                            </button>
+                            <button onclick="state.scenario='GeoFence'; renderMobile('GeoFence');" class="bg-slate-100 border border-slate-200 p-3 rounded-xl flex flex-col items-center gap-2 hover:bg-slate-200 transition-all">
+                                <i class="fa-solid fa-map-location-dot text-slate-600 text-xl"></i>
+                                <span class="text-xs font-bold text-slate-700">تتبع الوحدات</span>
+                            </button>
+                        </div>
+                        
+                        <div class="bg-red-50 border border-red-100 p-3 rounded-xl">
+                            <div class="flex items-center gap-2 text-red-700 text-xs font-bold mb-1">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <span>تنبيه أمني</span>
+                            </div>
+                            <p class="text-[10px] text-red-600">محاولة تلاعب رُصدت على الوحدة KAT-042</p>
+                        </div>
+                    </div>
+                `;
+            }
+            return '';
+        }
         // --- Mobile View Logic ---
-        function renderMobile(scenario, step) {
+        function renderMobile(scenario, step = 'initial') {
             let html = '';
             
-            if (scenario === 'Maintenance') {
+            // Role-based redirects for specific scenarios
+            const techOnlyScenarios = ['Maintenance', 'CollabMaint', 'SmartInv'];
+            const clientOnlyScenarios = ['ClientSOS', 'Logistics'];
+            const ownerOnlyScenarios = ['ExecDash'];
+            
+            // Show role-specific home screen if scenario doesn't match role
+            if (state.role === 'Client' && techOnlyScenarios.includes(scenario)) {
+                // Client trying to access tech scenarios - show client home
+                html = getRoleHomeScreen('Client');
+                els.mobileContent.innerHTML = html;
+                return;
+            }
+            if (state.role === 'Tech' && ownerOnlyScenarios.includes(scenario)) {
+                // Tech trying to access owner scenarios - show restricted message
+                html = `
+                    <div class="flex-1 flex flex-col items-center justify-center text-center animate-fade-in-up">
+                        <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-4">
+                            <i class="fa-solid fa-lock text-3xl text-red-500"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 mb-2">صلاحية غير متاحة</h3>
+                        <p class="text-xs text-slate-500 px-6">هذه الشاشة متاحة للإدارة فقط. برجاء التواصل مع المشرف.</p>
+                    </div>
+                `;
+                els.mobileContent.innerHTML = html;
+                return;
+            }
+            
+            if (scenario === 'CollabMaint') {
+                // Workflow 1: Collaborative Maintenance
+                if (step === 'initial') {
+                    html = `
+                        <div class="flex-1 flex flex-col items-center justify-center animate-fade-in-up">
+                            <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mb-6 relative">
+                                <i class="fa-solid fa-wrench text-3xl text-blue-600"></i>
+                                <span class="absolute top-0 right-0 w-6 h-6 bg-red-500 rounded-full border-2 border-white"></span>
+                            </div>
+                            <h3 class="font-bold text-slate-800 mb-2">طلب صيانة طارئ</h3>
+                            <p class="text-xs text-slate-500 text-center px-4 mb-6">تم رصد عطل في التوربو. مطلوب موافقة المدير لطلب قطعة غيار.</p>
+                            
+                            <div class="w-full bg-white border border-slate-200 rounded-xl p-3 mb-6">
+                                <div class="flex justify-between text-xs mb-2">
+                                    <span class="text-slate-500">القطعة:</span>
+                                    <span class="font-bold">Turbo Kit T-500</span>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span class="text-slate-500">التكلفة:</span>
+                                    <span class="font-bold text-red-600">45,000 ج.م</span>
+                                </div>
+                            </div>
+
+                            <button onclick="handleMobileClick('requestApproval')" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold shadow-lg shadow-blue-500/30 hover:bg-blue-700 transition-colors">
+                                <i class="fa-solid fa-paper-plane ml-2"></i> طلب تعميد المدير
+                            </button>
+                        </div>
+                    `;
+                } else if (step === 'approved') {
+                     html = `
+                        <div class="flex-1 flex flex-col items-center justify-center animate-fade-in-up">
+                            <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mb-6">
+                                <i class="fa-solid fa-check text-4xl text-emerald-600"></i>
+                            </div>
+                            <h3 class="font-bold text-slate-800 mb-2">تم التعميد بنجاح</h3>
+                            <p class="text-xs text-slate-500 text-center mb-8">وافق المدير على الطلب #REQ-998. جاري الشحن للموقع.</p>
+                             <button class="w-full bg-slate-100 text-slate-400 py-3 rounded-xl font-bold cursor-not-allowed">
+                                تم الإرسال
+                            </button>
+                        </div>
+                    `;
+                }
+            } else if (scenario === 'ExecDash') {
+                // Workflow 4: Owner ROI Dashboard
+                 html = `
+                    <div class="flex-1 flex flex-col animate-fade-in-up">
+                        <div class="bg-slate-900 text-white p-5 rounded-2xl mb-4 shadow-lg relative overflow-hidden">
+                             <div class="absolute top-0 left-0 w-32 h-32 bg-emerald-500/10 rounded-br-full -mt-10 -ml-10"></div>
+                             <p class="text-[10px] text-slate-400 mb-1 relative z-10">صافي الربح (شهري)</p>
+                             <h2 class="text-3xl font-bold relative z-10">245,000 <span class="text-sm font-normal text-slate-400">ج.م</span></h2>
+                             <div class="flex gap-2 mt-4 relative z-10">
+                                <span class="bg-emerald-500/20 text-emerald-400 text-[10px] px-2 py-1 rounded">+15% نمو</span>
+                                <span class="bg-blue-500/20 text-blue-400 text-[10px] px-2 py-1 rounded">98% تشغيل</span>
+                             </div>
+                        </div>
+
+                        <h3 class="font-bold text-slate-800 text-sm mb-3">التحكم السريع</h3>
+                        <div class="grid grid-cols-2 gap-3 mb-4">
+                            <button onclick="handleMobileClick('remoteKill')" class="bg-red-50 border border-red-100 p-4 rounded-xl flex flex-col items-center gap-2 hover:bg-red-100 transition-colors group">
+                                <i class="fa-solid fa-power-off text-red-500 text-xl group-hover:scale-110 transition-transform"></i>
+                                <span class="text-xs font-bold text-red-800">إيقاف المحرك</span>
+                            </button>
+                             <button onclick="handleMobileClick('remoteUnlock')" class="bg-emerald-50 border border-emerald-100 p-4 rounded-xl flex flex-col items-center gap-2 hover:bg-emerald-100 transition-colors group">
+                                <i class="fa-solid fa-unlock-keyhole text-emerald-500 text-xl group-hover:scale-110 transition-transform"></i>
+                                <span class="text-xs font-bold text-emerald-800">فتح مؤمن</span>
+                            </button>
+                        </div>
+
+                        <div class="bg-white border border-slate-100 p-3 rounded-xl">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs font-bold text-slate-700"><i class="fa-solid fa-location-dot text-blue-500 ml-1"></i> موقع الوحدة</span>
+                                <span class="text-[10px] text-slate-400">آخر تحديث: الآن</span>
+                            </div>
+                            <div class="h-24 bg-slate-100 rounded-lg relative overflow-hidden">
+                                 <!-- Fake Map -->
+                                <div class="absolute inset-0 bg-slate-200 grid grid-cols-4 grid-rows-2 opacity-30 gap-px">
+                                    ${Array(8).fill('<div class="bg-slate-300"></div>').join('')}
+                                </div>
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <div class="w-3 h-3 bg-blue-600 rounded-full animate-ping absolute"></div>
+                                    <div class="w-3 h-3 bg-blue-600 rounded-full relative border-2 border-white shadow-md"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (scenario === 'ClientSOS') {
+                // Workflow 5: Client SOS
+                 html = `
+                    <div class="flex-1 flex flex-col items-center justify-center animate-fade-in-up text-center">
+                        <div class="mb-8 relative">
+                             <div class="absolute inset-0 bg-red-500/20 rounded-full animate-ping"></div>
+                             <button onclick="handleMobileClick('dispatchSOS')" class="relative w-32 h-32 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center shadow-xl shadow-red-500/40 hover:scale-105 active:scale-95 transition-all group">
+                                <i class="fa-solid fa-bell text-5xl text-white group-hover:animate-shake"></i>
+                             </button>
+                        </div>
+                        <h2 class="text-2xl font-bold text-slate-800 mb-2">نجدة عاجلة (SOS)</h2>
+                        <p class="text-slate-500 text-sm px-6 mb-8">اضغط الزر لطلب الدعم الفوري. سيصلك مهندس الصيانة خلال 30 دقيقة.</p>
+                        
+                         <div class="flex items-center gap-2 text-xs text-slate-400 bg-slate-100 px-4 py-2 rounded-full">
+                            <i class="fa-solid fa-headset"></i>
+                            <span>خط ساخن: 19500</span>
+                        </div>
+                    </div>
+                `;
+            } else if (scenario === 'Logistics') {
+                // Workflow 6: Logistics
+                 html = `
+                    <div class="flex-1 flex flex-col animate-fade-in-up">
+                        <h3 class="font-bold text-slate-800 text-lg mb-4">خدمات لوجستية</h3>
+                        
+                        <div class="grid grid-cols-2 gap-3 mb-6">
+                            <button onclick="handleMobileClick('requestFuel')" class="bg-white border border-slate-200 p-4 rounded-xl hover:border-orange-500 hover:shadow-md transition-all group text-center">
+                                <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:bg-orange-500 group-hover:text-white transition-colors text-orange-600">
+                                    <i class="fa-solid fa-gas-pump"></i>
+                                </div>
+                                <span class="text-xs font-bold text-slate-700">طلب وقود</span>
+                            </button>
+                             <button onclick="handleMobileClick('extendRental')" class="bg-white border border-slate-200 p-4 rounded-xl hover:border-blue-500 hover:shadow-md transition-all group text-center">
+                                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:bg-blue-500 group-hover:text-white transition-colors text-blue-600">
+                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                </div>
+                                <span class="text-xs font-bold text-slate-700">تمديد إيجار</span>
+                            </button>
+                        </div>
+
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-4">
+                            <h4 class="text-xs font-bold text-slate-800 mb-3">حالة الطلبات النشطة</h4>
+                            <div class="flex items-center gap-3 bg-white p-2 rounded-lg border border-slate-100 shadow-sm">
+                                <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] text-slate-400">OD-2023-881</div>
+                                    <div class="text-xs font-bold text-slate-700">طلب صهريج 1000 لتر</div>
+                                </div>
+                                <span class="text-[10px] bg-yellow-100 text-yellow-700 px-2 py-1 rounded">جاري التجهيز</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (scenario === 'SmartInv') {
+                 // Workflow 3: Smart Inventory
+                  html = `
+                    <div class="flex-1 flex flex-col justify-center animate-fade-in-up">
+                        <div class="text-center mb-6">
+                            <div class="inline-block p-4 rounded-full bg-indigo-50 mb-4">
+                                <i class="fa-solid fa-boxes-stacked text-3xl text-indigo-600"></i>
+                            </div>
+                            <h3 class="font-bold text-slate-800">المخزون الذكي</h3>
+                            <p class="text-xs text-slate-500">مخزن القطامية الرئيسي</p>
+                        </div>
+
+                        <div class="bg-white border border-slate-100 rounded-xl p-4 shadow-sm mb-4">
+                            <div class="flex justify-between items-center border-b border-slate-50 pb-2 mb-2">
+                                <span class="text-xs font-bold text-slate-700">Oil Filter F-202</span>
+                                <span class="text-xs font-bold text-red-500">Low Stock</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
+                                    <div class="h-full bg-red-500 w-[15%]"></div>
+                                </div>
+                                <span class="text-[10px] text-slate-400">15 / 100</span>
+                            </div>
+                        </div>
+
+                        <button onclick="handleMobileClick('reorderStock')" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold shadow-lg shadow-indigo-500/30 hover:bg-indigo-700 transition-colors">
+                            <i class="fa-solid fa-cart-plus ml-2"></i> إنشاء طلب توريد آلي
+                        </button>
+                    </div>
+                  `;
+            } else if (scenario === 'Tamper') {
+                 // Workflow 8: Tampering
+                 html = `
+                     <div class="flex-1 flex flex-col items-center justify-center animate-pulse bg-red-50 w-full h-full absolute inset-0 z-20">
+                            <i class="fa-solid fa-hand-paper text-6xl text-red-600 mb-4"></i>
+                            <h2 class="text-2xl font-bold text-red-800 mb-2">محاولة تلاعب!</h2>
+                            <p class="text-red-600 text-sm text-center px-8">تم رصد فك اللوحة الإلكترونية بدون إذن.</p>
+                             <div class="mt-8 gap-3 flex flex-col w-full px-6">
+                                <button onclick="handleMobileClick('confirmTamper')" class="w-full bg-red-600 text-white py-3 rounded-xl font-bold hover:bg-red-700">
+                                    <i class="fa-solid fa-camera ml-2"></i> توثيق وإبلاغ
+                                </button>
+                                 <button class="w-full bg-white text-red-600 border border-red-200 py-3 rounded-xl font-bold">
+                                    تجاهل (False Alarm)
+                                </button>
+                             </div>
+                        </div>
+                 `;
+            } else if (scenario === 'Maintenance') {
                 if (step === 'initial') {
                     html = `
                         <div class="flex-1 flex flex-col items-center justify-center text-center">
@@ -423,7 +888,7 @@
                         <i class="fa-solid fa-triangle-exclamation ml-2"></i> محاكاة تحرك غير مصرح
                     </button>
                 `;
-            } else if (scenario === 'FuelTheft') {
+            } else if (scenario === 'FuelShield' || scenario === 'FuelTheft') {
                 html = `
                     <div class="flex-1 flex flex-col justify-center animate-fade-in-up">
                         <div class="bg-slate-100 p-4 rounded-2xl mb-6">
@@ -561,7 +1026,7 @@
                     </div>
                  `;
             } else if (scenario === 'MaintReject') {
-                // Scenario 7
+                // Scenario 7 - Parts Request Form
                 html = `
                      <div class="flex-1 flex flex-col justify-center animate-fade-in-up">
                         <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm mb-6 relative overflow-hidden">
@@ -571,11 +1036,11 @@
                                         <i class="fa-solid fa-xmark text-3xl text-red-600"></i>
                                     </div>
                                     <h3 class="text-red-700 font-bold text-lg">تم رفض الطلب</h3>
-                                    <p class="text-red-600 text-xs px-6 text-center mt-1 bg-white/50 py-1 rounded-full">ملاحظة: غالي جداً، نظف الفلاتر الأول.</p>
+                                    <p class="text-red-600 text-xs px-6 text-center mt-1 bg-white/50 py-1 rounded-full">السبب: يتطلب موافقة مجلس الإدارة (تجاوز الميزانية)</p>
                                 </div>
                              `: ''}
                             
-                            <h3 class="font-bold text-slate-800 text-lg mb-1">طلب قطع غيار</h3>
+                            <h3 class="font-bold text-slate-800 text-lg mb-1">طلب قطع غيار (PR)</h3>
                             <p class="text-xs text-slate-400 mb-4 border-b border-slate-100 pb-2">رقم الطلب #REQ-8823</p>
                             
                             <div class="flex justify-between items-center mb-2">
@@ -583,33 +1048,32 @@
                                 <span class="text-xs text-slate-800">Turbocharger Kit T-4</span>
                             </div>
                             <div class="flex justify-between items-center mb-4">
-                                <span class="text-xs text-slate-600 font-bold">التكلفة:</span>
+                                <span class="text-xs text-slate-600 font-bold">التكلفة المتوقعة:</span>
                                 <span class="text-xs text-red-600 font-bold">70,000 ج.م</span>
                             </div>
                             
-                            <div class="bg-yellow-50 text-yellow-700 px-3 py-2 rounded-lg text-xs font-bold text-center border border-yellow-200">
-                                <i class="fa-regular fa-clock ml-1"></i> بانتظار موافقة الإدارة...
-                            </div>
+                            <button onclick="handleMobileClick('requestParts')" class="w-full bg-blue-600 text-white py-2 rounded-lg text-xs font-bold">
+                                رفع الطلب للمدير المباشر
+                            </button>
                         </div>
                     </div>
                 `;
             } else if (scenario === 'Tampering') {
-                // Scenario 8
+                // Scenario 8 - Human Report
                 html = `
                      <div class="flex-1 flex flex-col items-center justify-center animate-fade-in-up text-center">
                         <div class="w-32 h-32 bg-slate-100 rounded-full flex items-center justify-center mb-6 relative">
-                            <i class="fa-solid fa-plug-circle-xmark text-6xl text-slate-300"></i>
-                            <div class="absolute bottom-0 right-0 w-10 h-10 bg-red-500 rounded-full border-4 border-white flex items-center justify-center shadow-lg">
-                                <i class="fa-solid fa-exclamation text-white"></i>
-                            </div>
+                            <i class="fa-solid fa-shield-cat text-6xl text-slate-300"></i>
                         </div>
-                        <h2 class="text-2xl font-bold text-slate-800 mb-2">انقطع الاتصال</h2>
-                        <p class="text-slate-500 text-sm px-6">فقدنا الإشارة مع الوحدة KAT-500. جاري محاولة إعادة الاتصال عبر القمر الصناعي...</p>
-                        <div class="mt-8 flex gap-2">
-                             <span class="w-2 h-2 bg-red-400 rounded-full animate-bounce"></span>
-                             <span class="w-2 h-2 bg-red-400 rounded-full animate-bounce delay-75"></span>
-                             <span class="w-2 h-2 bg-red-400 rounded-full animate-bounce delay-150"></span>
-                        </div>
+                        <h2 class="text-2xl font-bold text-slate-800 mb-2">الأمن والحراسة</h2>
+                        <p class="text-slate-500 text-sm px-6 mb-8">هل هناك أي ملاحظات أمنية في هذا الموقع؟</p>
+                        
+                        <button onclick="handleMobileClick('reportTamper')" class="bg-red-100 text-red-600 w-full py-4 rounded-xl font-bold shadow-sm border border-red-200 hover:bg-red-200 transition-colors mb-2">
+                             <i class="fa-solid fa-circle-exclamation ml-2"></i> إبلاغ: البوابة مفتوحة
+                        </button>
+                         <button class="bg-emerald-50 text-emerald-600 w-full py-4 rounded-xl font-bold shadow-sm border border-emerald-200 hover:bg-emerald-100 transition-colors">
+                             <i class="fa-solid fa-check ml-2"></i> الوضع آمن
+                        </button>
                     </div>
                 `;
             } else if (scenario === 'QRContext') {
@@ -732,9 +1196,18 @@
         }
 
         window.handleMobileClick = (action) => {
+            const phoneFrame = document.querySelector('.rounded-\\[2\\.5rem\\]'); // Select Phone Frame
+
             if (action === 'scan') {
+                // Trigger Focus Mode
+                phoneFrame.classList.add('phone-focus-mode');
+                
                 renderMobile('Maintenance', 'loading');
-                setTimeout(() => { renderMobile('Maintenance', 'form'); }, 1000);
+                setTimeout(() => { 
+                    renderMobile('Maintenance', 'form'); 
+                    // Remove Focus Mode after interaction
+                    setTimeout(() => phoneFrame.classList.remove('phone-focus-mode'), 1000);
+                }, 1000);
             } else if (action === 'submit') {
                  els.mobileContent.innerHTML = `
                     <div class="flex-1 flex flex-col items-center justify-center text-center animate-fade-in-up">
@@ -745,6 +1218,10 @@
                 `;
                 setTimeout(() => { addChatMessage('النظام', '🛠️ بلاغ صيانة جديد: تغيير زيت وفلاتر للمولد القطامي رقم 500', true); }, 800);
             } else if (action === 'breach') {
+                 const phoneFrame = document.querySelector('.rounded-\\[2\\.5rem\\]');
+                 phoneFrame.classList.add('phone-focus-mode');
+                 setTimeout(() => phoneFrame.classList.remove('phone-focus-mode'), 2000);
+
                  addChatMessage('النظام', '🚨 تنبيه خطير: المولد KAT-500 يتحرك خارج النطاق الجغرافي!', true);
             } else if (action === 'verifyFuel') {
                  els.mobileContent.innerHTML = `
@@ -777,6 +1254,10 @@
                  addChatMessage('النظام', '⚠️ تقرير تلفيات: تم رصد انبعاج جديد (خبطة) في الهيكل. تكلفة الإصلاح 2000 ج.م', true);
             } else if (action === 'scanGeo') {
                 // Scenario 10
+                const phoneFrame = document.querySelector('.rounded-\\[2\\.5rem\\]');
+                phoneFrame.classList.add('phone-focus-mode');
+                setTimeout(() => phoneFrame.classList.remove('phone-focus-mode'), 2000);
+                
                 renderMobile('GeoFence', 'denied');
                 addChatMessage('النظام', '🚨 اختراق أمني: محاولة مسح QR من موقع غير مصرح (الجيزة)!', true);
             } else if (action === 'scanInventory') {
@@ -784,40 +1265,60 @@
                 state.inventoryCount++;
                 renderMobile('Inventory'); // Re-render to update count
                 updateDashboard('Inventory Check', state.inventoryCount); // Pass count
+            } else if (action === 'requestParts') {
+                // Scenario 7 - Submit parts request
+                addChatMessage('النظام', '📋 طلب قطع غيار #REQ-8823: Turbocharger Kit بتكلفة 70,000 ج.م في انتظار الموافقة.', true);
+            } else if (action === 'requestApproval') {
+                // CollabMaint
+                addChatMessage('النظام', '⏳ تم إرسال طلب اعتماد (45,000 ج.م) للمدير المباشر. في الانتظار...', true);
+                setTimeout(() => {
+                    addChatMessage('المدير العام', '✅ تم الاعتماد. اصرف القطعة فوراً للأهمية.');
+                    renderMobile('CollabMaint', 'approved');
+                    updateDashboard('Parts Ordered');
+                }, 2000);
+            } else if (action === 'remoteKill') {
+                // ExecDash
+                addChatMessage('النظام', '🔴 تم إرسال أمر إيقاف للمحرك (KILL SIGNAL). الوحدة توقفت.', true);
+                updateDashboard('ENGINE LOCKED');
+                const btn = document.querySelector('button[onclick*="remoteKill"]');
+                if(btn) {
+                    btn.classList.add('bg-red-600', 'text-white');
+                    btn.innerHTML = '<i class="fa-solid fa-check ml-2"></i> تم الإيقاف';
+                }
+            } else if (action === 'remoteUnlock') {
+                // ExecDash
+                addChatMessage('النظام', '🟢 تم فك الحظر عن المحرك. الوحدة جاهزة للعمل.', true);
+                updateDashboard('Active');
+            } else if (action === 'dispatchSOS') {
+                // ClientSOS
+                const phoneFrame = document.querySelector('.rounded-\\[2\\.5rem\\]');
+                phoneFrame.classList.add('phone-focus-mode');
+                setTimeout(() => phoneFrame.classList.remove('phone-focus-mode'), 2000); // Visual Pulse
+                
+                addChatMessage('النظام', '🚨 استغاثة عميل (SOS): تم استلام البلاغ في غرفة العمليات.', true);
+                setTimeout(() => {
+                    addChatMessage('خدمة العملاء', '👷‍♂️ مرحباً يا فندم، مهندس الصيانة "أحمد علي" تحرك إليك الآن. مسافة الوصول 15 دقيقة.');
+                }, 1500);
+            } else if (action === 'requestFuel') {
+                // Logistics
+                addChatMessage('النظام', '⛽ تم تسجيل طلب وقود (1000 لتر). جاري تعيين سائق الصهريج.', true);
+            } else if (action === 'extendRental') {
+                 // Logistics
+                 addChatMessage('النظام', '📅 تم رفع طلب تمديد عقد الإيجار لمدة أسبوع إضافي للمراجعة.', true);
+            } else if (action === 'reorderStock') {
+                // SmartInv
+                addChatMessage('النظام', '📦 تم إنشاء PO تلقائي للمورد "الشركة الدولية" لعدد 100 فلتر.', true);
+            } else if (action === 'confirmTamper') {
+                // Tamper
+                addChatMessage('النظام', '📸 تم رفع صور التلاعب للأمن. جاري فتح تحقيق.', true);
+                updateDashboard('Locked');
+            } else if (action === 'reportTamper') {
+                // Scenario 8 - Report tampering (Legacy)
+                addChatMessage('النظام', '🚨 بلاغ أمني: البوابة مفتوحة في موقع المولد KAT-500!', true);
             }
         };
 
-        els.scenarioSelect.addEventListener('change', (e) => {
-             const val = e.target.value;
-             state.inventoryCount = 0; // Reset
-             
-             if(val === 'AIPredictive') {
-                 setTimeout(() => {
-                     renderMobile('AIPredictive', 'analyzing');
-                     setTimeout(() => {
-                         renderMobile('AIPredictive', 'result');
-                         addChatMessage('النظام', '🤖 تنبيه تنبؤي: احتمال عطل طلمبة الزيت خلال 48 ساعة.', true);
-                     }, 3000);
-                 }, 500);
-             } else if (val === 'MaintReject') {
-                 // Trigger Scenario 7 start
-                 setTimeout(() => {
-                     addChatMessage('النظام', '🔧 مطلوب موافقة: تغيير وتربو تشارجر (70,000 ج.م).', true);
-                 }, 800);
-             } else if (val === 'Tampering') {
-                 // Trigger Scenario 8 start
-                 setTimeout(() => {
-                     addChatMessage('النظام', '☠️ تحذير تلاعب: تم فصل البطارية الرئيسية! الجهاز يعمل بالبطارية الاحتياطية.', true);
-                 }, 500);
-             } else if (val === 'Inventory') {
-                 // Auto Switch Role
-                 state.role = 'Warehouse';
-                 els.roleSelect.value = 'Warehouse';
-                 addChatMessage('النظام', '📦 تم تفعيل وضع الجرد السريع. الموظف المسئول: أمين المخزن.');
-             } else if (val === 'QRContext') {
-                  addChatMessage('النظام', `📱 وضع المسح الذكي. الدور الحالي: ${els.roleSelect.options[els.roleSelect.selectedIndex].text}`);
-             }
-        });
+
 
         // Role Selector Listener
         els.roleSelect.addEventListener('change', (e) => {
@@ -840,7 +1341,7 @@
                     html = createChatActionHTML('fa-screwdriver-wrench text-orange-400', 'طلب صيانة', text, 'approve', 'اعتماد الصيانة', 'bg-blue-600');
                 } else if (state.scenario === 'Security') {
                     html = createChatActionHTML('fa-triangle-exclamation text-red-500', 'اختراق أمني', text, 'shutdown', 'إيقاف المحرك عن بعد', 'bg-red-600', true);
-                } else if (state.scenario === 'FuelTheft') {
+                } else if (state.scenario === 'FuelShield' || state.scenario === 'FuelTheft') {
                     html = createChatActionHTML('fa-gas-pump text-red-500', 'سرقة وقود', text, 'camera', 'طلب كاميرا الموقع', 'bg-slate-700');
                 } else if (state.scenario === 'SmartBilling') {
                     html = createChatActionHTML('fa-file-invoice text-blue-400', 'فرق ساعات تشغيل', text, 'invoice', 'إرسال الفاتورة المعدلة', 'bg-emerald-600');
@@ -869,6 +1370,19 @@
                     html = createChatActionHTML('fa-skull-crossbones text-red-600', 'خطر تلاعب بالجهاز', text + '<br><span class="text-[10px] text-slate-400">آخر موقع: طريق مصر اسماعيلية الصحراوي</span>' , 'investigate', 'طلب دورية أمنية', 'bg-red-700 animate-pulse', true);
                 } else if (state.scenario === 'GeoFence') {
                     html = createChatActionHTML('fa-map-location-dot text-red-500', 'انتهاك جغرافي', text, 'lockDown', '🔒 حظر الحساب فوراً', 'bg-red-800');
+                } else {
+                    // Default system message for any scenario not explicitly handled
+                    html = `
+                        <div class="flex justify-center my-4 opacity-0 animate-fade-in forwards">
+                            <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl max-w-[90%] shadow-lg">
+                                <div class="flex items-center gap-2 mb-2 text-blue-400">
+                                    <i class="fa-solid fa-circle-info"></i>
+                                    <span class="text-xs font-bold uppercase">إشعار النظام</span>
+                                </div>
+                                <p class="text-sm text-white">${text}</p>
+                            </div>
+                        </div>
+                    `;
                 }
             } else {
                  html = `
@@ -910,8 +1424,8 @@
         window.handleChatAction = (action) => {
             if (action === 'approve') {
                 updateDashboard('Service Complete');
-                addChatMessage('المشرف', '✅ تم اعتماد الصيانة. جاري إرسال فريق الدعم.');
-            } else if (action === 'shutdown') {
+                addChatMessage('مدير الصيانة', '👍 تم اعتماد التقرير. الله ينور يا رجالة.');
+            } else if (action === 'shutdown') { // For legacy security
                 updateDashboard('ENGINE LOCKED');
                 addChatMessage('المشرف', '🔒 تم إيقاف المحرك (LOCK). المولد في وضع الأمان.');
             } else if (action === 'camera') {
@@ -919,19 +1433,19 @@
                 addChatMessage('المشرف', '📸 تم طلب بث الكاميرات. جاري ابلاغ الأمن.');
             } else if (action === 'invoice') {
                 updateDashboard('Invoice Sent');
-                addChatMessage('المشرف', '📩 تم ارسال الفاتورة المعدلة للعميل (12 ساعة).');
+                addChatMessage('المحاسب', '📩 تم اعتماد وارسال الفاتورة.');
             } else if (action === 'parts') {
                 updateDashboard('Parts Ordered');
                 addChatMessage('المشرف', '📦 تم طلب طلمبة زيت جديدة. موعد التركيب غداً.');
             } else if (action === 'charge') {
                 updateDashboard('Under Repair');
-                addChatMessage('المشرف', '💰 تم خصم 2000 ج.م من تأمين العميل وإغلاق أمر الاستلام.');
+                addChatMessage('المحاسب', '💰 تم خصم 2000 ج.م من تأمين العميل وإغلاق أمر الاستلام.');
             } else if (action === 'reject') {
                 updateDashboard('Savings');
                 renderMobile('MaintReject', 'rejected'); // Update Mobile Immediately
-                addChatMessage('المشرف', '❌ تم رفض الطلب. (تنبيه: التكلفة مرتفعة، يرجى التنظيف أولاً).');
+                addChatMessage('المدير العام', '❌ مرفوض. الأسعار دي مبالغ فيها، شوف عرض سعر تاني.');
             } else if (action === 'investigate') {
-                addChatMessage('المشرف', '� تم تبليغ العمليات المركزية.');
+                addChatMessage('مدير الأمن', '👮‍♂️ تم توجيه دورية "النصر" للموقع. المتابعة لحظية.');
             } else if (action === 'lockDown') {
                 updateDashboard('Locked');
                 addChatMessage('المشرف', '🔒 تم تجميد الحساب وحظر الـ IP.');
@@ -944,7 +1458,7 @@
             let kpi1Lbl = 'الوحدات النشطة', kpi1Val = '24/30', kpi1Badge = '+12%';
             let kpi2Lbl = 'متوسط الوقود', kpi2Val = '78%', kpi2Badge = '-5%';
 
-            if (state.scenario === 'FuelTheft') {
+            if (state.scenario === 'FuelShield' || state.scenario === 'FuelTheft') {
                 kpi2Lbl = 'خسارة سولار';
                 kpi2Val = status === 'Theft Verified' ? '3,500 ج.م' : '0 ج.م';
                 kpi2Badge = status === 'Theft Verified' ? '🔻 سرقة مؤكدة' : '0%';
