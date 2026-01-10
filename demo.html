@@ -102,13 +102,18 @@
                 <i class="fa-solid fa-chart-pie"></i>
                 <span>Dashboard</span>
             </a>
+            <button id="btnShowcase" class="bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/30 text-purple-300 px-3 lg:px-4 py-1.5 rounded-lg text-xs lg:text-sm font-bold transition-all flex items-center gap-2" title="تشغيل العرض التلقائي للمشاهد">
+                <i class="fa-solid fa-film"></i>
+                <span class="hidden lg:inline">Showcase</span>
+            </button>
             <label class="text-sm text-slate-400 font-medium hidden xl:block">Workflows:</label>
             <div class="relative">
                 <select id="scenarioSelect" class="appearance-none bg-slate-800 border border-slate-700 text-white py-1.5 lg:py-2 pr-4 pl-8 lg:pl-10 rounded-lg text-xs lg:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:bg-slate-750 cursor-pointer w-40 lg:w-64">
-                    <optgroup label="� QR Code Demo">
+                    <optgroup label="📷 QR Demo">
                         <option value="Maintenance" selected>0. مسح QR + صيانة (الأساسي)</option>
+                        <option value="QRContext">1. سحر الـ QR (Context-Aware)</option>
                     </optgroup>
-                    <optgroup label="�🔴 Core Workflows">
+                    <optgroup label="🔴 Core Workflows">
                         <option value="CollabMaint">1. الصيانة التشاركية (Collaborative)</option>
                         <option value="FuelShield">2. درع الوقود (Fuel Shield)</option>
                         <option value="SmartInv">3. المخزون الذكي (Smart Inventory)</option>
@@ -129,8 +134,8 @@
             </div>
             
             <!-- Role Selector (Hidden on Mobile) -->
-            <div class="relative hidden sm:block">
-                <select id="roleSelect" class="appearance-none bg-slate-800 border border-slate-700 text-white py-2 pr-4 pl-10 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:bg-slate-750 cursor-pointer w-40">
+            <div class="relative">
+                <select id="roleSelect" class="appearance-none bg-slate-800 border border-slate-700 text-white py-1.5 lg:py-2 pr-4 pl-10 rounded-lg text-xs lg:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:bg-slate-750 cursor-pointer w-32 sm:w-40">
                     <option value="Tech">🔧 Technician (Ops)</option>
                     <option value="Client">👤 Client (VIP)</option>
                     <option value="Owner">👔 Owner (Admin)</option>
@@ -353,10 +358,136 @@
             badgeActive: document.getElementById('badge-active'),
             badgeFuel: document.getElementById('badge-fuel'),
             tableBody: document.getElementById('table-body'),
-            roleSelect: document.getElementById('roleSelect')
+            roleSelect: document.getElementById('roleSelect'),
+            btnShowcase: document.getElementById('btnShowcase')
         };
 
+        // --- Showcase Mode (Auto Demo) ---
+        const showcase = {
+            running: false,
+            timers: []
+        };
+
+        function clearShowcaseTimers() {
+            showcase.timers.forEach(t => clearTimeout(t));
+            showcase.timers = [];
+        }
+
+        function stopShowcase() {
+            showcase.running = false;
+            clearShowcaseTimers();
+            if (els.btnShowcase) {
+                els.btnShowcase.classList.remove('bg-red-600/20', 'border-red-500/30', 'text-red-300');
+                els.btnShowcase.classList.add('bg-purple-600/20', 'border-purple-500/30', 'text-purple-300');
+                els.btnShowcase.innerHTML = '<i class="fa-solid fa-film"></i><span class="hidden lg:inline">Showcase</span>';
+            }
+            addChatMessage('النظام', '⏹️ تم إيقاف العرض التلقائي.', true);
+        }
+
+        function schedule(fn, ms) {
+            const t = setTimeout(() => {
+                if (!showcase.running) return;
+                try { fn(); } catch (e) { /* keep demo resilient */ }
+            }, ms);
+            showcase.timers.push(t);
+        }
+
+        function setScenario(val) {
+            els.scenarioSelect.value = val;
+            els.scenarioSelect.dispatchEvent(new Event('change'));
+        }
+
+        function runShowcase() {
+            if (showcase.running) {
+                stopShowcase();
+                return;
+            }
+
+            showcase.running = true;
+            clearShowcaseTimers();
+
+            if (els.btnShowcase) {
+                els.btnShowcase.classList.remove('bg-purple-600/20', 'border-purple-500/30', 'text-purple-300');
+                els.btnShowcase.classList.add('bg-red-600/20', 'border-red-500/30', 'text-red-300');
+                els.btnShowcase.innerHTML = '<i class="fa-solid fa-stop"></i><span class="hidden lg:inline">Stop</span>';
+            }
+
+            addChatMessage('النظام', '🎬 بدء العرض التلقائي للمشاهد (Scene Mode).', true);
+
+            // Scene 2: QR Magic (Role-based UI)
+            schedule(() => {
+                setScenario('QRContext');
+                els.roleSelect.value = 'Tech';
+                els.roleSelect.dispatchEvent(new Event('change'));
+                addChatMessage('النظام', '📷 Scene 2: مسح QR بصفة فني (Ops).', true);
+            }, 600);
+
+            schedule(() => {
+                els.roleSelect.value = 'Client';
+                els.roleSelect.dispatchEvent(new Event('change'));
+                addChatMessage('النظام', '👑 Scene 2: نفس الـ QR بصفة عميل VIP (واجهة فخمة).', true);
+            }, 2200);
+
+            // Scene 3: Theft scenario
+            schedule(() => {
+                setScenario('FuelShield');
+                addChatMessage('النظام', '🚨 Scene 3: محاكاة سرقة وقود (كشف فوري).', true);
+            }, 4200);
+
+            schedule(() => {
+                if (window.handleMobileClick) window.handleMobileClick('verifyFuel');
+            }, 5200);
+
+            // Scene 4: Maintenance efficiency (fast workflow)
+            schedule(() => {
+                setScenario('Maintenance');
+                addChatMessage('النظام', '🛠️ Scene 4: دورة الصيانة في ثواني.', true);
+            }, 7400);
+
+            schedule(() => {
+                if (window.handleMobileClick) window.handleMobileClick('scan');
+            }, 8200);
+
+            schedule(() => {
+                if (window.handleMobileClick) window.handleMobileClick('submit');
+            }, 10400);
+
+            // Scene 4 (Inventory/parts handoff)
+            schedule(() => {
+                setScenario('SmartInv');
+                addChatMessage('النظام', '📦 Scene 4: المخزن الذكي يستجيب فوراً لطلب القطع.', true);
+            }, 12600);
+
+            schedule(() => {
+                if (window.handleMobileClick) window.handleMobileClick('reorderStock');
+            }, 13800);
+
+            // Scene 5: ROI view
+            schedule(() => {
+                setScenario('ExecDash');
+                addChatMessage('النظام', '📈 Scene 5: تقرير العائد (ROI) وإجراءات الإدارة.', true);
+            }, 16000);
+
+            schedule(() => {
+                if (window.handleMobileClick) window.handleMobileClick('remoteKill');
+            }, 17200);
+
+            schedule(() => {
+                addChatMessage('النظام', '✅ انتهى العرض التلقائي. جاهز للعرض اليدوي أمام الضيوف.', true);
+                stopShowcase();
+            }, 19600);
+        }
+
         // --- Event Listeners ---
+        if (els.btnShowcase) {
+            els.btnShowcase.addEventListener('click', runShowcase);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key.toLowerCase() === 'p') runShowcase();
+            if (e.key === 'Escape' && showcase.running) stopShowcase();
+        });
+
         els.scenarioSelect.addEventListener('change', (e) => {
             const val = e.target.value;
             state.scenario = val;
