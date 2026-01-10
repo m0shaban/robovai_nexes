@@ -79,78 +79,131 @@
             .h-screen { height: auto !important; min-height: 100vh; }
             nav { position: sticky; top: 0; }
         }
+
+        /* Bottom-sheet Drawer (Mobile Controls) */
+        .drawer-backdrop {
+            background: rgba(2, 6, 23, 0.68);
+            backdrop-filter: blur(6px);
+        }
+        .drawer-panel {
+            transform: translateY(110%);
+            transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .drawer-open .drawer-panel {
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden text-right">
 
     <!-- Navigation Bar -->
-    <nav class="h-16 lg:h-16 border-b border-slate-700/50 bg-slate-900/80 backdrop-blur-md flex items-center justify-between px-4 lg:px-6 shrink-0 z-20 sticky top-0 w-full">
-        <div class="flex items-center gap-3">
-            <img src="landing_assets/RoboVAI Solutions.png" alt="RoboVAI Solutions" class="w-10 h-10 rounded-xl shadow-lg">
-            <div class="text-lg lg:text-xl font-bold tracking-tight text-white hover:text-blue-400 transition-colors cursor-pointer">
-                القطامي <span class="text-blue-500">سمارت فليت</span>
-                <span class="block text-[10px] text-slate-400 font-normal">Powered by RoboVAI Nexus</span>
+    <nav class="border-b border-slate-700/50 bg-slate-900/80 backdrop-blur-md shrink-0 z-20 sticky top-0 w-full">
+        <!-- Mobile Top Bar (Clean) -->
+        <div class="h-14 sm:h-16 flex items-center justify-between px-4 lg:px-6">
+            <div class="flex items-center gap-3 min-w-0">
+                <img src="landing_assets/RoboVAI Solutions.png" alt="RoboVAI Solutions" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl shadow-lg shrink-0">
+                <div class="min-w-0">
+                    <div class="text-sm sm:text-lg font-black tracking-tight text-white truncate">
+                        القطامي <span class="text-blue-500">سمارت فليت</span>
+                    </div>
+                    <div class="text-[10px] text-slate-400 font-normal truncate">Powered by RoboVAI Nexus</div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button id="btnShowcase" class="bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/30 text-purple-200 px-3 py-2 rounded-xl text-xs font-extrabold transition-all flex items-center gap-2" title="تشغيل/إيقاف العرض التلقائي (P)">
+                    <i class="fa-solid fa-film"></i>
+                    <span class="hidden sm:inline">Showcase</span>
+                </button>
+
+                <a href="index.html" class="hidden sm:flex bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-400 px-4 py-2 rounded-xl text-xs font-bold transition-all items-center gap-2">
+                    <i class="fa-solid fa-house"></i>
+                    <span>الرئيسية</span>
+                </a>
+
+                <a href="dashboard.html" class="hidden sm:flex bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/30 text-emerald-400 px-4 py-2 rounded-xl text-xs font-bold transition-all items-center gap-2">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <button id="btnControls" class="sm:hidden w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 flex items-center justify-center text-slate-200 transition-colors" aria-haspopup="dialog" aria-controls="controlsDrawer" aria-expanded="false" title="التحكم">
+                    <i class="fa-solid fa-sliders"></i>
+                </button>
+
+                <div class="hidden sm:block w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 border border-slate-600 shadow-md"></div>
             </div>
         </div>
 
-        <div class="flex items-center gap-2 lg:gap-4">
-            <a href="index.html" class="hidden sm:flex bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-400 px-4 py-1.5 rounded-lg text-xs lg:text-sm font-medium transition-all items-center gap-2">
-                <i class="fa-solid fa-house"></i>
-                <span>الرئيسية</span>
-            </a>
-             <a href="dashboard.html" class="hidden sm:flex bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/30 text-emerald-400 px-4 py-1.5 rounded-lg text-xs lg:text-sm font-medium transition-all items-center gap-2">
-                <i class="fa-solid fa-chart-pie"></i>
-                <span>Dashboard</span>
-            </a>
-            <button id="btnShowcase" class="bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/30 text-purple-300 px-3 lg:px-4 py-1.5 rounded-lg text-xs lg:text-sm font-bold transition-all flex items-center gap-2" title="تشغيل العرض التلقائي للمشاهد">
-                <i class="fa-solid fa-film"></i>
-                <span class="hidden lg:inline">Showcase</span>
-            </button>
-            <label class="text-sm text-slate-400 font-medium hidden xl:block">Workflows:</label>
-            <div class="relative">
-                <select id="scenarioSelect" class="appearance-none bg-slate-800 border border-slate-700 text-white py-1.5 lg:py-2 pr-4 pl-8 lg:pl-10 rounded-lg text-xs lg:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:bg-slate-750 cursor-pointer w-40 lg:w-64">
-                    <optgroup label="📷 QR Demo">
-                        <option value="Maintenance" selected>0. مسح QR + صيانة (الأساسي)</option>
-                        <option value="QRContext">1. سحر الـ QR (Context-Aware)</option>
-                    </optgroup>
-                    <optgroup label="🔴 Core Workflows">
-                        <option value="CollabMaint">1. الصيانة التشاركية (Collaborative)</option>
-                        <option value="FuelShield">2. درع الوقود (Fuel Shield)</option>
-                        <option value="SmartInv">3. المخزون الذكي (Smart Inventory)</option>
-                        <option value="ExecDash">4. العائد الاستثماري (ROI Dashboard)</option>
-                    </optgroup>
-                    <optgroup label="👤 Client Experience">
-                        <option value="ClientSOS">5. استغاثة العميل (SOS)</option>
-                        <option value="Logistics">6. طلب لوجستي (وقود/تمديد)</option>
-                    </optgroup>
-                    <optgroup label="⚠️ Security & Safety">
-                        <option value="GeoFence">7. الخروج عن النطاق (Geo-Fence)</option>
-                        <option value="Tamper">8. محاولة تلاعب (Tampering)</option>
-                    </optgroup>
-                </select>
-                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center px-2 lg:px-3 text-slate-400">
-                    <i class="fa-solid fa-chevron-down text-[10px] lg:text-xs"></i>
+        <!-- Controls: Desktop Inline / Mobile Bottom Sheet -->
+        <div id="controlsDrawer" class="hidden sm:block">
+            <!-- Backdrop (mobile only) -->
+            <div id="drawerBackdrop" class="drawer-backdrop fixed inset-0 z-40 hidden" aria-hidden="true"></div>
+
+            <!-- Panel -->
+            <div id="drawerPanel" class="drawer-panel fixed bottom-0 left-0 right-0 z-50 sm:static sm:transform-none sm:transition-none sm:z-auto">
+                <div class="bg-slate-900 border-t border-slate-700/60 sm:border-t-0 sm:bg-transparent sm:px-0 px-4 pb-4 sm:pb-0 pt-4 sm:pt-0 rounded-t-3xl sm:rounded-none shadow-2xl sm:shadow-none">
+                    <div class="flex items-center justify-between sm:hidden mb-3">
+                        <div class="text-sm font-black text-white">التحكم في العرض</div>
+                        <button id="btnCloseControls" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 flex items-center justify-center text-slate-200" aria-label="إغلاق">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+
+                    <div class="sm:flex sm:items-center sm:justify-end sm:gap-3 sm:pb-3 sm:px-4 lg:px-6">
+                        <label class="text-xs text-slate-400 font-bold hidden xl:block">Workflows:</label>
+
+                        <div class="relative w-full sm:w-auto">
+                            <select id="scenarioSelect" class="w-full sm:w-64 appearance-none bg-slate-800 border border-slate-700 text-white py-2 pr-4 pl-10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:bg-slate-750 cursor-pointer">
+                                <optgroup label="📷 QR Demo">
+                                    <option value="Maintenance" selected>0. مسح QR + صيانة (الأساسي)</option>
+                                    <option value="QRContext">1. سحر الـ QR (Context-Aware)</option>
+                                </optgroup>
+                                <optgroup label="🔴 Core Workflows">
+                                    <option value="CollabMaint">1. الصيانة التشاركية (Collaborative)</option>
+                                    <option value="FuelShield">2. درع الوقود (Fuel Shield)</option>
+                                    <option value="SmartInv">3. المخزون الذكي (Smart Inventory)</option>
+                                    <option value="ExecDash">4. العائد الاستثماري (ROI Dashboard)</option>
+                                </optgroup>
+                                <optgroup label="👤 Client Experience">
+                                    <option value="ClientSOS">5. استغاثة العميل (SOS)</option>
+                                    <option value="Logistics">6. طلب لوجستي (وقود/تمديد)</option>
+                                </optgroup>
+                                <optgroup label="⚠️ Security & Safety">
+                                    <option value="GeoFence">7. الخروج عن النطاق (Geo-Fence)</option>
+                                    <option value="Tamper">8. محاولة تلاعب (Tampering)</option>
+                                </optgroup>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center px-3 text-slate-400">
+                                <i class="fa-solid fa-diagram-project text-xs"></i>
+                            </div>
+                        </div>
+
+                        <div class="relative w-full sm:w-auto mt-2 sm:mt-0">
+                            <select id="roleSelect" class="w-full sm:w-44 appearance-none bg-slate-800 border border-slate-700 text-white py-2 pr-4 pl-10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:bg-slate-750 cursor-pointer">
+                                <option value="Tech">🔧 Technician (Ops)</option>
+                                <option value="Client">👤 Client (VIP)</option>
+                                <option value="Owner">👔 Owner (Admin)</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center px-3 text-slate-400">
+                                <i class="fa-solid fa-user-gear text-xs"></i>
+                            </div>
+                        </div>
+
+                        <div class="sm:hidden grid grid-cols-2 gap-2 mt-3">
+                            <a href="index.html" class="bg-blue-600/15 hover:bg-blue-600/25 border border-blue-500/25 text-blue-300 px-3 py-2 rounded-xl text-sm font-bold flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-house"></i> الرئيسية
+                            </a>
+                            <a href="dashboard.html" class="bg-emerald-600/15 hover:bg-emerald-600/25 border border-emerald-500/25 text-emerald-300 px-3 py-2 rounded-xl text-sm font-bold flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-chart-pie"></i> الداشبورد
+                            </a>
+                        </div>
+
+                        <div class="sm:hidden mt-3 text-[11px] text-slate-400 leading-relaxed">
+                            تلميح: اضغط <span class="text-white font-bold">Showcase</span> لتشغيل العرض التلقائي. لإيقافه: <span class="text-white font-bold">Esc</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            <!-- Role Selector (Hidden on Mobile) -->
-            <div class="relative">
-                <select id="roleSelect" class="appearance-none bg-slate-800 border border-slate-700 text-white py-1.5 lg:py-2 pr-4 pl-10 rounded-lg text-xs lg:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:bg-slate-750 cursor-pointer w-32 sm:w-40">
-                    <option value="Tech">🔧 Technician (Ops)</option>
-                    <option value="Client">👤 Client (VIP)</option>
-                    <option value="Owner">👔 Owner (Admin)</option>
-                </select>
-                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center px-3 text-slate-400">
-                    <i class="fa-solid fa-user-gear text-xs"></i>
-                </div>
-            </div>
-            
-            <div class="h-8 w-px bg-slate-700 mx-2 hidden md:block"></div>
-            
-            <button class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300 transition-colors">
-                <i class="fa-regular fa-bell"></i>
-            </button>
-            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 border border-slate-600 shadow-md"></div>
         </div>
     </nav>
 
@@ -359,8 +412,53 @@
             badgeFuel: document.getElementById('badge-fuel'),
             tableBody: document.getElementById('table-body'),
             roleSelect: document.getElementById('roleSelect'),
-            btnShowcase: document.getElementById('btnShowcase')
+            btnShowcase: document.getElementById('btnShowcase'),
+            btnControls: document.getElementById('btnControls'),
+            btnCloseControls: document.getElementById('btnCloseControls'),
+            controlsDrawer: document.getElementById('controlsDrawer'),
+            drawerBackdrop: document.getElementById('drawerBackdrop')
         };
+
+        // --- Mobile Controls Drawer (Bottom Sheet) ---
+        function isMobile() {
+            return window.matchMedia('(max-width: 639px)').matches;
+        }
+
+        function openControls() {
+            if (!els.controlsDrawer) return;
+            els.controlsDrawer.classList.remove('hidden');
+            document.body.classList.add('drawer-open');
+            if (els.drawerBackdrop) els.drawerBackdrop.classList.remove('hidden');
+            if (els.btnControls) els.btnControls.setAttribute('aria-expanded', 'true');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeControls() {
+            if (!els.controlsDrawer) return;
+            document.body.classList.remove('drawer-open');
+            if (els.drawerBackdrop) els.drawerBackdrop.classList.add('hidden');
+            if (els.btnControls) els.btnControls.setAttribute('aria-expanded', 'false');
+            document.body.classList.remove('overflow-hidden');
+            // Keep drawer present on desktop; hide only on mobile
+            if (isMobile()) els.controlsDrawer.classList.add('hidden');
+        }
+
+        els.btnControls?.addEventListener('click', openControls);
+        els.btnCloseControls?.addEventListener('click', closeControls);
+        els.drawerBackdrop?.addEventListener('click', closeControls);
+
+        window.addEventListener('resize', () => {
+            // Ensure correct state when rotating / resizing
+            if (!isMobile()) {
+                els.controlsDrawer?.classList.remove('hidden');
+                document.body.classList.remove('drawer-open');
+                els.drawerBackdrop?.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            } else {
+                // default closed on mobile
+                closeControls();
+            }
+        });
 
         // --- Showcase Mode (Auto Demo) ---
         const showcase = {
@@ -485,7 +583,10 @@
 
         document.addEventListener('keydown', (e) => {
             if (e.key.toLowerCase() === 'p') runShowcase();
-            if (e.key === 'Escape' && showcase.running) stopShowcase();
+            if (e.key === 'Escape') {
+                if (showcase.running) stopShowcase();
+                closeControls();
+            }
         });
 
         els.scenarioSelect.addEventListener('change', (e) => {
