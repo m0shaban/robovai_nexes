@@ -427,6 +427,10 @@
             return window.matchMedia('(max-width: 639px)').matches;
         }
 
+        function isControlsOpen() {
+            return document.body.classList.contains('drawer-open');
+        }
+
         function openControls() {
             if (!els.controlsDrawer) return;
             if (!isMobile()) {
@@ -450,20 +454,30 @@
             if (isMobile()) els.controlsDrawer.classList.add('hidden');
         }
 
+        function toggleControls() {
+            if (isControlsOpen()) closeControls();
+            else openControls();
+        }
+
         els.btnControls?.addEventListener('click', openControls);
         els.btnCloseControls?.addEventListener('click', closeControls);
         els.drawerBackdrop?.addEventListener('click', closeControls);
-        els.btnPhoneMenu?.addEventListener('click', openControls);
+        els.btnPhoneMenu?.addEventListener('click', toggleControls);
 
+        // Avoid flakiness on mobile: browsers trigger many resizes (address bar show/hide).
+        // Only react when crossing the mobile breakpoint.
+        let lastIsMobile = isMobile();
         window.addEventListener('resize', () => {
-            // Ensure correct state when rotating / resizing
-            if (!isMobile()) {
+            const nowIsMobile = isMobile();
+            if (nowIsMobile === lastIsMobile) return;
+            lastIsMobile = nowIsMobile;
+
+            if (!nowIsMobile) {
                 els.controlsDrawer?.classList.remove('hidden');
                 document.body.classList.remove('drawer-open');
                 els.drawerBackdrop?.classList.add('hidden');
                 document.body.classList.remove('overflow-hidden');
             } else {
-                // default closed on mobile
                 closeControls();
             }
         });
