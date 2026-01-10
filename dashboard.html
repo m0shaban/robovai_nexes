@@ -95,6 +95,25 @@
         .notification-toast.show {
             transform: translateX(0);
         }
+
+        /* Mobile Controls Drawer (Dashboard) */
+        .dash-drawer-backdrop {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 180ms ease;
+        }
+        .dash-drawer-backdrop.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .dash-drawer-sheet {
+            transform: translateY(110%);
+            transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+            will-change: transform;
+        }
+        .dash-drawer-sheet.show {
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden">
@@ -131,13 +150,26 @@
             </div>
 
             <div class="flex items-center gap-2 lg:gap-6">
+                <!-- Mobile compact actions -->
+                <div class="sm:hidden flex items-center gap-2">
+                    <button onclick="triggerTheftSimulation()" class="glass-panel hover:bg-red-500/10 border border-red-500/30 text-red-400 px-3 py-2 rounded-lg text-xs font-bold transition-colors flex items-center gap-2" title="Simulate Theft">
+                        <i class="fa-solid fa-bell"></i>
+                        <span class="sr-only">Simulate Theft</span>
+                    </button>
+                    <button id="dashControlsBtn" class="glass-panel hover:bg-white/5 px-3 py-2 rounded-lg text-xs text-slate-200 transition-colors flex items-center gap-2" aria-haspopup="dialog" aria-controls="dashControlsSheet" title="Controls">
+                        <i class="fa-solid fa-sliders"></i>
+                        <span>التحكم</span>
+                    </button>
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=0ea5e9&color=fff" class="w-9 h-9 rounded-full ring-2 ring-blue-500/30" alt="Admin">
+                </div>
+
                 <!-- Action Buttons -->
-                <button onclick="triggerTheftSimulation()" class="bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-500 px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 group">
+                <button onclick="triggerTheftSimulation()" class="hidden sm:flex bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-500 px-4 py-2 rounded-lg text-sm font-bold transition-all items-center gap-2 group">
                     <i class="fa-solid fa-bell group-hover:animate-swing"></i>
                     <span>Simulate Theft</span>
                 </button>
 
-                <button id="btnPresentation" class="hide-in-presentation glass-panel hover:bg-white/5 px-3 py-2 rounded-lg text-xs text-slate-300 transition-colors flex items-center gap-2" title="Presentation Mode (F) / خروج: Esc">
+                <button id="btnPresentation" class="hidden sm:flex hide-in-presentation glass-panel hover:bg-white/5 px-3 py-2 rounded-lg text-xs text-slate-300 transition-colors items-center gap-2" title="Presentation Mode (F) / خروج: Esc">
                     <i class="fa-solid fa-expand"></i>
                     <span class="hidden lg:inline">Presentation</span>
                 </button>
@@ -149,16 +181,16 @@
                     <button id="btnScene5" class="glass-panel hover:bg-white/5 px-3 py-2 rounded-lg text-[11px] text-slate-300 transition-colors" title="Scene 5 (5)">Scene 5</button>
                 </div>
                 
-                <a href="demo.html" class="glass-panel hover:bg-white/5 px-4 py-2 rounded-lg text-xs text-slate-300 transition-colors">
+                <a href="demo.html" class="hidden sm:inline-flex glass-panel hover:bg-white/5 px-4 py-2 rounded-lg text-xs text-slate-300 transition-colors items-center">
                     <i class="fa-solid fa-mobile-screen mr-1"></i> وضع الموبايل
                 </a>
-                 <a href="index.html" class="glass-panel hover:bg-white/5 px-4 py-2 rounded-lg text-xs text-slate-300 transition-colors">
+                 <a href="index.html" class="hidden sm:inline-flex glass-panel hover:bg-white/5 px-4 py-2 rounded-lg text-xs text-slate-300 transition-colors items-center">
                     <i class="fa-solid fa-house mr-1"></i> الرئيسية
                 </a>
 
-                <div class="h-8 w-px bg-white/10"></div>
+                <div class="hidden sm:block h-8 w-px bg-white/10"></div>
                 
-                <div class="flex items-center gap-2">
+                <div class="hidden sm:flex items-center gap-2">
                     <img src="https://ui-avatars.com/api/?name=Admin&background=0ea5e9&color=fff" class="w-8 h-8 rounded-full ring-2 ring-blue-500/30">
                     <div class="hidden lg:block text-right">
                         <div class="text-xs font-bold text-white">المدير العام</div>
@@ -168,6 +200,54 @@
             </div>
         </div>
     </header>
+
+    <!-- Mobile Controls Drawer -->
+    <div id="dashControlsBackdrop" class="dash-drawer-backdrop fixed inset-0 bg-black/60 backdrop-blur-sm z-50"></div>
+    <div id="dashControlsSheet" class="dash-drawer-sheet fixed left-0 right-0 bottom-0 z-50">
+        <div class="mx-auto max-w-md w-full rounded-t-2xl glass-panel border border-white/10 overflow-hidden">
+            <div class="px-4 py-3 flex items-center justify-between border-b border-white/10">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-sliders text-blue-400"></i>
+                    <div class="text-sm font-bold text-white">التحكم السريع</div>
+                </div>
+                <button id="dashControlsClose" class="px-3 py-2 rounded-lg hover:bg-white/5 text-slate-300" aria-label="Close">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="p-4 space-y-3">
+                <div class="grid grid-cols-2 gap-2">
+                    <button id="dashDrawerPresentation" class="glass-panel hover:bg-white/5 px-3 py-2 rounded-xl text-xs font-bold text-slate-200 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-expand"></i>
+                        <span>Presentation</span>
+                    </button>
+                    <button id="dashDrawerTheft" class="bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 px-3 py-2 rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-bell"></i>
+                        <span>Simulate Theft</span>
+                    </button>
+                    <a href="demo.html" class="glass-panel hover:bg-white/5 px-3 py-2 rounded-xl text-xs font-bold text-slate-200 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-mobile-screen"></i>
+                        <span>وضع الموبايل</span>
+                    </a>
+                    <a href="index.html" class="glass-panel hover:bg-white/5 px-3 py-2 rounded-xl text-xs font-bold text-slate-200 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-house"></i>
+                        <span>الرئيسية</span>
+                    </a>
+                </div>
+
+                <div class="glass-panel rounded-xl p-3 border border-white/10">
+                    <div class="text-[11px] text-slate-400 mb-2">المشاهد</div>
+                    <div class="grid grid-cols-4 gap-2">
+                        <button id="dashDrawerScene1" class="glass-panel hover:bg-white/5 px-2 py-2 rounded-lg text-[11px] font-bold text-slate-200">1</button>
+                        <button id="dashDrawerScene3" class="glass-panel hover:bg-white/5 px-2 py-2 rounded-lg text-[11px] font-bold text-slate-200">3</button>
+                        <button id="dashDrawerScene4" class="glass-panel hover:bg-white/5 px-2 py-2 rounded-lg text-[11px] font-bold text-slate-200">4</button>
+                        <button id="dashDrawerScene5" class="glass-panel hover:bg-white/5 px-2 py-2 rounded-lg text-[11px] font-bold text-slate-200">5</button>
+                    </div>
+                    <div class="mt-2 text-[10px] text-slate-500">Hotkeys: 1 / 3 / 4 / 5 — Presentation: F — خروج: Esc</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Main Content Grid -->
     <main class="flex-1 overflow-hidden p-4 lg:p-6 grid grid-cols-12 gap-6">
@@ -568,6 +648,41 @@
         document.getElementById('btnScene4')?.addEventListener('click', scene4);
         document.getElementById('btnScene5')?.addEventListener('click', scene5);
 
+        // Mobile controls drawer wiring
+        const dashControlsBackdrop = document.getElementById('dashControlsBackdrop');
+        const dashControlsSheet = document.getElementById('dashControlsSheet');
+        const dashControlsBtn = document.getElementById('dashControlsBtn');
+        const dashControlsClose = document.getElementById('dashControlsClose');
+        const dashDrawerPresentation = document.getElementById('dashDrawerPresentation');
+        const dashDrawerTheft = document.getElementById('dashDrawerTheft');
+
+        function openDashControls() {
+            dashControlsBackdrop?.classList.add('show');
+            dashControlsSheet?.classList.add('show');
+        }
+
+        function closeDashControls() {
+            dashControlsBackdrop?.classList.remove('show');
+            dashControlsSheet?.classList.remove('show');
+        }
+
+        dashControlsBtn?.addEventListener('click', openDashControls);
+        dashControlsClose?.addEventListener('click', closeDashControls);
+        dashControlsBackdrop?.addEventListener('click', closeDashControls);
+
+        dashDrawerPresentation?.addEventListener('click', () => {
+            togglePresentation();
+            closeDashControls();
+        });
+        dashDrawerTheft?.addEventListener('click', () => {
+            triggerTheftSimulation();
+            closeDashControls();
+        });
+        document.getElementById('dashDrawerScene1')?.addEventListener('click', () => { scene1(); closeDashControls(); });
+        document.getElementById('dashDrawerScene3')?.addEventListener('click', () => { scene3(); closeDashControls(); });
+        document.getElementById('dashDrawerScene4')?.addEventListener('click', () => { scene4(); closeDashControls(); });
+        document.getElementById('dashDrawerScene5')?.addEventListener('click', () => { scene5(); closeDashControls(); });
+
         tabBar?.addEventListener('click', (e) => {
             const btn = e.target.closest('button[data-tab]');
             if (!btn) return;
@@ -585,7 +700,13 @@
         });
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') togglePresentation(false);
+            if (e.key === 'Escape') {
+                if (dashControlsSheet?.classList.contains('show')) {
+                    closeDashControls();
+                    return;
+                }
+                togglePresentation(false);
+            }
             if (e.key.toLowerCase() === 'f') togglePresentation();
             if (e.key === '1') scene1();
             if (e.key === '3') scene3();
