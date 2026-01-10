@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoboVAI Nexus | لوحة القيادة والسيطرة</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            950: '#020617',
+                            900: '#0f172a',
+                            800: '#1e293b',
+                        }
+                    },
+                    animation: {
+                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Leaflet CSS (Map) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <style>
+        body { font-family: 'Cairo', sans-serif; background-color: #020617; color: #e2e8f0; }
+        
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Ticker Animation */
+        @keyframes ticker {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .ticker-wrap {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .ticker-item {
+            display: inline-block;
+            animation: ticker 30s linear infinite;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        .notification-toast {
+            transform: translateX(-120%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .notification-toast.show {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden">
+
+    <!-- Header & Ticker -->
+    <header class="flex-none bg-dark-900 border-b border-white/5 z-30">
+        <!-- Top Tech Ticker -->
+        <div class="bg-blue-900/20 border-b border-blue-500/10 h-8 flex items-center overflow-hidden relative">
+            <div class="bg-blue-600 px-3 h-full flex items-center text-[10px] font-bold text-white z-10 shrink-0">
+                <i class="fa-solid fa-satellite-dish mr-2 animate-pulse"></i> LIVE FEED
+            </div>
+            <div class="ticker-wrap w-full">
+                <div class="ticker-item text-xs text-blue-200 py-1">
+                    <span class="mx-4">⚡ تنبيه: المولد DCA-45 (موقع العاصمة) يحتاج صيانة دورية خلال 48 ساعة</span>
+                    <span class="mx-4 text-emerald-400">💰 تم توفير 1500 لتر وقود هذا الأسبوع بفضل الكشف المبكر</span>
+                    <span class="mx-4 text-red-400">🚨 انخفاض مستوى الوقود في مولد رقم #88 (محور المشير) - جاري التوجيه</span>
+                    <span class="mx-4">✅ تم إغلاق 15 أمر شغل صيانة بنجاح اليوم</span>
+                    <span class="mx-4">📈 مؤشر الأداء العام: 98.5% (ممتاز)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Navbar -->
+        <div class="h-16 px-6 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <img src="landing_assets/RoboVAI Solutions.png" alt="Logo" class="w-10 h-10 rounded-lg shadow-lg shadow-blue-500/20">
+                <div>
+                    <h1 class="text-lg font-bold text-white leading-tight">مركز القيادة والسيطرة</h1>
+                    <div class="text-[10px] text-slate-400 flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        RoboVAI Nexus OS v2.4
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <!-- Action Buttons -->
+                <button onclick="triggerTheftSimulation()" class="bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-500 px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 group">
+                    <i class="fa-solid fa-bell group-hover:animate-swing"></i>
+                    <span>Simulate Theft</span>
+                </button>
+                
+                <a href="demo.html" class="glass-panel hover:bg-white/5 px-4 py-2 rounded-lg text-xs text-slate-300 transition-colors">
+                    <i class="fa-solid fa-mobile-screen mr-1"></i> وضع الموبايل
+                </a>
+                 <a href="index.html" class="glass-panel hover:bg-white/5 px-4 py-2 rounded-lg text-xs text-slate-300 transition-colors">
+                    <i class="fa-solid fa-house mr-1"></i> الرئيسية
+                </a>
+
+                <div class="h-8 w-px bg-white/10"></div>
+                
+                <div class="flex items-center gap-2">
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=0ea5e9&color=fff" class="w-8 h-8 rounded-full ring-2 ring-blue-500/30">
+                    <div class="hidden lg:block text-right">
+                        <div class="text-xs font-bold text-white">المدير العام</div>
+                        <div class="text-[10px] text-slate-400">Elkatamy Group</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="flex-1 overflow-hidden p-4 lg:p-6 grid grid-cols-12 gap-6">
+        
+        <!-- Sidebar KPI Column (Left) -->
+        <div class="col-span-12 lg:col-span-3 flex flex-col gap-4 h-full overflow-y-auto pr-2 pb-20 lg:pb-0">
+            <!-- KPI Cards -->
+            <div class="glass-panel p-4 rounded-xl border-l-4 border-emerald-500">
+                <div class="text-xs text-slate-400 mb-1">إجمالي الإيراد اليومي المتوقع</div>
+                <div class="flex items-end gap-2">
+                    <div class="text-2xl font-black text-white">150,000</div>
+                    <div class="text-xs font-bold text-emerald-400 mb-1.5">EGP</div>
+                </div>
+                <div class="text-[10px] text-emerald-500 mt-2 flex items-center gap-1">
+                    <i class="fa-solid fa-arrow-trend-up"></i> +12% عن الأسبوع الماضي
+                </div>
+            </div>
+
+            <div class="glass-panel p-4 rounded-xl border-l-4 border-orange-500">
+                <div class="text-xs text-slate-400 mb-1">مصاريف التشغيل والصيانة</div>
+                <div class="flex items-end gap-2">
+                    <div class="text-2xl font-black text-white">12,450</div>
+                    <div class="text-xs font-bold text-orange-400 mb-1.5">EGP</div>
+                </div>
+                <div class="w-full bg-slate-700 h-1.5 mt-2 rounded-full overflow-hidden">
+                    <div class="bg-orange-500 h-full w-[45%]"></div>
+                </div>
+            </div>
+
+            <!-- The Hero KPI: Saved Waste -->
+            <div class="glass-panel p-4 rounded-xl border-l-4 border-blue-500 relative overflow-hidden group">
+                <div class="absolute inset-0 bg-blue-500/5 group-hover:bg-blue-500/10 transition-colors"></div>
+                <div class="relative z-10">
+                    <div class="text-xs text-blue-300 mb-1 flex items-center justify-between">
+                        <span>قيمة الهدر المتوقفة (Saved)</span>
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div class="flex items-end gap-2">
+                        <div class="text-3xl font-black text-white text-glow">45,000</div>
+                        <div class="text-sm font-bold text-blue-400 mb-1.5">EGP</div>
+                    </div>
+                    <div class="text-[10px] text-slate-400 mt-2">
+                        بفضل كشف السرقات والصيانة الاستباقية
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generators Status List -->
+            <div class="glass-panel rounded-xl flex-1 flex flex-col min-h-[300px]">
+                <div class="p-4 border-b border-white/5 flex justify-between items-center">
+                    <h3 class="font-bold text-sm">حالة الأسطول</h3>
+                    <span class="bg-slate-700 text-[10px] px-2 py-0.5 rounded text-slate-300">54 وحدة</span>
+                </div>
+                <div class="overflow-y-auto flex-1 p-2 space-y-2">
+                    <!-- Item 1 -->
+                    <div class="flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg cursor-pointer group transition-colors">
+                        <div class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
+                        <div class="flex-1">
+                            <div class="flex justify-between">
+                                <span class="text-xs font-bold text-slate-200">DCA-400 #101</span>
+                                <span class="text-[10px] text-emerald-400">تشغيل</span>
+                            </div>
+                            <div class="text-[10px] text-slate-500">موقع العاصمة الإدارية R7</div>
+                        </div>
+                        <i class="fa-solid fa-chevron-left text-[10px] text-slate-600 group-hover:text-white transition-colors"></i>
+                    </div>
+                    <!-- Item 2 -->
+                    <div class="flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg cursor-pointer group transition-colors">
+                        <div class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
+                        <div class="flex-1">
+                            <div class="flex justify-between">
+                                <span class="text-xs font-bold text-slate-200">DCA-150 #44</span>
+                                <span class="text-[10px] text-emerald-400">تشغيل</span>
+                            </div>
+                            <div class="text-[10px] text-slate-500">مشروع المونوريل</div>
+                        </div>
+                    </div>
+                    <!-- Item 3 (Warning) -->
+                    <div class="flex items-center gap-3 p-2 bg-red-500/10 hover:bg-red-500/20 rounded-lg cursor-pointer group transition-colors border border-red-500/20">
+                        <div class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                        <div class="flex-1">
+                            <div class="flex justify-between">
+                                <span class="text-xs font-bold text-white">DCA-45 #K7</span>
+                                <span class="text-[10px] text-red-400">توقف (حرارة)</span>
+                            </div>
+                            <div class="text-[10px] text-slate-400">طريق الإسكندرية الصحراوي</div>
+                        </div>
+                        <i class="fa-solid fa-triangle-exclamation text-xs text-red-500"></i>
+                    </div>
+                     <!-- Item 4 -->
+                    <div class="flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg cursor-pointer group transition-colors">
+                        <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+                        <div class="flex-1">
+                            <div class="flex justify-between">
+                                <span class="text-xs font-bold text-slate-200">DCA-25 #12</span>
+                                <span class="text-[10px] text-amber-400">استعداد</span>
+                            </div>
+                            <div class="text-[10px] text-slate-500">مخازن الشركة</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center Map (Middle) -->
+        <div class="col-span-12 lg:col-span-6 flex flex-col gap-4 h-full min-h-[400px]">
+            <div class="glass-panel rounded-xl flex-1 relative overflow-hidden group">
+                <div id="map" class="absolute inset-0 z-0 bg-slate-800"></div>
+                
+                <!-- Map Overlay Controls -->
+                <div class="absolute top-4 right-4 z-[400] flex flex-col gap-2">
+                    <button class="bg-dark-900/90 text-white p-2 rounded shadow-lg hover:bg-blue-600 transition-colors text-xs" title="Reset View"><i class="fa-solid fa-crosshairs"></i></button>
+                    <button class="bg-dark-900/90 text-white p-2 rounded shadow-lg hover:bg-blue-600 transition-colors text-xs" title="Heatmap Mode"><i class="fa-solid fa-fire"></i></button>
+                </div>
+
+                <!-- Simulation Overlay (Hidden by default) -->
+                <div id="theftModal" class="hidden absolute top-4 left-4 right-4 z-[1000] animate-bounce">
+                    <div class="bg-red-600 text-white p-4 rounded-xl shadow-2xl border-2 border-red-400 flex items-start gap-4">
+                        <div class="bg-white/20 p-3 rounded-full animate-pulse">
+                            <i class="fa-solid fa-bell text-2xl"></i>
+                        </div>
+                        <div class="flex-1">
+                             <div class="font-black text-lg mb-1">🚨 تم اكتشاف سرقة وقود محتملة!</div>
+                             <div class="text-sm opacity-90 mb-2">
+                                الموقع: <strong>مشروع سفنكس الجديد</strong><br>
+                                المعدة: <strong>DCA-150 #88</strong><br>
+                                الحدث: انخفاض مفاجئ (20 لتر) في 2 دقيقة والمحرك متوقف.
+                             </div>
+                             <div class="flex gap-2 mt-2">
+                                <button onclick="closeModal()" class="bg-white text-red-600 px-3 py-1 rounded text-xs font-bold hover:bg-gray-100">تحقق بالكاميرا</button>
+                                <button onclick="closeModal()" class="bg-red-800 text-white px-3 py-1 rounded text-xs hover:bg-red-900">الاتصال بالأمن</button>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Charts Area -->
+            <div class="h-48 grid grid-cols-2 gap-4">
+                <div class="glass-panel p-3 rounded-xl">
+                    <div class="text-[10px] text-slate-400 mb-2 font-bold uppercase">كفاءة الأصول (ROI)</div>
+                    <canvas id="roiChart" class="w-full h-full"></canvas>
+                </div>
+                <div class="glass-panel p-3 rounded-xl">
+                    <div class="text-[10px] text-slate-400 mb-2 font-bold uppercase">تحليل الأعطال (الأسباب)</div>
+                    <canvas id="failuresChart" class="w-full h-full"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Feed Column (Right) -->
+        <div class="col-span-12 lg:col-span-3 flex flex-col gap-4 h-full overflow-y-auto pb-20 lg:pb-0">
+             <!-- Live Feed Log -->
+             <div class="glass-panel rounded-xl flex-1 flex flex-col p-4">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-sm">سجل العمليات (Live Log)</h3>
+                    <i class="fa-solid fa-rotate text-xs text-slate-500 hover:text-white cursor-pointer hover:rotate-180 transition-transform duration-500"></i>
+                </div>
+                
+                <div id="activityLog" class="space-y-4 text-xs overflow-y-auto max-h-[600px] pr-2">
+                    <!-- Dynamic Items will be inserted here -->
+                    <div class="relative pl-4 border-r-2 border-slate-700 pb-4">
+                        <div class="absolute -right-[5px] top-0 w-2.5 h-2.5 rounded-full bg-slate-500"></div>
+                        <div class="text-[10px] text-slate-500 mb-0.5">منذ 2 دقيقة</div>
+                        <div class="text-slate-300">تم تسجيل خروج <strong>مولد #45</strong> من المخزن الرئيسي.</div>
+                        <div class="text-[10px] text-blue-400 mt-1">بواسطة: محمد أحمد (سائق)</div>
+                    </div>
+
+                    <div class="relative pl-4 border-r-2 border-slate-700 pb-4">
+                        <div class="absolute -right-[5px] top-0 w-2.5 h-2.5 rounded-full bg-purple-500"></div>
+                        <div class="text-[10px] text-slate-500 mb-0.5">منذ 15 دقيقة</div>
+                        <div class="text-slate-300">نظام AI: اكتشاف نمط استهلاك غير طبيعي في <strong>موقع التجمع</strong>.</div>
+                        <div class="inline-block px-1.5 py-0.5 bg-purple-500/20 text-purple-400 rounded mt-1">Under Review</div>
+                    </div>
+
+                     <div class="relative pl-4 border-r-2 border-slate-700 pb-4">
+                        <div class="absolute -right-[5px] top-0 w-2.5 h-2.5 rounded-full bg-blue-500"></div>
+                        <div class="text-[10px] text-slate-500 mb-0.5">منذ 45 دقيقة</div>
+                        <div class="text-slate-300">صيانة دورية مكتملة لمولد <strong>DCA-150</strong>.</div>
+                         <div class="text-[10px] text-emerald-400 mt-1">تمت الموافقة</div>
+                    </div>
+                </div>
+             </div>
+
+             <!-- Efficiency Demo Box -->
+             <div class="glass-panel p-4 rounded-xl border border-dashed border-slate-600 bg-slate-800/30">
+                <h4 class="text-xs font-bold text-slate-300 mb-2">محاكاة سير العمل (Efficiency)</h4>
+                <p class="text-[10px] text-slate-500 mb-3">اضغط لمحاكاة طلب صيانة من الموقع ومراقبة الاستجابة.</p>
+                <button onclick="simulateMaintenance()" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded text-xs font-bold transition-colors">
+                    <i class="fa-solid fa-wrench mr-1"></i> إرسال طلب صيانة
+                </button>
+             </div>
+        </div>
+
+    </main>
+
+    <!-- Notification Toast Container -->
+    <div id="toastContainer" class="fixed bottom-6 left-6 z-50 flex flex-col gap-3"></div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // 1. Leaflet Map Setup
+        const map = L.map('map', {
+            zoomControl: false,
+            attributionControl: false
+        }).setView([30.0444, 31.2357], 10); // Cairo Center
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(map);
+
+        // Custom Icons
+        const greenIcon = L.divIcon({
+            className: 'custom-div-icon',
+            html: "<div style='background-color:#10b981; width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 0 10px #10b981; border: 2px solid white;'></div>",
+            iconSize: [12, 12],
+            iconAnchor: [6, 6]
+        });
+
+        const redIcon = L.divIcon({
+            className: 'custom-div-icon',
+            html: "<div style='background-color:#ef4444; width: 14px; height: 14px; border-radius: 50%; box-shadow: 0 0 15px #ef4444; border: 2px solid white; animation: pulse 1s infinite;'></div>",
+            iconSize: [14, 14],
+            iconAnchor: [7, 7]
+        });
+
+        // Add Pins (Real Locations)
+        const locations = [
+            { lat: 30.0055, lng: 31.4780, type: 'green', name: "التجمع الخامس - ميفيدا" }, // New Cairo
+            { lat: 30.0444, lng: 31.2357, type: 'green', name: "وسط البلد - مقر البنك" }, // Downtown
+            { lat: 30.0131, lng: 31.2089, type: 'red', name: "شارع الهرم - فندق الأهرام" }, // Giza (Problem)
+            { lat: 30.1706, lng: 31.7562, type: 'green', name: "العاصمة الإدارية - R3" }, 
+            { lat: 30.0888, lng: 30.9388, type: 'green', name: "6 أكتوبر - المنطقة الصناعية" },
+            { lat: 29.9668, lng: 31.2599, type: 'green', name: "المعادي - برج 2" },
+            { lat: 30.0626, lng: 31.3479, type: 'green', name: "مدينة نصر - ستاد القاهرة" },
+        ];
+
+        locations.forEach(loc => {
+            L.marker([loc.lat, loc.lng], { icon: loc.type === 'green' ? greenIcon : redIcon })
+                .addTo(map)
+                .bindPopup(`<div class='text-slate-800 font-bold'>${loc.name}</div>`);
+        });
+
+
+        // 2. Charts Setup (Chart.js)
+        // ROI Chart
+        const ctxROI = document.getElementById('roiChart').getContext('2d');
+        new Chart(ctxROI, {
+            type: 'bar',
+            data: {
+                labels: ['DCA-400', 'DCA-150', 'DCA-100', 'Cat C13', 'Perkins'],
+                datasets: [{
+                    label: 'نسبة الربحية %',
+                    data: [85, 92, 78, 88, 65],
+                    backgroundColor: '#0ea5e9',
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: {  grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
+                    x: {  grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 9 } } }
+                }
+            }
+        });
+
+        // Failures Chart - Maintenance Reasons
+        const ctxFail = document.getElementById('failuresChart').getContext('2d');
+        new Chart(ctxFail, {
+            type: 'doughnut',
+            data: {
+                labels: ['حرارة', 'فلاتر', 'بطارية', 'أخرى'],
+                datasets: [{
+                    data: [30, 45, 15, 10],
+                    backgroundColor: ['#ef4444', '#f59e0b', '#10b981', '#64748b'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { 
+                    legend: { position: 'right', labels: { color: '#94a3b8', boxWidth: 10, font: { size: 9 } } } 
+                }
+            }
+        });
+
+
+        // 3. Simulations Logic
+        
+        // Scene 3: Theft Simulation
+        function triggerTheftSimulation() {
+            // Play sound (optional)
+            // const audio = new Audio('alert.mp3'); audio.play();
+
+            // Show Modal on Map
+            const modal = document.getElementById('theftModal');
+            modal.classList.remove('hidden');
+
+            // Add to activity log
+            addLogItem('critical', 'انخفاض وقود حرج (محاولة سرقة) في موقع سفنكس!', 'منذ لحظات');
+
+            // Auto hide after 8 seconds if not interacted
+            setTimeout(() => {
+                // modal.classList.add('hidden'); // Keep it open for effect until closed manually
+            }, 8000);
+        }
+
+        function closeModal() {
+            document.getElementById('theftModal').classList.add('hidden');
+        }
+
+        // Scene 4: Efficiency Simulation
+        function simulateMaintenance() {
+            // 1. Show Toast Notification
+            showToast('🛠️ طلب صيانة جديد', 'فني: أحمد علي | موقع: العاصمة | نوع: طلب فلتر زيت');
+
+            // 2. Add to Activity Log
+            addLogItem('info', 'استلام طلب قطعة غيار (فلتر زيت #123) من تطبيق الفني.', 'الآن');
+
+            // 3. Simulate System Response (Auto Check Inventory)
+            setTimeout(() => {
+                addLogItem('system', 'المخزن الذكي: الرصيد متاح (4 قطع). تم حجز القطعة.', 'الآن');
+                showToast('✅ تم تأكيد الصرف', 'تمت الموافقة الآلية على المخزون');
+            }, 1500);
+
+             // 4. Simulate Purchase Order
+             setTimeout(() => {
+                addLogItem('warning', 'تنبيه مشتريات: مخزون الفلاتر وصل لحد الطلب (Reorder Point).', 'الآن');
+            }, 3000);
+        }
+
+        // Helper: Add Log Item
+        function addLogItem(type, text, time) {
+            const container = document.getElementById('activityLog');
+            const colorClass = type === 'critical' ? 'bg-red-500' : (type === 'warning' ? 'bg-amber-500' : 'bg-blue-500');
+            const textColor = type === 'critical' ? 'text-red-400' : 'text-slate-300';
+            
+            const html = `
+                <div class="relative pl-4 border-r-2 border-slate-700 pb-4 animate-pulse">
+                    <div class="absolute -right-[5px] top-0 w-2.5 h-2.5 rounded-full ${colorClass}"></div>
+                    <div class="text-[10px] text-slate-500 mb-0.5">${time}</div>
+                    <div class="${textColor}">${text}</div>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('afterbegin', html);
+        }
+
+        // Helper: Show Toast
+        function showToast(title, msg) {
+            const container = document.getElementById('toastContainer');
+            const el = document.createElement('div');
+            el.className = 'glass-panel p-4 rounded-lg border-r-4 border-blue-500 w-72 shadow-2xl notification-toast relative';
+            el.innerHTML = `
+                <div class="font-bold text-sm text-white mb-1"><i class="fa-solid fa-bell mr-2 text-blue-400"></i>${title}</div>
+                <div class="text-xs text-slate-400">${msg}</div>
+            `;
+            container.appendChild(el);
+            
+            // Trigger animation
+            setTimeout(() => el.classList.add('show'), 10);
+            
+            // Remove
+            setTimeout(() => {
+                el.classList.remove('show');
+                setTimeout(() => el.remove(), 400);
+            }, 4000);
+        }
+
+    </script>
+</body>
+</html>

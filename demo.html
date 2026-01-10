@@ -98,6 +98,10 @@
                 <i class="fa-solid fa-house"></i>
                 <span>الرئيسية</span>
             </a>
+             <a href="dashboard.html" class="hidden sm:flex bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/30 text-emerald-400 px-4 py-1.5 rounded-lg text-xs lg:text-sm font-medium transition-all items-center gap-2">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Dashboard</span>
+            </a>
             <label class="text-sm text-slate-400 font-medium hidden xl:block">Workflows:</label>
             <div class="relative">
                 <select id="scenarioSelect" class="appearance-none bg-slate-800 border border-slate-700 text-white py-1.5 lg:py-2 pr-4 pl-8 lg:pl-10 rounded-lg text-xs lg:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:bg-slate-750 cursor-pointer w-40 lg:w-64">
@@ -1101,20 +1105,34 @@
                     `;
                 } else if (state.role === 'Client') {
                      content = `
-                        <div class="border-t border-slate-200 pt-4 w-full">
-                             <div class="grid grid-cols-2 gap-2 mb-4">
-                                <div class="bg-slate-50 p-2 rounded text-center border border-slate-200">
-                                    <span class="block text-[10px] text-slate-400">الحالة</span>
-                                    <span class="block text-xs font-bold text-emerald-500">ممتاز (98%)</span>
+                        <div class="border-t border-slate-200 pt-2 w-full">
+                             <div class="bg-slate-900 text-white p-3 rounded-xl mb-3 flex items-center justify-between shadow-lg">
+                                <div>
+                                    <div class="text-[10px] text-amber-400 uppercase font-bold tracking-wider mb-0.5"><i class="fa-solid fa-crown mr-1"></i> VIP Client</div>
+                                    <div class="text-sm font-bold">القطامي للإنشاءات</div>
                                 </div>
-                                <div class="bg-slate-50 p-2 rounded text-center border border-slate-200">
-                                    <span class="block text-[10px] text-slate-400">ساعات</span>
-                                    <span class="block text-xs font-bold text-slate-700">1,240 س</span>
+                                <div class="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center text-slate-900 font-bold">A+</div>
+                             </div>
+
+                             <div class="grid grid-cols-2 gap-2 mb-3">
+                                <button onclick="handleMobileClick('dispatchSOS')" class="bg-red-500 text-white p-3 rounded-xl shadow-lg shadow-red-500/20 hover:bg-red-600 transition-colors flex flex-col items-center justify-center gap-1">
+                                    <i class="fa-solid fa-bell text-xl mb-1 animate-pulse"></i>
+                                    <span class="text-xs font-bold">استغاثة (SOS)</span>
+                                </button>
+                                <button onclick="handleMobileClick('requestFuel')" class="bg-blue-600 text-white p-3 rounded-xl shadow-lg shadow-blue-500/20 hover:bg-blue-500 transition-colors flex flex-col items-center justify-center gap-1">
+                                    <i class="fa-solid fa-gas-pump text-xl mb-1"></i>
+                                    <span class="text-xs font-bold">طلب وقود</span>
+                                </button>
+                             </div>
+
+                             <div class="bg-slate-800 rounded-xl overflow-hidden shadow-inner border border-slate-700 relative h-32 mb-2 group cursor-pointer">
+                                <div class="absolute inset-0 bg-black/50 flex items-center justify-center group-hover:bg-black/30 transition-colors">
+                                    <i class="fa-solid fa-play-circle text-4xl text-white opacity-80 group-hover:scale-110 transition-transform"></i>
                                 </div>
+                                <img src="landing_assets/quality_assurance.png" class="w-full h-full object-cover grayscale opacity-50">
+                                <span class="absolute bottom-2 right-2 bg-red-600 text-white text-[8px] font-bold px-1.5 py-0.5 rounded animate-pulse">LIVE</span>
                              </div>
-                             <div class="bg-yellow-50 p-3 rounded-lg border border-yellow-100 text-[10px] text-yellow-800 text-center">
-                                <i class="fa-solid fa-eye ml-1"></i> للعرض فقط. ليس لديك صلاحية التعديل.
-                             </div>
+                             <div class="text-[10px] text-slate-400 text-center">بث مباشر من موقع العمل</div>
                         </div>
                     `;
                 } else {
