@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Fleet Demo</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        slate: {
+                            850: '#152033', // Slightly lighter than 900 for cards
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* Dark Theme Background */
+            color: #f1f5f9;
+        }
+        
+        /* Custom Scrollbar for Chat */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Glassmorphism utility */
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden">
+
+    <!-- Navigation Bar -->
+    <nav class="h-16 border-b border-slate-700/50 bg-slate-900/80 backdrop-blur-md flex items-center justify-between px-6 shrink-0 z-20">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/30">
+                <i class="fa-solid fa-bolt"></i>
+            </div>
+            <h1 class="text-lg font-bold tracking-tight text-white">Smart Fleet <span class="text-blue-400">AI</span></h1>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <label class="text-sm text-slate-400 font-medium">Scenario:</label>
+            <div class="relative">
+                <select id="scenarioSelect" class="appearance-none bg-slate-800 border border-slate-700 text-white py-2 pl-4 pr-10 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:bg-slate-750 cursor-pointer">
+                    <option value="Maintenance">1. Routine Maintenance</option>
+                    <option value="Security">2. Security Breach / Theft</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
+                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                </div>
+            </div>
+            
+            <div class="h-8 w-px bg-slate-700 mx-2"></div>
+            
+            <button class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300 transition-colors">
+                <i class="fa-regular fa-bell"></i>
+            </button>
+            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 border border-slate-600 shadow-md"></div>
+        </div>
+    </nav>
+
+    <!-- Main Grid Layout -->
+    <main class="flex-1 grid grid-cols-12 gap-6 p-6 overflow-hidden min-h-0">
+        
+        <!-- Left Column: Mobile App (Field Tech View) - Spans 3 columns -->
+        <section class="col-span-12 lg:col-span-3 flex flex-col h-full min-h-0">
+            <div class="flex items-center gap-2 mb-3 text-slate-400 text-xs font-semibold uppercase tracking-wider">
+                <i class="fa-solid fa-mobile-screen"></i> Field Tech View
+            </div>
+            
+            <!-- Phone Frame -->
+            <div class="flex-1 rounded-[2.5rem] border-8 border-slate-800 bg-white relative overflow-hidden shadow-2xl shadow-black/50 flex flex-col max-h-[850px] mx-auto w-full max-w-[340px]">
+                <!-- Notch -->
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-slate-800 z-50 rounded-b-xl flex justify-center">
+                   <div class="w-12 h-1.5 bg-slate-900/50 rounded-full mt-2"></div>
+                </div>
+                
+                <!-- Status Bar -->
+                <div class="h-10 bg-slate-100 flex items-center justify-between px-6 pt-2 text-[10px] font-bold text-slate-800 select-none">
+                    <span>9:41</span>
+                    <div class="flex gap-1.5">
+                        <i class="fa-solid fa-signal"></i>
+                        <i class="fa-solid fa-wifi"></i>
+                        <i class="fa-solid fa-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- App Header -->
+                <div class="bg-blue-600 px-5 pt-4 pb-8 text-white rounded-b-[2rem] shadow-lg relative z-0">
+                    <div class="flex justify-between items-start mb-4">
+                        <i class="fa-solid fa-bars text-lg opacity-80"></i>
+                        <div class="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                            <i class="fa-solid fa-user text-xs"></i>
+                        </div>
+                    </div>
+                    <h2 class="text-xl font-bold">Hello, Alex</h2>
+                    <p class="text-blue-100 text-xs mt-1 opacity-90">Ready for today's route?</p>
+                </div>
+
+                <!-- App Content -->
+                <div id="mobileContent" class="flex-1 bg-slate-50 relative -mt-6 z-10 rounded-t-[1.5rem] px-5 pt-6 pb-2 overflow-y-auto scrollbar-hide flex flex-col">
+                    <!-- Dynamic Content Will Be Injected Here -->
+                </div>
+
+                <!-- Phone Bottom Bar -->
+                <div class="h-16 bg-white border-t border-slate-100 flex justify-around items-center px-2 pb-2 text-slate-400">
+                    <div class="flex flex-col items-center gap-1 text-blue-600">
+                        <i class="fa-solid fa-house text-lg"></i>
+                    </div>
+                    <div class="flex flex-col items-center gap-1 hover:text-blue-600 transition-colors">
+                        <i class="fa-solid fa-calendar-check text-lg"></i>
+                    </div>
+                    <div class="flex flex-col items-center gap-1 hover:text-blue-600 transition-colors">
+                        <i class="fa-solid fa-comment-dots text-lg"></i>
+                    </div>
+                </div>
+                
+                <!-- Home Indicator -->
+                <div class="bg-white h-5 w-full flex justify-center items-end pb-1.5">
+                    <div class="w-32 h-1 bg-slate-900 rounded-full"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Middle Column: Command Center (Chat) - Spans 4 columns -->
+        <section class="col-span-12 lg:col-span-4 flex flex-col h-full min-h-0">
+             <div class="flex items-center justify-between mb-3 text-slate-400 text-xs font-semibold uppercase tracking-wider">
+                <div class="flex items-center gap-2"><i class="fa-brands fa-whatsapp"></i> Alert Stream</div>
+                <span class="w-2 h-2 rounded-full bg-green-500 shadow-lg shadow-green-500/50 animate-pulse"></span>
+            </div>
+            
+            <div class="flex-1 glass rounded-2xl flex flex-col overflow-hidden shadow-xl border border-slate-700/50">
+                <!-- Chat Header -->
+                <div class="p-4 border-b border-slate-700/50 bg-slate-800/40 backdrop-blur-md flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-orange-500/10 text-orange-400 flex items-center justify-center border border-orange-500/20">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-slate-100">Fleet Operations</h3>
+                            <p class="text-xs text-slate-400">12 members online</p>
+                        </div>
+                    </div>
+                    <button class="text-slate-400 hover:text-white"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                </div>
+
+                <!-- Messages Area -->
+                <div id="chatContainer" class="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-hide bg-gradient-to-b from-transparent to-slate-900/30">
+                    <div class="flex justify-center my-2">
+                        <span class="bg-slate-800/60 text-slate-400 text-[10px] px-3 py-1 rounded-full border border-slate-700">Today</span>
+                    </div>
+                    <!-- Messages will be injected here -->
+                </div>
+
+                <!-- Input Area -->
+                <div class="p-3 bg-slate-800/50 border-t border-slate-700/50 backdrop-blur-md">
+                    <div class="flex gap-2">
+                        <button class="w-10 h-10 rounded-xl bg-slate-700/50 text-slate-400 hover:bg-slate-700 hover:text-white transition-colors flex items-center justify-center">
+                           <i class="fa-solid fa-paperclip"></i>
+                        </button>
+                        <input type="text" placeholder="Type a message..." class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 text-sm text-white focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition-all placeholder:text-slate-500">
+                        <button class="w-10 h-10 rounded-xl bg-blue-600 text-white shadow-lg shadow-blue-600/20 hover:bg-blue-500 transition-all flex items-center justify-center">
+                            <i class="fa-solid fa-paper-plane text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Column: Live Analytics - Spans 5 columns -->
+        <section class="col-span-12 lg:col-span-5 flex flex-col h-full min-h-0 text-white">
+            <div class="flex items-center gap-2 mb-3 text-slate-400 text-xs font-semibold uppercase tracking-wider">
+                <i class="fa-solid fa-chart-line"></i> Live Metrics
+            </div>
+
+            <!-- KPI Cards Grid -->
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <!-- Card 1 -->
+                <div class="bg-slate-800/40 p-5 rounded-2xl border border-slate-700/50 hover:bg-slate-800/60 transition-colors group">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="w-10 h-10 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <i class="fa-solid fa-truck-fast"></i>
+                        </div>
+                        <span id="badge-active" class="text-emerald-400 text-xs font-bold bg-emerald-500/10 px-2 py-1 rounded-full">+12%</span>
+                    </div>
+                    <div id="kpi-active" class="text-2xl font-bold text-white mb-0.5">24/30</div>
+                    <div class="text-xs text-slate-400 font-medium">Active Units</div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-slate-800/40 p-5 rounded-2xl border border-slate-700/50 hover:bg-slate-800/60 transition-colors group">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="w-10 h-10 rounded-lg bg-orange-500/10 text-orange-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <i class="fa-solid fa-gas-pump"></i>
+                        </div>
+                        <span id="badge-fuel" class="text-red-400 text-xs font-bold bg-red-500/10 px-2 py-1 rounded-full">-5%</span>
+                    </div>
+                    <div id="kpi-fuel" class="text-2xl font-bold text-white mb-0.5">78%</div>
+                    <div class="text-xs text-slate-400 font-medium">Avg Fuel Level</div>
+                </div>
+            </div>
+
+            <!-- Data Table Section -->
+            <div class="flex-1 glass rounded-2xl border border-slate-700/50 flex flex-col overflow-hidden min-h-0">
+                <div class="p-4 border-b border-slate-700/50 flex justify-between items-center">
+                    <h3 class="font-bold text-sm">Unit Status</h3>
+                    <button class="text-xs text-blue-400 hover:text-blue-300 font-medium">View All</button>
+                </div>
+                
+                <div class="overflow-auto scrollbar-hide">
+                    <table class="w-full text-left text-sm text-slate-400">
+                        <thead class="bg-slate-800/50 text-xs uppercase font-medium text-slate-300 sticky top-0 backdrop-blur-sm">
+                            <tr>
+                                <th class="px-4 py-3">Unit ID</th>
+                                <th class="px-4 py-3">Driver</th>
+                                <th class="px-4 py-3">Status</th>
+                                <th class="px-4 py-3 text-right">Fuel</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body" class="divide-y divide-slate-700/50">
+                            <!-- Rows injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                 <!-- Mini Chart Placeholder -->
+                 <div class="p-4 border-t border-slate-700/50 mt-auto bg-slate-800/20">
+                    <p class="text-[10px] text-slate-400 uppercase tracking-widest mb-2 font-bold">Efficiency Trend</p>
+                    <div class="flex items-end gap-1 h-12">
+                        <div class="flex-1 bg-blue-500/20 rounded-t-sm h-[40%] hover:bg-blue-500/40 transition-colors"></div>
+                        <div class="flex-1 bg-blue-500/20 rounded-t-sm h-[60%] hover:bg-blue-500/40 transition-colors"></div>
+                        <div class="flex-1 bg-blue-500/20 rounded-t-sm h-[50%] hover:bg-blue-500/40 transition-colors"></div>
+                        <div class="flex-1 bg-blue-500/20 rounded-t-sm h-[80%] hover:bg-blue-500/40 transition-colors"></div>
+                         <div class="flex-1 bg-blue-500/20 rounded-t-sm h-[70%] hover:bg-blue-500/40 transition-colors"></div>
+                        <div class="flex-1 bg-emerald-500/40 rounded-t-sm h-[90%] hover:bg-emerald-500/60 transition-colors relative group">
+                            <div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-white text-slate-900 text-[9px] px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">Now</div>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // --- Global State ---
+        let state = {
+            status: 'Normal',
+            assetID: 'GEN-500',
+            scenario: 'Maintenance' // 'Maintenance' or 'Security'
+        };
+
+        // --- DOM Elements ---
+        const els = {
+            scenarioSelect: document.getElementById('scenarioSelect'),
+            mobileContent: document.getElementById('mobileContent'),
+            chatContainer: document.getElementById('chatContainer'),
+            kpiActive: document.getElementById('kpi-active'),
+            kpiFuel: document.getElementById('kpi-fuel'),
+            tableBody: document.getElementById('table-body')
+        };
+
+        // --- Event Listeners ---
+        els.scenarioSelect.addEventListener('change', (e) => {
+            state.scenario = e.target.value;
+            resetDemo();
+        });
+
+        // --- Initialization ---
+        function resetDemo() {
+            // Reset state
+            state.status = 'Normal';
+            
+            // Clear Chat
+            els.chatContainer.innerHTML = `
+                <div class="flex justify-center my-2">
+                    <span class="bg-slate-800/60 text-slate-400 text-[10px] px-3 py-1 rounded-full border border-slate-700">Today</span>
+                </div>
+            `;
+            
+            // Initial Dashboard Render
+            updateDashboard(state.status);
+
+            // Initial Mobile Render
+            renderMobile(state.scenario, 'initial');
+
+            // Add welcome message
+            setTimeout(() => {
+                addChatMessage('Dispatcher', `Scenario started: ${state.scenario}. Waiting for events...`);
+            }, 500);
+        }
+
+        // --- Mobile View Logic ---
+        function renderMobile(scenario, step) {
+            let html = '';
+            
+            if (scenario === 'Maintenance') {
+                if (step === 'initial') {
+                    html = `
+                        <div class="flex-1 flex flex-col items-center justify-center text-center">
+                            <div class="w-24 h-24 bg-slate-100 rounded-2xl flex items-center justify-center mb-6 border-2 border-dashed border-slate-300">
+                                <i class="fa-solid fa-qrcode text-4xl text-slate-400"></i>
+                            </div>
+                            <h3 class="text-slate-800 font-bold text-lg mb-2">Scan Asset QR</h3>
+                            <p class="text-slate-500 text-xs px-8 mb-6">Scan the QR code on the generator unit to begin service.</p>
+                            <button onclick="handleMobileClick('scan')" class="bg-blue-600 text-white w-full py-3 rounded-xl font-bold shadow-lg shadow-blue-500/30 hover:bg-blue-500 transition-colors">
+                                <i class="fa-solid fa-camera mr-2"></i> Scan QR Code
+                            </button>
+                        </div>
+                    `;
+                } else if (step === 'loading') {
+                    html = `
+                        <div class="flex-1 flex flex-col items-center justify-center">
+                            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mb-4"></div>
+                            <p class="text-slate-500 text-xs font-medium">Verifying Asset ID...</p>
+                        </div>
+                    `;
+                } else if (step === 'form') {
+                    html = `
+                        <div class="animate-fade-in-up">
+                            <h3 class="font-bold text-slate-800 text-lg mb-4">Maintenance Form</h3>
+                            <div class="space-y-3 mb-6">
+                                <div>
+                                    <label class="text-[10px] uppercase font-bold text-slate-400">Asset ID</label>
+                                    <input type="text" value="GEN-500" disabled class="w-full bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-600">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] uppercase font-bold text-slate-400">Issue Type</label>
+                                    <select class="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-800">
+                                        <option>Oil Change Needed</option>
+                                        <option>Filter Replacement</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-[10px] uppercase font-bold text-slate-400">Notes</label>
+                                    <textarea class="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm h-20" placeholder="Describe the issue..."></textarea>
+                                </div>
+                            </div>
+                            <button onclick="handleMobileClick('submit')" class="bg-blue-600 text-white w-full py-3 rounded-xl font-bold shadow-lg shadow-blue-500/30 hover:bg-blue-500 transition-colors">
+                                Submit Report
+                            </button>
+                        </div>
+                    `;
+                }
+            } else if (scenario === 'Security') {
+                // Security Scenario
+                 html = `
+                    <div class="flex-1 flex flex-col relative rounded-xl overflow-hidden mb-4 border border-slate-200">
+                        <!-- Mock Map Background -->
+                         <div class="absolute inset-0 bg-slate-200 flex items-center justify-center">
+                            <div class="grid grid-cols-6 grid-rows-6 w-full h-full opacity-20">
+                                ${Array(36).fill('<div class="border border-slate-300"></div>').join('')}
+                            </div>
+                            <i class="fa-solid fa-location-dot text-4xl text-blue-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-lg"></i>
+                        </div>
+                        <div class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm p-3 rounded-lg shadow-sm border border-slate-100">
+                             <div class="flex items-center gap-2 mb-1">
+                                <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                                <span class="text-[10px] font-bold text-slate-500 uppercase">Geofence Active</span>
+                             </div>
+                             <p class="text-xs text-slate-800 font-bold">Zone: Industrial Sector 4</p>
+                        </div>
+                    </div>
+                    <button onclick="handleMobileClick('breach')" class="bg-red-50 text-red-600 border border-red-100 w-full py-3 rounded-xl font-bold hover:bg-red-100 transition-colors">
+                        <i class="fa-solid fa-triangle-exclamation mr-2"></i> Simulate Unauthorized Move
+                    </button>
+                `;
+            }
+            
+            els.mobileContent.innerHTML = html;
+        }
+
+        window.handleMobileClick = (action) => {
+            if (action === 'scan') {
+                renderMobile('Maintenance', 'loading');
+                setTimeout(() => {
+                    renderMobile('Maintenance', 'form');
+                }, 1000);
+            } else if (action === 'submit') {
+                // Submit Form
+                 els.mobileContent.innerHTML = `
+                    <div class="flex-1 flex flex-col items-center justify-center text-center animate-fade-in-up">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                            <i class="fa-solid fa-check text-2xl text-green-600"></i>
+                        </div>
+                        <h3 class="text-slate-800 font-bold text-lg">Report Submitted</h3>
+                        <p class="text-slate-500 text-xs">Ticket #99281 created.</p>
+                    </div>
+                `;
+                setTimeout(() => {
+                    // Trigger Chat Bot
+                    addChatMessage('System', '🛠️ Maintenance Reported: Oil Change Needed for GEN-500', true);
+                }, 800);
+            } else if (action === 'breach') {
+                 // Trigger Critical Alert
+                 addChatMessage('System', '🚨 CRITICAL: Asset GEN-500 moving outside Geofence!', true);
+            }
+        };
+
+        // --- Chat Logic ---
+        function addChatMessage(sender, text, isAction = false) {
+            const isSystem = sender === 'System';
+            const isMe = sender === 'Dispatcher'; // Initial msg
+            
+            let html = '';
+            
+            if (isSystem) {
+                 // System Alert / Actionable Message
+                if (state.scenario === 'Maintenance') {
+                    html = `
+                        <div class="flex justify-center my-4 opacity-0 animate-fade-in forwards">
+                            <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl max-w-[90%] shadow-lg">
+                                <div class="flex items-center gap-2 mb-2 text-orange-400">
+                                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                                    <span class="text-xs font-bold uppercase">Maintenance Request</span>
+                                </div>
+                                <p class="text-sm text-slate-200 mb-3">${text}</p>
+                                <div class="flex gap-2">
+                                    <button onclick="handleChatAction('approve')" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold py-2 rounded-lg transition-colors">Approve</button>
+                                    <button class="flex-1 bg-slate-700 hover:bg-slate-600 text-slate-300 text-xs font-bold py-2 rounded-lg transition-colors">Details</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                     // Security Alert
+                      html = `
+                        <div class="flex justify-center my-4 opacity-0 animate-fade-in forwards">
+                            <div class="bg-red-500/10 border border-red-500/50 p-4 rounded-xl max-w-[90%] shadow-lg shadow-red-900/20">
+                                <div class="flex items-center gap-2 mb-2 text-red-500 px-1">
+                                    <i class="fa-solid fa-triangle-exclamation animate-pulse"></i>
+                                    <span class="text-xs font-bold uppercase">Security Breach</span>
+                                </div>
+                                <p class="text-sm text-white font-bold mb-3">${text}</p>
+                                <button onclick="handleChatAction('shutdown')" class="w-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2.5 rounded-lg transition-colors shadow-lg shadow-red-600/30">
+                                    <i class="fa-solid fa-lock mr-2"></i> REMOTE SHUTDOWN
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+            } else {
+                 // Standard Chat Bubble
+                 html = `
+                    <div class="flex items-end gap-2 group opacity-0 animate-fade-in forwards">
+                        <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-xs font-bold text-white mb-1 shadow-md">${sender[0]}</div>
+                        <div class="bg-slate-800 p-3 rounded-2xl rounded-bl-sm max-w-[85%] border border-slate-700 shadow-sm">
+                            <p class="text-xs font-bold text-indigo-400 mb-0.5">${sender}</p>
+                            <p class="text-sm text-slate-200 leading-snug">${text}</p>
+                            <span class="text-[10px] text-slate-500 mt-1 block text-right">Now</span>
+                        </div>
+                    </div>
+                 `;
+            }
+
+            // Append and Scroll
+            const div = document.createElement('div');
+            div.innerHTML = html;
+            els.chatContainer.appendChild(div.firstElementChild);
+            els.chatContainer.scrollTo({ top: els.chatContainer.scrollHeight, behavior: 'smooth' });
+            
+            // Trigger animation
+            setTimeout(() => {
+                els.chatContainer.lastElementChild.classList.remove('opacity-0');
+            }, 50);
+        }
+
+        window.handleChatAction = (action) => {
+            if (action === 'approve') {
+                updateDashboard('Service Complete');
+                addChatMessage('Manager', '✅ Maintenance Approved. Work order dispatched.');
+            } else if (action === 'shutdown') {
+                updateDashboard('ENGINE LOCKED');
+                addChatMessage('Manager', '🔒 ENGINE LOCKED. Assets secured.');
+            }
+        };
+
+        // --- Dashboard Logic ---
+        function updateDashboard(status) {
+            state.status = status;
+            
+            // Update Table Row for GEN-500 (Simulated)
+            let statusBadge = '';
+            
+            if (status === 'Normal') {
+                 statusBadge = '<span class="bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded text-[10px] font-bold uppercase border border-emerald-500/20">Running</span>';
+            } else if (status === 'Service Complete') {
+                 statusBadge = '<span class="bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold uppercase border border-blue-500/20">Serviced</span>';
+            } else if (status === 'ENGINE LOCKED') {
+                 statusBadge = '<span class="bg-red-500/10 text-red-500 px-2 py-0.5 rounded text-[10px] font-bold uppercase border border-red-500/20 animate-pulse">LOCKED</span>';
+            }
+
+            const html = `
+                 <tr class="bg-slate-700/30 transition-colors border-l-2 border-blue-500">
+                    <td class="px-4 py-3 font-bold text-white">#GEN-500</td>
+                    <td class="px-4 py-3 flex items-center gap-2">
+                        <div class="w-5 h-5 rounded-full bg-slate-600 border border-slate-500"></div> Alex T.
+                    </td>
+                    <td class="px-4 py-3">${statusBadge}</td>
+                    <td class="px-4 py-3 text-right text-white">45%</td>
+                </tr>
+                <tr class="hover:bg-slate-700/30 transition-colors opacity-60">
+                    <td class="px-4 py-3 font-medium text-white">#TRK-042</td>
+                    <td class="px-4 py-3 flex items-center gap-2">
+                        <div class="w-5 h-5 rounded-full bg-slate-600"></div> S. Smith
+                    </td>
+                    <td class="px-4 py-3"><span class="bg-yellow-500/10 text-yellow-400 px-2 py-0.5 rounded text-[10px] font-bold uppercase border border-yellow-500/20">Idle</span></td>
+                    <td class="px-4 py-3 text-right text-white">64%</td>
+                </tr>
+                 <tr class="hover:bg-slate-700/30 transition-colors opacity-60">
+                    <td class="px-4 py-3 font-medium text-white">#TRK-105</td>
+                    <td class="px-4 py-3 flex items-center gap-2">
+                        <div class="w-5 h-5 rounded-full bg-slate-600"></div> M. Brown
+                    </td>
+                    <td class="px-4 py-3"><span class="bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded text-[10px] font-bold uppercase border border-emerald-500/20">Moving</span></td>
+                    <td class="px-4 py-3 text-right text-white">91%</td>
+                </tr>
+            `;
+            els.tableBody.innerHTML = html;
+        }
+
+        // Add Keyframes for Fade In
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fadeInUp {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .animate-fade-in-up {
+                animation: fadeInUp 0.3s ease-out forwards;
+            }
+             .animate-fade-in {
+                animation: fadeInUp 0.3s ease-out forwards;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Start
+        resetDemo();
+
+    </script>
+</body>
+</html>
