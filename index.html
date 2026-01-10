@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>القطامي سمارت فليت | الجيل الجديد لإدارة الطاقة</title>
+    <title>RoboVAI Nexus™ | Elkatamy Smart Fleet Edition</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -163,26 +163,29 @@
             <div class="text-center lg:text-right space-y-8">
                 <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-medium animate-fade-in-up">
                     <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-                    نظام التشغيل الرقمي (Smart Fleet OS)
+                    نظام التشغيل الرقمي للصناعة (Industrial Asset OS)
                 </div>
                 
                 <h1 class="text-5xl lg:text-7xl font-black leading-tight reveal delay-100">
-                    RoboVAI <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 text-glow">Nexus</span>
+                    حوّل أسطولك من <span class="text-slate-500">معدات صامتة</span><br>
+                    إلى <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 text-glow">أصول ذكية</span>
                 </h1>
                 
                 <p class="text-lg text-slate-400 max-w-2xl mx-auto lg:mx-0 leading-relaxed reveal delay-200 mt-6">
-                    ليس مجرد تطبيق، بل هو <strong>توأم رقمي (Digital Twin)</strong> لكل مولد في أسطول "القطامي".
-                    <br>الجيل الجديد من إدارة الأصول بذكاء سياقي (Context-Aware) يخدم العميل، الفني، والمالك في آن واحد.
+                    لا تُدر إمبراطوريتك بالتخمين. امتلك <strong>توأماً رقمياً (Digital Twin)</strong> لكل مولد، راقب العائد لحظياً، وأغلق منافذ الهدر في عملياتك التشغيلية.
                 </p>
 
-                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start reveal delay-300">
+                <!-- Value Prop Tags -->
+                <div class="flex flex-col gap-3 reveal delay-300 text-sm text-slate-300">
+                    <div class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-emerald-400"></i> 0% تكاليف هاردوير (Sensorless Tech)</div>
+                    <div class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-emerald-400"></i> 100% رؤية لحظية (Real-time Visibility)</div>
+                    <div class="flex items-center gap-2"><i class="fa-solid fa-check-circle text-emerald-400"></i> 24/7 رقابة آلية (Automated Audit)</div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start reveal delay-400 pt-4">
                     <a href="demo.html" class="px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white rounded-xl font-bold shadow-lg shadow-blue-500/25 transition-all transform hover:scale-105 flex items-center justify-center gap-3 hover-shine">
-                        <i class="fa-solid fa-play"></i>
-                        ابدأ التجربة الحية
-                    </a>
-                    <a href="#system" class="px-8 py-4 glass hover:bg-white/5 text-white rounded-xl font-bold transition-all flex items-center justify-center gap-3 hover-shine">
-                        <i class="fa-solid fa-layer-group"></i>
-                        كيف يعمل النظام؟
+                        <i class="fa-solid fa-rocket"></i>
+                        اطلب عرض تشغيل تجريبي
                     </a>
                 </div>
                 
@@ -239,86 +242,134 @@
         </div>
     </section>
 
+    <!-- The Pain Section -->
+    <section class="py-20 bg-dark-900 relative border-y border-white/5">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <div class="inline-block px-4 py-1 rounded-full bg-red-500/10 text-red-400 text-xs font-bold mb-4">
+                    ⚠️ المشكلة - The Pain
+                </div>
+                <h2 class="text-3xl lg:text-4xl font-bold">هل تدير استثماراتك بـ <span class="text-red-500">الذاكرة</span>؟</h2>
+                <p class="text-slate-400 mt-4 max-w-2xl mx-auto">في عالم المقاولات والطاقة، الاعتماد على الدفاتر الورقية والجروبات العشوائية يكلفك الملايين سنوياً.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Pain 1 -->
+                <div class="glass p-8 rounded-2xl border border-red-500/10 hover:border-red-500/30 transition-colors reveal delay-100">
+                    <div class="w-12 h-12 bg-red-900/20 text-red-500 rounded-lg flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-eye-slash"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">العمى التشغيلي</h3>
+                    <p class="text-slate-400 text-sm">لا تعلم أين المعدة ولا حالتها إلا بعد الكارثة. قراراتك دائماً تأتي كرد فعل متأخر.</p>
+                </div>
+
+                <!-- Pain 2 -->
+                <div class="glass p-8 rounded-2xl border border-red-500/10 hover:border-red-500/30 transition-colors reveal delay-200">
+                    <div class="w-12 h-12 bg-red-900/20 text-red-500 rounded-lg flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-gas-pump"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">نزيف الوقود</h3>
+                    <p class="text-slate-400 text-sm">هدر وسرقات لا تُكتشف إلا عند مراجعة الفواتير (بعد فوات الأوان). استنزاف صامت للأرباح.</p>
+                </div>
+
+                <!-- Pain 3 -->
+                <div class="glass p-8 rounded-2xl border border-red-500/10 hover:border-red-500/30 transition-colors reveal delay-300">
+                    <div class="w-12 h-12 bg-red-900/20 text-red-500 rounded-lg flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-user-clock"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">فقدان العملاء</h3>
+                    <p class="text-slate-400 text-sm">بطء الاستجابة للأعطال يضر بسمعة الشركة في المواقع الحساسة ويمنح المنافسين فرصة.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Context-Aware Access Section -->
     <section id="context-aware" class="py-24 relative bg-dark-800">
         <div class="container mx-auto px-6">
             <div class="text-center mb-20 reveal">
-                <h2 class="text-3xl lg:text-4xl font-bold mb-4">بوابة الدخول <span class="text-blue-500">الذكية</span> (Context-Aware)</h2>
-                <p class="text-slate-400 max-w-2xl mx-auto">كود QR واحد... 3 واجهات مختلفة. النظام يتعرف على "من أنت" ويعرض لك الأدوات المناسبة.</p>
+                <div class="inline-block px-4 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-bold mb-4">
+                    💎 الحل الجوهري - The Core Tech
+                </div>
+                <h2 class="text-3xl lg:text-4xl font-bold mb-4">تكنولوجيا <span class="text-blue-500">البوابة الذكية</span> (Context-Aware Access)</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">نظام Nexus لا يعامل الجميع سواسية. كود مشفر واحد (Smart QR) يتغير ذكياً حسب "هوية المستخدم".</p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
-                <!-- 1. Client View -->
+                <!-- 1. VIP Client Portal -->
                 <div class="glass-card p-8 rounded-3xl relative group overflow-hidden reveal delay-100 border-t-4 border-blue-500">
                     <div class="bg-blue-900/30 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-2xl text-blue-400">
                         <i class="fa-solid fa-user-tie"></i>
                     </div>
                     
-                    <h3 class="text-2xl font-bold mb-2">1. واجهة العميل (VIP)</h3>
+                    <h3 class="text-xl font-bold mb-2">1. واجهة كبار العملاء (VIP)</h3>
                     <p class="text-xs text-blue-400 font-mono mb-4">Role: Client / Site Engineer</p>
                     
                     <ul class="space-y-3 text-slate-400 text-sm mb-6">
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-bell text-red-500"></i> زر استغاثة (SOS) فوري</li>
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-truck-droplet text-blue-500"></i> طلب وقود / تمديد</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-square-check text-blue-500"></i> خدمة ذاتية (صيانة/وقود/تمديد)</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-map-location text-blue-500"></i> تتبع وصول الفني لحظياً</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-star text-yellow-500"></i> تقليل مكالمات الدعم 70%</li>
                     </ul>
                     
                     <img src="landing_assets/security_site_real.png" alt="Client Site View" class="w-full h-32 object-cover rounded-xl opacity-80 group-hover:opacity-100 transition-all mb-4 border border-white/10">
 
                     <div class="bg-slate-900/50 p-3 rounded-xl border border-white/5 text-center">
                         <span class="text-[10px] text-slate-500 block">القيمة المضافة</span>
-                        <div class="font-bold text-white text-sm">مهندس مقيم 24/7</div>
+                        <div class="font-bold text-white text-sm">ارفع قيمة علامتك التجارية</div>
                     </div>
                 </div>
 
-                <!-- 2. Technician View -->
+                <!-- 2. Field Ops Interface -->
                 <div class="glass-card p-8 rounded-3xl relative group overflow-hidden reveal delay-200 border-t-4 border-amber-500 transform lg:-translate-y-8 shadow-2xl shadow-amber-500/10">
                     <div class="bg-amber-900/30 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-2xl text-amber-400">
                         <i class="fa-solid fa-screwdriver-wrench"></i>
                     </div>
                     
-                    <h3 class="text-2xl font-bold mb-2">2. واجهة التشغيل (Ops)</h3>
+                    <h3 class="text-xl font-bold mb-2">2. واجهة العمليات الميدانية</h3>
                     <p class="text-xs text-amber-400 font-mono mb-4">Role: Technician / Driver</p>
                     
                     <ul class="space-y-3 text-slate-400 text-sm mb-6">
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-book-medical text-amber-500"></i> السجل الطبي للمعدة</li>
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-list-check text-blue-500"></i> قوائم صيانة ذكية</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-book-open text-amber-500"></i> سجل رقمي (تاريخ المعدة بالكامل)</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-camera text-amber-500"></i> إغلاق فوري (صور + GPS)</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-ban text-red-500"></i> لا مجال للاجتهاد الخاطئ</li>
                     </ul>
 
                     <img src="landing_assets/tech_tablet_real.png" alt="Technician App" class="w-full h-32 object-cover rounded-xl opacity-80 group-hover:opacity-100 transition-all mb-4 border border-white/10">
 
                     <div class="bg-slate-900/50 p-3 rounded-xl border border-white/5 text-center">
                         <span class="text-[10px] text-slate-500 block">القيمة المضافة</span>
-                        <div class="font-bold text-white text-sm">إغلاق ثغرات الصيانة</div>
+                        <div class="font-bold text-white text-sm">توثيق العمليات 100%</div>
                     </div>
                 </div>
 
-                <!-- 3. Owner View -->
+                <!-- 3. Owner Command Center -->
                 <div class="glass-card p-8 rounded-3xl relative group overflow-hidden reveal delay-300 border-t-4 border-emerald-500">
                     <div class="bg-emerald-900/30 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-2xl text-emerald-400">
                         <i class="fa-solid fa-chart-line"></i>
                     </div>
                     
-                    <h3 class="text-2xl font-bold mb-2">3. واجهة الإدارة (Owner)</h3>
+                    <h3 class="text-xl font-bold mb-2">3. واجهة القيادة والسيطرة</h3>
                     <p class="text-xs text-emerald-400 font-mono mb-4">Role: Owner / Manager</p>
                     
                     <ul class="space-y-3 text-slate-400 text-sm mb-6">
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-sack-dollar text-emerald-500"></i> حساب العائد (ROI)</li>
-                        <li class="flex items-center gap-2"><i class="fa-solid fa-map-location-dot text-blue-500"></i> تتبع ومراقبة حية</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-money-bill-trend-up text-emerald-500"></i> مراقبة العائد (ROI) لحظياً</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation text-red-500"></i> إنذار مبكر (تلاعب/تحرك)</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-layer-group text-slate-400"></i> لوحة تحكم شاملة</li>
                     </ul>
 
                     <img src="landing_assets/fleet_map_real.png" alt="Owner Dashboard" class="w-full h-32 object-cover rounded-xl opacity-80 group-hover:opacity-100 transition-all mb-4 border border-white/10">
 
                     <div class="bg-slate-900/50 p-3 rounded-xl border border-white/5 text-center">
                         <span class="text-[10px] text-slate-500 block">القيمة المضافة</span>
-                        <div class="font-bold text-white text-sm">اتخاذ قرار لحظي</div>
+                        <div class="font-bold text-white text-sm">التحكم الكامل في الأصول</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 4 Core Workflows Section -->
-    <section id="workflows" class="py-20 relative overflow-hidden">
+    <!-- 4 Profit Engines Section -->
+    <section id="profit-engines" class="py-20 relative overflow-hidden">
         <div class="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div class="container mx-auto px-6 relative z-10">
             <div class="bg-slate-800/50 rounded-[3rem] p-8 lg:p-16 border border-white/5 backdrop-blur-sm">
@@ -326,47 +377,58 @@
                 <div class="grid lg:grid-cols-2 gap-16 items-start">
                     <div>
                         <div class="inline-block px-4 py-2 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-bold mb-6">
-                            الأتمتة الذكية (Automation)
+                            ⚙️ محركات الربحية (Profit Engines)
                         </div>
-                        <h2 class="text-3xl lg:text-4xl font-bold mb-8 leading-tight">4 مسارات عمل <br><span class="text-blue-500">تغير قواعد اللعبة</span></h2>
+                        <h2 class="text-3xl lg:text-4xl font-bold mb-8 leading-tight">4 أنظمة تعمل بالتوازي <br><span class="text-emerald-500">لحماية أصولك</span></h2>
                         
                         <div class="space-y-8">
-                            <!-- Workflow 1 -->
+                            <!-- Engine 1 -->
                             <div class="flex gap-5 reveal delay-100 group">
-                                <div class="w-14 h-14 rounded-2xl bg-slate-700/50 flex items-center justify-center text-blue-400 shrink-0 group-hover:bg-blue-500 group-hover:text-white transition-all">
-                                    <i class="fa-solid fa-handshake"></i>
+                                <div class="w-14 h-14 rounded-2xl bg-slate-700/50 flex items-center justify-center text-red-500 shrink-0 group-hover:bg-red-500 group-hover:text-white transition-all">
+                                    <i class="fa-solid fa-shield-halved"></i>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-lg text-white mb-2">1. الصيانة التشاركية</h4>
-                                    <p class="text-slate-400 text-sm leading-relaxed">الفني يكتشف العطل -> يطلب القطعة -> المدير يعتمد بلمسة واحدة. إغلاق كامل للدورة المستندية.</p>
+                                    <h4 class="font-bold text-lg text-white mb-2">1. درع الوقود (Fuel Integrity Shield)</h4>
+                                    <p class="text-slate-400 text-sm leading-relaxed">وداعاً للطرق التقليدية. خوارزميات "المطابقة الرقمية" تكشف السرقة والتسريب فور إغلاق الوردية.</p>
                                 </div>
                             </div>
                             
-                            <!-- Workflow 2 -->
+                            <!-- Engine 2 -->
                             <div class="flex gap-5 reveal delay-200 group">
-                                <div class="w-14 h-14 rounded-2xl bg-slate-700/50 flex items-center justify-center text-red-400 shrink-0 group-hover:bg-red-500 group-hover:text-white transition-all">
-                                    <i class="fa-solid fa-shield-cat"></i>
+                                <div class="w-14 h-14 rounded-2xl bg-slate-700/50 flex items-center justify-center text-blue-500 shrink-0 group-hover:bg-blue-500 group-hover:text-white transition-all">
+                                    <i class="fa-solid fa-arrows-rotate"></i>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-lg text-white mb-2">2. درع الوقود (Fuel Shield)</h4>
-                                    <p class="text-slate-400 text-sm leading-relaxed">AI يقارن استهلاك الوقود بكتالوج المصنع. أي نقص غير منطقي = إنذار سرقة فوري للأمن.</p>
+                                    <h4 class="font-bold text-lg text-white mb-2">2. الصيانة التشاركية (Collaborative Workflow)</h4>
+                                    <p class="text-slate-400 text-sm leading-relaxed">دورة مستندية مغلقة: (اكتشاف عطل -> طلب قطعة -> صرف -> اعتماد). لا مزيد من فوضى الاتصالات.</p>
                                 </div>
                             </div>
 
-                            <!-- Workflow 3 -->
+                            <!-- Engine 3 -->
                             <div class="flex gap-5 reveal delay-300 group">
-                                <div class="w-14 h-14 rounded-2xl bg-slate-700/50 flex items-center justify-center text-amber-400 shrink-0 group-hover:bg-amber-500 group-hover:text-white transition-all">
-                                    <i class="fa-solid fa-boxes-stacked"></i>
+                                <div class="w-14 h-14 rounded-2xl bg-slate-700/50 flex items-center justify-center text-amber-500 shrink-0 group-hover:bg-amber-500 group-hover:text-white transition-all">
+                                    <i class="fa-solid fa-warehouse"></i>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-lg text-white mb-2">3. المخزون الذكي</h4>
-                                    <p class="text-slate-400 text-sm leading-relaxed">ربط قطع الغيار بالمولدات. عند الوصول لحد الأمان، النظام يرسل طلب توريد تلقائي للمشتريات.</p>
+                                    <h4 class="font-bold text-lg text-white mb-2">3. المخزون المتنبئ (Predictive Inventory)</h4>
+                                    <p class="text-slate-400 text-sm leading-relaxed">النظام يراقب الاستهلاك ويرسل طلبات توريد ذكية قبل نفاد المخزون. ضمان استمرارية التشغيل.</p>
+                                </div>
+                            </div>
+
+                            <!-- Engine 4 -->
+                            <div class="flex gap-5 reveal delay-400 group">
+                                <div class="w-14 h-14 rounded-2xl bg-slate-700/50 flex items-center justify-center text-purple-500 shrink-0 group-hover:bg-purple-500 group-hover:text-white transition-all">
+                                    <i class="fa-solid fa-file-contract"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg text-white mb-2">4. الحوكمة الرقمية (Digital Governance)</h4>
+                                    <p class="text-slate-400 text-sm leading-relaxed">كل حركة، كل لتر، وكل قطعة مسجلة في "سجل دائم" لا يمكن التلاعب به. أنت تمتلك الحقيقة.</p>
                                 </div>
                             </div>
                         </div>
 
                         <div class="mt-12">
-                            <a href="index v3.html" class="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-4 rounded-xl font-bold shadow-lg shadow-blue-600/20 hover:scale-105 transition-transform">
+                            <a href="demo.html" class="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-4 rounded-xl font-bold shadow-lg shadow-blue-600/20 hover:scale-105 transition-transform">
                                 شاهد الديمو يعمل
                                 <i class="fa-solid fa-arrow-left"></i>
                             </a>
@@ -374,26 +436,131 @@
                     </div>
 
                     <!-- Visual Side (Cards) -->
-                    <div class="grid grid-cols-2 gap-4 mt-8 lg:mt-0">
-                        <div class="glass-card p-6 rounded-2xl text-center transform hover:-translate-y-2 transition-transform">
-                            <i class="fa-solid fa-robot text-3xl text-blue-400 mb-4"></i>
-                            <div class="font-bold text-lg">AI Logic</div>
-                            <div class="text-xs text-slate-400">تحليل البيانات</div>
+                    <div class="flex flex-col gap-6">
+                        <!-- Implementation Strategy (New Location?) No, keep distinct -->
+                        <div class="glass-card p-8 rounded-2xl border border-emerald-500/20">
+                            <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-robot text-emerald-500"></i>
+                                <span>Automation First</span>
+                            </h3>
+                            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                                النظام يعمل 24/7 دون تدخل بشري لمراقبة وتدقيق كل العمليات.
+                            </p>
                         </div>
-                        <div class="glass-card p-6 rounded-2xl text-center translate-y-8 transform hover:translate-y-6 transition-transform">
-                            <i class="fa-solid fa-mobile-screen-button text-3xl text-purple-400 mb-4"></i>
-                            <div class="font-bold text-lg">Mobile App</div>
-                            <div class="text-xs text-slate-400">تطبيق لكل دور</div>
+                        
+                         <div class="grid grid-cols-2 gap-4">
+                            <!-- Cards remain similar style but specific icons/text could be tweaked if needed. keeping generic for "Tech Stack" visual -->
+                            <div class="glass-card p-6 rounded-2xl text-center transform hover:-translate-y-2 transition-transform">
+                                <i class="fa-solid fa-wand-magic-sparkles text-3xl text-blue-400 mb-4"></i>
+                                <div class="font-bold text-lg">AI Vision</div>
+                                <div class="text-xs text-slate-400">تحليل ذكي</div>
+                            </div>
+                            <div class="glass-card p-6 rounded-2xl text-center translate-y-8 transform hover:translate-y-6 transition-transform">
+                                <i class="fa-solid fa-mobile-screen-button text-3xl text-purple-400 mb-4"></i>
+                                <div class="font-bold text-lg">Web App</div>
+                                <div class="text-xs text-slate-400">بدون تحميل</div>
+                            </div>
+                            <div class="glass-card p-6 rounded-2xl text-center transform hover:-translate-y-2 transition-transform">
+                                <i class="fa-solid fa-qrcode text-3xl text-emerald-400 mb-4"></i>
+                                <div class="font-bold text-lg">Secure QR</div>
+                                <div class="text-xs text-slate-400">بصمة مشفرة</div>
+                            </div>
+                            <div class="glass-card p-6 rounded-2xl text-center translate-y-8 transform hover:translate-y-6 transition-transform">
+                                <i class="fa-solid fa-cloud-lock text-3xl text-red-400 mb-4"></i>
+                                <div class="font-bold text-lg">Encrypted</div>
+                                <div class="text-xs text-slate-400">أمان بنكي</div>
+                            </div>
                         </div>
-                        <div class="glass-card p-6 rounded-2xl text-center transform hover:-translate-y-2 transition-transform">
-                            <i class="fa-solid fa-fingerprint text-3xl text-emerald-400 mb-4"></i>
-                            <div class="font-bold text-lg">Secure ID</div>
-                            <div class="text-xs text-slate-400">بصمة رقمية</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Implementation Strategy Section -->
+    <section class="py-24 bg-dark-900 border-y border-white/5">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <div class="inline-block px-4 py-1 rounded-full bg-purple-500/10 text-purple-400 text-xs font-bold mb-4">
+                    🏗️ منهجية التنفيذ - Implementation
+                </div>
+                <h2 class="text-3xl lg:text-4xl font-bold">نشر مرن.. بدون <span class="text-purple-500">صدمات تشغيلية</span></h2>
+                <p class="text-slate-400 mt-4 max-w-2xl mx-auto">نحن لا نبيع "برنامجاً جاهزاً"، نحن نبني بنية تحتية رقمية مفصلة لعمليات "القطامي". (Agile Deployment)</p>
+            </div>
+
+            <div class="relative">
+                <!-- Timeline Line -->
+                <div class="absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-blue-900 via-purple-900 to-blue-900 hidden lg:block -translate-y-1/2 rounded-full opacity-50"></div>
+
+                <div class="grid lg:grid-cols-3 gap-8 relative z-10">
+                    <!-- Phase 1 -->
+                    <div class="glass p-8 rounded-2xl text-center reveal delay-100 group hover:bg-slate-800 transition-colors">
+                        <div class="w-16 h-16 bg-dark-800 rounded-full border-4 border-blue-500 flex items-center justify-center text-xl font-bold mx-auto mb-6 group-hover:scale-110 transition-transform relative z-10">1</div>
+                        <h3 class="text-xl font-bold mb-2">التأسيس (Data Foundation)</h3>
+                        <p class="text-slate-400 text-sm">رقمنة الأسطول وبناء قاعدة البيانات المركزية. (Hygienic Data)</p>
+                    </div>
+
+                    <!-- Phase 2 -->
+                    <div class="glass p-8 rounded-2xl text-center reveal delay-200 group hover:bg-slate-800 transition-colors">
+                        <div class="w-16 h-16 bg-dark-800 rounded-full border-4 border-purple-500 flex items-center justify-center text-xl font-bold mx-auto mb-6 group-hover:scale-110 transition-transform relative z-10">2</div>
+                        <h3 class="text-xl font-bold mb-2">التشغيل التجريبي (Pilot)</h3>
+                        <p class="text-slate-400 text-sm">تفعيل النظام في مواقع مختارة لضمان سلاسة الانتقال وتدريب الفريق.</p>
+                    </div>
+
+                    <!-- Phase 3 -->
+                    <div class="glass p-8 rounded-2xl text-center reveal delay-300 group hover:bg-slate-800 transition-colors">
+                        <div class="w-16 h-16 bg-dark-800 rounded-full border-4 border-emerald-500 flex items-center justify-center text-xl font-bold mx-auto mb-6 group-hover:scale-110 transition-transform relative z-10">3</div>
+                        <h3 class="text-xl font-bold mb-2">التعميم (Full Scale)</h3>
+                        <p class="text-slate-400 text-sm">ربط كافة الأقسام (مخازن، مبيعات، صيانة) في منظومة واحدة متكاملة.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why RoboVAI Section -->
+    <section class="py-20 bg-dark-800">
+        <div class="container mx-auto px-6">
+            <div class="bg-gradient-to-br from-blue-900/20 to-purple-900/20 rounded-3xl p-8 lg:p-12 border border-white/5">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-6">
+                        <h2 class="text-3xl lg:text-4xl font-bold">🏆 لماذا <span class="text-blue-400">RoboVAI Nexus</span>؟</h2>
+                        <div class="inline-block px-3 py-1 bg-white/5 rounded text-xs text-slate-300 border border-white/10">صُمم للشركات الكبرى (Enterprise Grade)</div>
+                        
+                        <div class="space-y-4 pt-4">
+                            <div class="flex gap-4">
+                                <div class="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 shrink-0"><i class="fa-solid fa-lock"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-white">أمان بنكي</h4>
+                                    <p class="text-sm text-slate-400">بيانات عملائكم ومناقصاتكم مشفرة ومحمية على خوادم سحابية خاصة.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="w-12 h-12 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400 shrink-0"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-white">قابلية توسع لا نهائية</h4>
+                                    <p class="text-sm text-slate-400">النظام يخدم من 50 مولداً حتى 5000 مولد بنفس الكفاءة.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="w-12 h-12 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 shrink-0"><i class="fa-solid fa-mobile-screen"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-white">سهولة الاستخدام</h4>
+                                    <p class="text-sm text-slate-400">واجهات مصممة لتعمل مع أي هاتف ذكي، ولا تتطلب تدريباً معقداً.</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="glass-card p-6 rounded-2xl text-center translate-y-8 transform hover:translate-y-6 transition-transform">
-                            <i class="fa-solid fa-network-wired text-3xl text-amber-400 mb-4"></i>
-                            <div class="font-bold text-lg">IoT Grid</div>
-                            <div class="text-xs text-slate-400">ربط لحظي</div>
+                    </div>
+                    
+                    <div class="relative h-64 lg:h-full min-h-[300px] rounded-2xl overflow-hidden glass group">
+                        <!-- Abstract Visual or Image placeholder -->
+                        <div class="absolute inset-0 bg-gradient-to-tr from-blue-600/20 to-purple-600/20"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center">
+                                <i class="fa-solid fa-certificate text-6xl text-white/20 mb-4 group-hover:scale-110 transition-transform duration-500"></i>
+                                <div class="text-xl font-bold text-white/50">Quality Assurance</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -404,16 +571,15 @@
     <!-- Footer -->
     <footer class="bg-dark-950 border-t border-white/5 py-12">
         <div class="container mx-auto px-6 text-center">
-            <div class="flex items-center justify-center gap-3 mb-2">
-                <img src="landing_assets/RoboVAI Solutions.png" alt="RoboVAI Solutions" class="w-10 h-10 rounded-lg">
-                <span class="text-xl font-bold">القطامي سمارت فليت</span>
+            <div class="flex items-center justify-center gap-3 mb-4">
+                <img src="landing_assets/RoboVAI Solutions.png" alt="RoboVAI Solutions" class="w-12 h-12 rounded-lg grayscale hover:grayscale-0 transition-all">
             </div>
-            <p class="text-slate-500 text-xs mb-2">مدعوم من <span class="text-blue-400 font-semibold">RoboVAI Nexus</span></p>
-            <p class="text-slate-600 text-xs mb-8">منتج من <span class="font-semibold">RoboVAI Solutions</span> © 2026</p>
-            <div class="flex justify-center gap-6 text-slate-400">
-                <a href="#" class="hover:text-blue-400 transition-colors"><i class="fa-brands fa-facebook"></i></a>
-                <a href="#" class="hover:text-blue-400 transition-colors"><i class="fa-brands fa-twitter"></i></a>
-                <a href="#" class="hover:text-blue-400 transition-colors"><i class="fa-brands fa-linkedin"></i></a>
+            <h3 class="text-2xl font-bold text-white mb-2">RoboVAI Nexus™</h3>
+            <p class="text-slate-400 text-sm mb-6">The Digital Backbone for Industry Leaders.</p>
+            
+            <div class="border-t border-white/5 pt-8 mt-8">
+                <p class="text-slate-600 text-xs mb-2">تطوير وتنفيذ: <span class="text-blue-400 font-semibold">RoboVAI Solutions</span></p>
+                <p class="text-slate-700 text-[10px]">حقوق الملكية الفكرية محفوظة © 2026</p>
             </div>
         </div>
     </footer>
