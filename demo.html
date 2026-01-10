@@ -236,7 +236,9 @@
                 <!-- App Header -->
                 <div id="mobileHeader" class="bg-blue-600 px-5 pt-4 pb-8 text-white rounded-b-[2rem] shadow-lg relative z-0">
                     <div class="flex justify-between items-start mb-4">
-                        <i class="fa-solid fa-bars text-lg opacity-80"></i>
+                        <button id="btnPhoneMenu" class="w-9 h-9 -mr-2 rounded-xl hover:bg-white/10 active:bg-white/15 transition-colors flex items-center justify-center" aria-label="القائمة" title="القائمة" type="button">
+                            <i class="fa-solid fa-bars text-lg opacity-80"></i>
+                        </button>
                         <div id="mobileAvatar" class="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
                             <i class="fa-solid fa-user text-xs"></i>
                         </div>
@@ -416,7 +418,8 @@
             btnControls: document.getElementById('btnControls'),
             btnCloseControls: document.getElementById('btnCloseControls'),
             controlsDrawer: document.getElementById('controlsDrawer'),
-            drawerBackdrop: document.getElementById('drawerBackdrop')
+            drawerBackdrop: document.getElementById('drawerBackdrop'),
+            btnPhoneMenu: document.getElementById('btnPhoneMenu'),
         };
 
         // --- Mobile Controls Drawer (Bottom Sheet) ---
@@ -426,6 +429,10 @@
 
         function openControls() {
             if (!els.controlsDrawer) return;
+            if (!isMobile()) {
+                els.scenarioSelect?.focus();
+                return;
+            }
             els.controlsDrawer.classList.remove('hidden');
             document.body.classList.add('drawer-open');
             if (els.drawerBackdrop) els.drawerBackdrop.classList.remove('hidden');
@@ -446,6 +453,7 @@
         els.btnControls?.addEventListener('click', openControls);
         els.btnCloseControls?.addEventListener('click', closeControls);
         els.drawerBackdrop?.addEventListener('click', closeControls);
+        els.btnPhoneMenu?.addEventListener('click', openControls);
 
         window.addEventListener('resize', () => {
             // Ensure correct state when rotating / resizing
